@@ -14,8 +14,8 @@ git_repo = 'https://github.com/AmanoTeam/EduuRobot' #Repositório onde seu bot e
 
 max_time = 60
 
-version = os.environ['version']
-logs = os.environ["logs"]
+VERSION = os.environ['version']
+LOGS = os.environ["logs"]
 
 sudoers = [
     123892996, 200097591, 204807919,
