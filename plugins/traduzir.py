@@ -45,8 +45,8 @@ def traduzir(msg):
                                     data=dict(key=traducao, lang=lang, text=text)).json()
                 
                 bot.editMessageText((msg['chat']['id'], sent['message_id']),
-                                    '''<b>Source:</b>\n <code>{}</code> \n <b>Language:</b> <code>{}</code>\n
-<b>Translation:</b>\n <code>{}</code>'''.format(text, req['lang'], req['text'][0]),
+                                    '''<b>Source:</b>\n <i>{}</i> \n\n <b>Language:</b> <code>{}</code>\n
+<b>Translation:</b>\n {}'''.format(text, req['lang'], req['text'][0]),
                                     parse_mode='HTML')
 
             else:
