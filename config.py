@@ -39,5 +39,6 @@ enabled_plugins = [
     'ip',
     'jsondump',
     'dados',
-    'diversos'
+    'diversos',
+    'ts'
 ]
