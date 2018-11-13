@@ -65,17 +65,6 @@ def sudos(msg):
                 os.execl(sys.executable, sys.executable, *sys.argv)
                 del threading.Thread
 
-
-            elif msg['text'].split()[0] == '!cmd':
-                text = msg['text'][5:]
-                if re.match('(?i).*poweroff|halt|shutdown|reboot', text):
-                    res = 'Comando proibido.'
-                else:
-                    res = subprocess.getstatusoutput(text)[1]
-                bot.sendMessage(msg['chat']['id'], res, reply_to_message_id=msg['message_id'])
-                return True
-
-
             elif msg['text'].split()[0] == '!exec':
                 text = msg['text'][6:]
                 try:
@@ -91,27 +80,28 @@ def sudos(msg):
 
 
             elif msg['text'] == '!upgrade':
-                if os.system('git > /dev/null') == 32512:
-                    bot.sendMessage(msg['chat']['id'], 'Ei, você precisa instalar o git para que esse comando funcione!',
+                if msg['from']['id'] in sudoers:
+                    if os.system('git > /dev/null') == 32512:
+                        bot.sendMessage(msg['chat']['id'], 'Ei, você precisa instalar o git para que esse comando funcione!',
                                     reply_to_message_id=msg['message_id'])
-                else:
-                    sent = bot.sendMessage(msg['chat']['id'], 'Atualizando a base do bot...',
+                    else:
+                        sent = bot.sendMessage(msg['chat']['id'], 'Atualizando a base do bot...',
                                            reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
-                    config = open('config.py').read()
-                    database = open('bot.db', 'rb').read()
-                    cdir = os.getcwd()
-                    os.chdir('..')
-                    os.system('rm -rf '+cdir)
-                    os.system('git clone {} {}'.format(git_repo,cdir))
-                    os.chdir(cdir)
-                    with open('config.py', 'w') as cfg:
-                        cfg.write(config)
-                    with open('bot.db', 'wb') as dbf:
-                        dbf.write(database)
-                    bot.editMessageText((msg['chat']['id'], sent['message_id']), 'Reiniciando...')
-                    time.sleep(1)
-                    os.exec(sys.executable, sys.executable, *sys.argv)
-                    del threading.Thread
+                        config = open('config.py').read()
+                        database = open('bot.db', 'rb').read()
+                        cdir = os.getcwd()
+                        os.chdir('..')
+                        os.system('rm -rf '+cdir)
+                        os.system('git clone {} {}'.format(git_repo,cdir))
+                        os.chdir(cdir)
+                        with open('config.py', 'w') as cfg:
+                            cfg.write(config)
+                        with open('bot.db', 'wb') as dbf:
+                            dbf.write(database)
+                        bot.editMessageText((msg['chat']['id'], sent['message_id']), 'Reiniciando...')
+                        time.sleep(1)
+                        os.system(sys.executable, sys.executable, *sys.argv)
+                        del threading.Thread
 
 
             elif msg['text'].startswith('!leave'):
