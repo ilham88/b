@@ -43,10 +43,10 @@ def traduzir(msg):
 
                 req = requests.post("https://translate.yandex.net/api/v1.5/tr.json/translate",
                                     data=dict(key=traducao, lang=lang, text=text)).json()
-
+                
                 bot.editMessageText((msg['chat']['id'], sent['message_id']),
-                                    '''<b>Idioma:</b> {}
-<b>Tradução:</b> <code>{}</code>'''.format(req['lang'], req['text'][0]),
+                                    '''<b>Source:</b>\n <code>{}</code> \n <b>Language:</b> <code>{}</code>\n
+<b>Translation:</b>\n <code>{}</code>'''.format(text, req['lang'], req['text'][0]),
                                     parse_mode='HTML')
 
             else:
