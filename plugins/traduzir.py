@@ -38,7 +38,7 @@ def traduzir(msg):
                 text = text.replace(lang, '', 1).strip() if text.startswith(lang) else text
 
             if len(text) > 0:
-                sent = bot.sendMessage(msg['chat']['id'], 'Traduzindo...',
+                sent = bot.editMessageText(msg['chat']['id'], 'Translating...',
                                         reply_to_message_id=msg['message_id'])
 
                 req = requests.post("https://translate.yandex.net/api/v1.5/tr.json/translate",
@@ -50,6 +50,6 @@ def traduzir(msg):
                                     parse_mode='HTML')
 
             else:
-                bot.sendMessage(msg['chat']['id'], 'Uso: /tr <idioma> texto para traduzir (pode ser usado em resposta a uma mensagem).',
+                bot.sendMessage(msg['chat']['id'], 'Use: /tr <lang> text to translate (can also be used when replying to a message).',
                                 reply_to_message_id=msg['message_id'])
             return True
