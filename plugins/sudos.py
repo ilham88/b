@@ -24,8 +24,8 @@ def sudos(msg):
     global db
 
     if msg.get('text'):
-        if msg['text'] == '!sudos' or msg['text'] == '/sudos':
-                bot.sendMessage(msg['chat']['id'], '''*List of sudos:*
+            if msg['text'] == '!sudos' or msg['text'] == '/sudos':
+                    bot.sendMessage(msg['chat']['id'], '''*List of sudos:*
 
 *!backup - Makes a backup of the bot.
 *!cmd* - Run a command.
@@ -39,7 +39,7 @@ def sudos(msg):
 *!upgrade - Upgrades the base of the bot.''',
                                 'Markdown',
                                 reply_to_message_id=msg['message_id'])
-                return True
+                    return True
 
 
             elif msg['text'].split()[0] == '!eval':
