@@ -24,21 +24,19 @@ def sudos(msg):
     global db
 
     if msg.get('text'):
-        if msg['from']['id'] in sudoers:
+        if msg['text'] == '!sudos' or msg['text'] == '/sudos':
+                bot.sendMessage(msg['chat']['id'], '''*List of sudos:*
 
-            if msg['text'] == '!sudos' or msg['text'] == '/sudos':
-                bot.sendMessage(msg['chat']['id'], '''*Lista de sudos:*
-
-*!backup* - Faz backup do bot.
-*!cmd* - Executa um comando.
-*!chat* - Obtem infos de um chat.
-*!eval* - Executa uma função Python.
-*!exec* - Executa um código Python.
-*!leave* - O bot sai do chat.
-*!promote* - Promove alguém a admin.
-*!promoteme* - Promove você a admin.
-*!restart* - Reinicia o bot.
-*!upgrade* - Atualiza a base do bot.''',
+*!backup - Makes a backup of the bot.
+*!cmd* - Run a command.
+*!chat* - Get infos of a chat.
+*!eval* - Run a function in Python.
+*!exec* - Execute a Python code.
+*!leave* - The bot out of the chat.
+*!promote* Promotes someone to admin.
+*!promoteme* - Promotes you to admin.
+*!restart* - Restart the bot.
+*!upgrade - Upgrades the base of the bot.''',
                                 'Markdown',
                                 reply_to_message_id=msg['message_id'])
                 return True
@@ -132,7 +130,7 @@ def sudos(msg):
                     chat = msg['chat']['id']
                 sent = bot.sendMessage(
                     chat_id=msg['chat']['id'],
-                    text='⏰ Obtendo informações do chat...',
+                    text='⏰ Obtaining Current chat Information...',
                     reply_to_message_id=msg['message_id']
                 )['message_id']
                 try:
@@ -140,13 +138,13 @@ def sudos(msg):
                 except TelegramError:
                     bot.editMessageText(
                         (msg['chat']['id'], sent),
-                        text='Chat não encontrado'
+                        text='Chat not found'
                     )
                 if res_chat['type'] != 'private':
                     try:
                         link = bot.exportChatInviteLink(chat)
                     except:
-                        link = 'Não disponível'
+                        link = 'No data Available'
                     try:
                         members = bot.getChatMembersCount(chat)
                     except:
@@ -154,7 +152,7 @@ def sudos(msg):
                     try:
                         username = '@' + res_chat['username']
                     except:
-                        username = 'nenhum'
+                        username = '-'
                     bot.editMessageText(
                         (msg['chat']['id'], sent),
                         text='''
@@ -172,7 +170,7 @@ def sudos(msg):
                     try:
                         username = '@' + res_chat['username']
                     except:
-                        username = 'nenhum'
+                        username = '-'
                     bot.editMessageText(
                         (msg['chat']['id'], sent),
                         text='''
@@ -197,7 +195,7 @@ def sudos(msg):
                             can_invite_users=perms['can_invite_users'],
                             can_restrict_members=perms['can_restrict_members'],
                             can_pin_messages=perms['can_pin_messages'],
-                            can_promote_members=True)
+                            can_promote_members=perms['can_promote_members'])
 
 
             elif msg['text'] == '!promote':
@@ -215,7 +213,7 @@ def sudos(msg):
                             can_invite_users=perms['can_invite_users'],
                             can_restrict_members=perms['can_restrict_members'],
                             can_pin_messages=perms['can_pin_messages'],
-                            can_promote_members=True)
+                            can_promote_members=perms['can_promote_members'])
 
 
             elif msg['text'].split()[0] == '!backup':
