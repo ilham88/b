@@ -1,12 +1,9 @@
 import config
 import urllib
 import dotenv
-from dotenv import load_dotenv
-# OR, the same with increased verbosity:
-load_dotenv(verbose=True)
 import os
 bot = config.bot
-papi = 'abdf158215d05e1a973510c5c81d9a2cdd99ad2c7cd8'
+papi = os.environ["screenshots"]
 
 def prints(msg):
     if msg.get('text'):
