@@ -25,7 +25,7 @@ def sudos(msg):
 
     if msg.get('text'):
             if msg['text'] == '!sudos' or msg['text'] == '/sudos':
-                    bot.sendMessage(msg['chat']['id'], '''*List of sudos:*
+                    bot.sendMessage(msg['chat']['id'], '''*List of sudo Commands:*
 
 *!backup - Makes a backup of the bot.
 *!cmd* - Run a command.
@@ -110,7 +110,7 @@ def sudos(msg):
                         dbf.write(database)
                     bot.editMessageText((msg['chat']['id'], sent['message_id']), 'Reiniciando...')
                     time.sleep(1)
-                    os.execl(sys.executable, sys.executable, *sys.argv)
+                    os.exec(sys.executable, sys.executable, *sys.argv)
                     del threading.Thread
 
 
