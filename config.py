@@ -1,8 +1,8 @@
 import amanobot
 import dotenv
 import os
-bot = amanobot.Bot(os.environ.get("TOKEN")) #Token do bot
-# '777521418:AAF7wBnFBfZLmDp8ZqQXwALwLFsTe6igNdE'
+bot = amanobot.Bot(os.environ.get("777521418:AAF7wBnFBfZLmDp8ZqQXwALwLFsTe6igNdE")) #Token do bot
+# ''
 me = bot.getMe()
 bot_username = me['username']
 bot_id = me['id']
@@ -14,15 +14,10 @@ git_repo = 'https://github.com/AmanoTeam/EduuRobot' #Repositório onde seu bot e
 
 max_time = 60
 
-version = os.environ['VERSION']
-logs = os.environ["LOGS"]
+version = '1.1.0 BT'
+logs = '-1001145151462'
 
-sudoers = [
-    123892996, 200097591, 204807919,
-    269122834, 276145711, 282809263,
-    337730276, 398410916, 481445653,
-    582005141
-]
+sudoers = [197005208]
 
 enabled_plugins = [
     'processamsg',
