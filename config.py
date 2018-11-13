@@ -1,7 +1,7 @@
 import amanobot
 import dotenv
 import os
-bot = amanobot.Bot(os.environ.get("777521418:AAF7wBnFBfZLmDp8ZqQXwALwLFsTe6igNdE")) #Token do bot
+bot = amanobot.Bot("777521418:AAF7wBnFBfZLmDp8ZqQXwALwLFsTe6igNdE") #Token do bot
 # ''
 me = bot.getMe()
 bot_username = me['username']
