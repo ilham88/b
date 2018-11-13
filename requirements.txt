@@ -6,3 +6,4 @@ youtube-dl
 duckpy
 python-dotenv
 Pillow
+python-telegram-bot
