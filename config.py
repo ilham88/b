@@ -16,7 +16,7 @@ max_time = 60
 version = os.environ["version"]
 logs = os.environ["logs"]
 
-sudoers = [os.environ.get("sudoers")]
+sudoers = os.environ["sudoers"]
 keys = ['abdf158215d05e1a973510c5c81d9a2cdd99ad2c7cd8']
 enabled_plugins = [
     'processamsg',
@@ -39,6 +39,5 @@ enabled_plugins = [
     'ip',
     'jsondump',
     'dados',
-    'diversos',
-    'ts'
+    'diversos'
 ]
