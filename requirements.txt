@@ -5,3 +5,4 @@ requests
 youtube-dl
 duckpy
 python-dotenv
+Pillow
