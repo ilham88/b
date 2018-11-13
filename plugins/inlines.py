@@ -8,9 +8,6 @@ from uuid import uuid4
 import duckpy
 from .youtube import search_yt
 import dotenv
-from dotenv import load_dotenv
-# OR, the same with increased verbosity:
-load_dotenv(verbose=True)
 import os
 
 bot_username = config.me['username']
@@ -100,7 +97,7 @@ def inlines(msg):
                                      id=str(uuid4()),
                                      title="Sem resultados.",
                                      input_message_content=InputTextMessageContent(
-                                         message_text=f"Sem resultados para '{search}'."
+                                         message_text=f"No results for '{search}'."
                                      )))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
