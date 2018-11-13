@@ -2,7 +2,7 @@ import amanobot
 import dotenv
 import os
 bot_key = os.environ["TOKEN"]
-bot = amanobot.Bot(bot_key) #Token do bot
+bot = amanobot.Bot(os.environ["TOKEN"]) #Token do bot
 # ''
 me = bot.getMe()
 bot_username = me['username']
