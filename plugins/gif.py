@@ -2,9 +2,6 @@ import config
 import requests
 import random
 import dotenv
-from dotenv import load_dotenv
-# OR, the same with increased verbosity:
-load_dotenv(verbose=True)
 import os
 bot = config.bot
 bot_username = config.bot_username
