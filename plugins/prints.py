@@ -56,8 +56,8 @@ def prints(msg):
                     x += "  🔎 [{}]({}) \n\n".format(text, url)
                 end = datetime.now()
                 ms = (end - start).seconds
-                bot.editMessageText((msg['chat']['id'],sent_id),
-                                        "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x), 'Markdown', disable_web_page_preview=True)
+                bot.sendMessage(msg['chat']['id'], "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x), 'Markdown', 
+                                reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
                 try:
                     bot.sendLocation(msg['chat']['id'],
                                      latitude=req['lat'],
