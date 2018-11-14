@@ -55,8 +55,8 @@ def prints(msg):
                 end = datetime.now()
                 ms = (end - start).seconds
                 f = "searched Google for {} in {} seconds. \n{}".format(input_str, ms, x)
-                bot.sendMessage(msg['chat']['id'], f, 'Markdown', link_preview=False,
-                                reply_to_message_id=msg['message_id'])
+                bot.sendMessage(msg['chat']['id'], f, 'Markdown',
+                                reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
                 try:
                     bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
                                 parse_mode='Markdown',
