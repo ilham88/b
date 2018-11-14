@@ -46,20 +46,21 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                start = datetime.now()
-                req = search(input_str, num_results=GLOBAL_LIMIT)
-                x = " "
-                for text, url in req:
-                    x += "  🔎 [{}]({}) \n\n".format(text, url)
+                if msg.get('reply_to_message') and msg['reply_to_message'].get('text'):
+                    start = datetime.now()
+                    req = search(input_str, num_results=GLOBAL_LIMIT)
+                    x = " "
+                    for text, url in req:
+                        x += "  🔎 [{}]({}) \n\n".format(text, url)
                
-                end = datetime.now()
-                ms = (end - start).seconds
-                f = "searched Google for {} in {} seconds. \n{}".format(input_str, ms, x)
-                bot.sendMessage(msg['chat']['id'], f, 'Markdown',
+                    end = datetime.now()
+                    ms = (end - start).seconds
+                    f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
+                    bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
-                try:
-                    bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
+                    try:
+                        bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-                except KeyError:
-                    pass
+                     except KeyError:
+                        pass
