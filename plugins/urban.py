@@ -3,8 +3,6 @@ import urllib
 import dotenv
 import urbandict
 import logger
-from bs4 import BeautifulSoup
-from datetime import datetime
 import os
 import re
 from amanobot.namedtuple import InlineKeyboardMarkup
@@ -15,7 +13,7 @@ import time
 bot = config.bot
 bot_username = config.bot_username
 
-def prin(msg):
+def urban(msg):
     if msg.get('text'):
         if msg['text'].startswith('/u') or msg['text'].startswith('!u'):
             str = msg['text'][3:]
