@@ -60,7 +60,7 @@ def prints(msg):
                 
        
     
-def prints(msg):
+def print(msg):
     if msg.get('text'):
         if msg['text'].startswith('/w') or msg['text'].startswith('!w'):
             match = msg['text'][3:]
@@ -75,7 +75,7 @@ def prints(msg):
                 bot.editMessageText((msg['chat']['id'], sents), '**Search:**\n`' + match + '`\n\n**Result:**\n' + result, 'Markdown', disable_web_page_preview=True)
     
 
-def prints(msg):
+def prin(msg):
     if msg.get('text'):
         if msg['text'].startswith('/u') or msg['text'].startswith('!u'):
             str = msg['text'][3:]
@@ -92,35 +92,3 @@ def prints(msg):
                 except Exception as error:
                     return bot.editMessageText((msg['chat']['id'], sents), "Can't find *{str}* in the dictionary", parse_mode="Markdown", disable_web_page_preview=True)
                 
-def prints(msg):
-    if msg.get('text'):
-        if msg['text'].startswith('/screen') or msg['text'].startswith('!screen'):
-            input_str = msg['text'][8:]
-            if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
-                                parse_mode='Markdown',
-                                reply_to_message_id=msg['message_id'])
-            else:
-                sent = bot.sendMessage(msg['chat']['id'], '*Capturing website in progress..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
-                'message_id']
-                start = datetime.now()
-                sample_url = "https://api.screenshotlayer.com/api/capture?access_key={}&url={}"
-    			# https://stackoverflow.com/a/23718458/4723940
-    			contentType = response_api.headers['content-type']
-    			if "image" in contentType:
-        			temp_file_name = "screenshotlayer.jpg"
-        			with open(temp_file_name, "wb") as fd:
-            		for chunk in response_api.iter_content(chunk_size=128):
-                		fd.write(chunk)
-        			try:
-            			bot.sendPhoto(
-                				msg['chat']['id'],
-                				temp_file_name,
-                				caption=input_str,
-                				reply_to_message_id=msg['message_id'])
-            			bot.deleteMessage(msg['chat']['id'], sent)
-        			except:
-            			bot.editMessageText((msg['chat']['id'], sent), response_api.text, 'Markdown', disable_web_page_preview=True)
-        				os.remove(temp_file_name)
-    			else:
-        				bot.editMessageText((msg['chat']['id'], sent), response_api.text, 'Markdown', disable_web_page_preview=True)
