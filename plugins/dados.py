@@ -71,7 +71,7 @@ except:
     input()
 def dados(msg):
     if msg.get('text'):
-        if msg['text'].startswith('/scr') or msg['text'].startswith('!scr'):
+        if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             match = msg['text'][3:]
             if match == '':
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/w or !w <search query>`',
@@ -80,5 +80,6 @@ def dados(msg):
             else:
                 sents = bot.sendMessage(msg['chat']['id'], download, 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
-                result=wikipedia.summary(match)
-                bot.editMessageText((msg['chat']['id'], sents), '**Search:**\n`' + match + '`\n\n**Result:**\n' + result, 'Markdown', disable_web_page_preview=True)
+                filename = match.split('/')[-1]
+                bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                bot.editMessageText((msg['chat']['id'], sents), '**Search:**', 'Markdown', disable_web_page_preview=True)
