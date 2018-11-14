@@ -63,16 +63,7 @@ def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
             file_size = int(meta.getheaders("Content-Length")[0])
             _download_helper(response,out_file,file_size)
 
-import traceback
-try:
-    download(
-        url,
-        filename,
-        progress_callback_simple
-    )
-except:
-    traceback.print_exc()
-    input()
+
 def dados(msg):
     if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
