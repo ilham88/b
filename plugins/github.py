@@ -6,7 +6,7 @@ import os
 
 
 url = 'https://api.github.com/users/{}'
-
+bot = config.bot
 
 def github(msg):
     if msg.get('text'):
