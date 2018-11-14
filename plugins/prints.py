@@ -57,8 +57,6 @@ def prints(msg):
                 
                 last_search = bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
-                try:
-                    bot.deleteMessage((msg['chat']['id'],last_search)
-                except KeyError:
-                    pass
+                bot.deleteMessage((msg['chat']['id'],last_search)
+                
                
