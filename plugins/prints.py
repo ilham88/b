@@ -40,7 +40,6 @@ def escape_definition(definition):
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
-            text = msg['text'][2:]
             input_str = msg['text'][2:]
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
@@ -48,9 +47,9 @@ def prints(msg):
                                 reply_to_message_id=msg['message_id'])
             else:
                 req = search(input_str, num_results=GLOBAL_LIMIT)
-                x = ''
-                for i in req:
-                    x += "*{}*: `{}`\n".format(i.title(), req[i])
+                x = " "
+                for text, url in req:
+                    x += "  🔎 [{}]({}) \n\n".format(text, url)
                 bot.sendMessage(msg['chat']['id'], x, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
                 try:
