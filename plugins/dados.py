@@ -16,7 +16,7 @@ bot = config.bot
 bot_username = config.bot_username
 
 
-def prints(msg):
+def dados(msg):
     if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
