@@ -82,10 +82,10 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                sents = bot.sendMessage(msg['chat']['id'], download, 'Markdown', reply_to_message_id=msg['message_id'])[
+                sents = bot.sendMessage(msg['chat']['id'], '**Search:.........**', 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
                 filename = match.split('/')[-1]
-                dl = download(url, filename, progress_callback_simple)
+                dl = download(match, filename, progress_callback_simple)
                 a = out_file.read()
                 bot.sendChatAction(msg['chat']['id'], 'upload_document')
                 bot.editMessageText((msg['chat']['id'], sents), '**Search:**', 'Markdown', disable_web_page_preview=True)
