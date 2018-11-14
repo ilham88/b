@@ -24,7 +24,7 @@ def prints(msg):
             except Exception as e:
                 bot.sendMessage(msg['chat']['id'], f'Ocorreu um erro ao enviar a print, favor tente mais tarde.\nDescrição do erro: {e.description}',
                                 reply_to_message_id=msg['message_id'])
-             else:
+            else:
                 bot.sendMessage(msg['chat']['id'], 'Use: /tr <lang> text to translate (can also be used when replying to a message).',
                                 reply_to_message_id=msg['message_id'])
             return True
