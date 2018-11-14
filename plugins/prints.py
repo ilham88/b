@@ -16,7 +16,7 @@ import config
 import requests
 import re
 import html
-
+import time
 bot = config.bot
 bot_username = config.bot_username
 GLOBAL_LIMIT = 9
@@ -46,11 +46,9 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                first = time.time()
                 sent = bot.sendMessage(msg['chat']['id'], '*Processing your request..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
-                second = time.time()
-                start = datetime.now()
+                start = round(time.time() * 1000)
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = ''
                 for text, url in req:
