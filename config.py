@@ -24,6 +24,7 @@ enabled_plugins = [
     'shorten',
     'kibe',
     'wiki',
+    'urban
     'traduzir',
     'inlines',
     'admins',
