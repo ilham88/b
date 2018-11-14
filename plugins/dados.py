@@ -69,7 +69,7 @@ try:
 except:
     traceback.print_exc()
     input()
-def prints(msg):
+def dados(msg):
     if msg.get('text'):
         if msg['text'].startswith('/scr') or msg['text'].startswith('!scr'):
             match = msg['text'][3:]
