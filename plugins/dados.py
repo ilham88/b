@@ -77,6 +77,19 @@ def dados(msg):
                 'message_id']
                 filename = match.split('/')[-1]
                 dl = download(match, filename, progress_callback_simple)
-                a = out_file.read()
-                bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                bot.editMessageText((msg['chat']['id'], sents), '**Search:**', 'Markdown', disable_web_page_preview=True)
+                with open(dstfilepath,"wb") as out_file:
+                    if python3:
+                        with urllib.request.urlopen(srcurl) as response:
+                        file_size = int(response.getheader("Content-Length"))
+                        _download_helper(response,out_file,file_size)
+                    else:
+                        response = urllib2.urlopen(srcurl)
+                        meta = response.info()
+                        file_size = int(meta.getheaders("Content-Length")[0])
+                        _download_helper(response,out_file,file_size)
+                        a = out_file.read()
+                        bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                        bot.editMessageText((msg['chat']['id'], sents), '**Search:**', 'Markdown', disable_web_page_preview=True)
+
+                
+                
