@@ -18,7 +18,7 @@ papi = os.environ["screenshots"]
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/print ') or msg['text'].startswith('!print '):
-            if msg['text'][7:] = ''
+            if msg['text'][7:] = '':
                 bot.sendMessage(msg['chat']['id'], 'Use: /tr <lang> text to translate (can also be used when replying to a message).',
                                 reply_to_message_id=msg['message_id'])
                 try:
