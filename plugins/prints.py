@@ -52,8 +52,7 @@ def prints(msg):
                 req = search(text, num_results=GLOBAL_LIMIT)
                 x = " "
                 for text, url in req:
-                    x += "  🔎 [{}]({}) \n\n".format(text, url)
+                    x += "searched Google for {} in {} seconds. \n🔎 [{}]({}) \n\n".format(req, ms, x, text, url)
                 end = datetime.now()
                 ms = (end - start).seconds
-                bot.editMessageText((msg['chat']['id'],sent_id),
-                                        "searched Google for {} in {} seconds. \n{}".format(req, ms, x), link_preview=False, 'Markdown')
+                bot.editMessageText((msg['chat']['id'],sent_id), x, link_preview=False, 'Markdown')
