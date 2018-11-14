@@ -58,7 +58,7 @@ def prints(msg):
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
                 last_search = bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
-                    try:
-                        bot.deleteMessage((msg['chat']['id'],last_search))
-                    except KeyError:
-                        pass
+                try:
+                    bot.deleteMessage((msg['chat']['id'],last_search)
+                except KeyError:
+                    pass
