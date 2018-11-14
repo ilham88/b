@@ -17,7 +17,7 @@ papi = os.environ["screenshots"]
 
 def prints(msg):
      if msg.get('text'):
-        if msg['text'].startswith('/pypi ') or msg['text'].startswith('!pypi '):
+        if msg['text'].startswith('/g ') or msg['text'].startswith('!pg '):
           text = msg['text'][6:]
           r = requests.get(f"https://pypi.python.org/pypi/{text}/json", headers={"User-Agent": "Eduu/v1.0_Beta"})
           if r.ok:
