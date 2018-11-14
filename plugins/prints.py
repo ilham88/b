@@ -57,7 +57,7 @@ def prints(msg):
                 ms = (end - start).seconds
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
                 bot.editMessageText((msg['chat']['id'],last_search), f, 'Markdown')
-                try::
+                try:
                 req = requests.get('http://ip-api.com/json/' + text).json()
                 x = ''
                 for i in req:
