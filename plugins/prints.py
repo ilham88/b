@@ -36,7 +36,7 @@ def escape_definition(definition):
         if isinstance(value, str):
             definition[key] = html.escape(cleanhtml(value))
     return definition
-
+last_search = {}
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
@@ -56,5 +56,9 @@ def prints(msg):
                 end = datetime.now()
                 ms = (end - start).seconds
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
-                bot.sendMessage(msg['chat']['id'], f, 'Markdown',
+                last_search = bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
+                    try:
+                        bot.deleteMessage((msg['chat']['id'],last_search))
+                    except KeyError:
+                        pass
