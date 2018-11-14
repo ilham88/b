@@ -62,5 +62,5 @@ def prints(msg):
                         bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-                     except KeyError:
+                    except KeyError:
                         pass
