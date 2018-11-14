@@ -16,21 +16,19 @@ bot = config.bot
 papi = os.environ["screenshots"]
 
 def prints(msg):
-    if msg.get('text'):
-        if msg['text'].startswith('/print ') or msg['text'].startswith('!print '):
-            text = msg['text'][6:]
-
-            if text == '':
-                bot.sendMessage(msg['chat']['id'], '*Uso:* /ytdl URL do vídeo ou nome', 'Markdown',
-                                reply_to_message_id=msg['message_id'])
-            else:
-                sent_id = bot.sendMessage(msg['chat']['id'], 'Obtendo informações do vídeo...', 'Markdown',
-                                          reply_to_message_id=msg['message_id'])['message_id']
-                try:
-                    bot.sendPhoto(msg['chat']['id'], f"https://api.thumbnail.ws/api/{papi}/thumbnail/get?url={urllib.parse.quote_plus(msg['text'][7:])}&width=1280",
-                              reply_to_message_id=msg['message_id'])
-                except Exception as e:
-                    bot.sendMessage(msg['chat']['id'], f'Ocorreu um erro ao enviar a print, favor tente mais tarde.\nDescrição do erro: {e.description}',
-                                reply_to_message_id=msg['message_id'])
-            
-                return True
+     if msg.get('text'):
+        if msg['text'].startswith('/pypi ') or msg['text'].startswith('!pypi '):
+          text = msg['text'][6:]
+          r = requests.get(f"https://pypi.python.org/pypi/{text}/json", headers={"User-Agent": "Eduu/v1.0_Beta"})
+          if r.ok:
+              pypi = escape_definition(r.json()["info"])
+              MESSAGE = "<b>%s</b> by <i>%s</i> (%s)\n" \
+                        "Platform: <b>%s</b>\n" \
+                        "Version: <b>%s</b>\n" \
+                        "License: <b>%s</b>\n" \
+                        "Summary: <b>%s</b>\n" % (pypi["name"], pypi["author"], pypi["author_email"], pypi["platform"],
+                                                  pypi["version"], pypi["platform"], pypi["summary"])
+              return bot.sendMessage(msg['chat']['id'], MESSAGE, reply_to_message_id=msg['message_id'], parse_mode="HTML", disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+    [dict(text='Package home page', url='{}'.format(pypi['home_page']))]]))
+          else:
+              return bot.sendMessage(msg['chat']['id'], f"Cant find *{text}* in pypi", reply_to_message_id=msg['message_id'], parse_mode="Markdown", disable_web_page_preview=True)           
