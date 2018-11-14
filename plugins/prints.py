@@ -19,7 +19,13 @@ import html
 
 bot = config.bot
 bot_username = config.bot_username
+GLOBAL_LIMIT = 9
+# TG API limit. An album can have atmost 10 media!
+TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./../DOWNLOADS/")
 
+
+def progress(current, total):
+    print("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', raw_html)
@@ -32,19 +38,24 @@ def escape_definition(definition):
     return definition
 
 def prints(msg):
-     if msg.get('text'):
-        if msg['text'].startswith('/g ') or msg['text'].startswith('!pg '):
-          text = msg['text'][6:]
-          r = requests.get(f"https://pypi.python.org/pypi/{text}/json", headers={"User-Agent": "Eduu/v1.0_Beta"})
-          if r.ok:
-              pypi = escape_definition(r.json()["info"])
-              MESSAGE = "<b>%s</b> by <i>%s</i> (%s)\n" \
-                        "Platform: <b>%s</b>\n" \
-                        "Version: <b>%s</b>\n" \
-                        "License: <b>%s</b>\n" \
-                        "Summary: <b>%s</b>\n" % (pypi["name"], pypi["author"], pypi["author_email"], pypi["platform"],
-                                                  pypi["version"], pypi["platform"], pypi["summary"])
-              return bot.sendMessage(msg['chat']['id'], MESSAGE, reply_to_message_id=msg['message_id'], parse_mode="HTML", disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-    [dict(text='Package home page', url='{}'.format(pypi['home_page']))]]))
-          else:
-              return bot.sendMessage(msg['chat']['id'], f"Cant find *{text}* in pypi", reply_to_message_id=msg['message_id'], parse_mode="Markdown", disable_web_page_preview=True)           
+    if msg.get('text'):
+        if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
+            text = msg['text'][2:]
+            if text == '':
+                bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
+                                parse_mode='Markdown',
+                                reply_to_message_id=msg['message_id'])
+            else:
+                req = requests.get('http://ip-api.com/json/' + text).json()
+                x = ''
+                for i in req:
+                    x += "*{}*: `{}`\n".format(i.title(), req[i])
+                bot.sendMessage(msg['chat']['id'], x, 'Markdown',
+                                reply_to_message_id=msg['message_id'])
+                try:
+                    bot.sendLocation(msg['chat']['id'],
+                                     latitude=req['lat'],
+                                     longitude=req['lon'],
+                                     reply_to_message_id=msg['message_id'])
+                except KeyError:
+                    pass
