@@ -23,6 +23,7 @@ enabled_plugins = [
     'start',
     'shorten',
     'kibe',
+    'wiki'
     'traduzir',
     'inlines',
     'admins',
