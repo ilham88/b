@@ -87,7 +87,8 @@ def prints(msg):
                 sents = bot.sendMessage(msg['chat']['id'], '*Performing dictionary query..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
                 mean = urbandict.define(str)
-                if len(mean) >= 0:
+                try:
                     return bot.editMessageText((msg['chat']['id'], sents), 'Text: **'+str+'**\n\nMeaning: **'+mean[0]['def']+'**\n\n'+'Example: \n__'+mean[0]['example']+'__', 'Markdown', disable_web_page_preview=True)
-                else:
-                    return bot.sendMessage(msg['chat']['id'], f"Can't find *{str}* in the dictionary", reply_to_message_id=msg['message_id'], parse_mode="Markdown", disable_web_page_preview=True)
+                except Exception as error:
+                    return bot.editMessageText((msg['chat']['id'], sents), "Can't find *{str}* in the dictionary", parse_mode="Markdown", disable_web_page_preview=True)
+                
