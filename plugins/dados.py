@@ -2,6 +2,7 @@ import sys
 import config
 import requests
 import re
+import sys
 try:
     import urllib.request
     python3 = True
@@ -26,7 +27,8 @@ def progress_callback_simple(downloaded,total):
         " [%3.2f%%]"%(100.0*float(downloaded)/float(total))
     )
     sys.stdout.flush()
-
+url="https://geometrian.com/data/programming/projects/glLib/glLib%20Reloaded%200.5.9/0.5.9.zip"
+filename = url.split('/')[-1]
 def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
     def _download_helper(response, out_file, file_size):
         if progress_callback!=None: progress_callback(0,file_size)
@@ -67,12 +69,3 @@ try:
 except:
     traceback.print_exc()
     input()
-    
-
-				
-
-
-
-
-
-
