@@ -38,12 +38,11 @@ def escape_definition(definition):
     return definition
   
 def prints(msg):
-def ip(msg):
     if msg.get('text'):
         if msg['text'].startswith('/s') or msg['text'].startswith('!s') or msg['text'].startswith('#s'):
             text = msg['text'][3:]
             if text == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/g or !g <search query>`',
+                bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             try:
