@@ -7,14 +7,8 @@ import os
 
 url = 'https://api.github.com/users/{}'
 
-OFFSET = 127462 - ord('A')
 
-
-def flag(code):
-    return chr(ord(code[0]) + OFFSET) + chr(ord(code[1]) + OFFSET)
-
-
-def clima(msg):
+def github(msg):
     if msg.get('text'):
         if msg['text'].startswith('/gith'):
             if msg['text'][6:] == '':
