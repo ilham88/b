@@ -50,9 +50,10 @@ def prints(msg):
                 x = " "
                 for text, url in req:
                     x += "  🔎 [{}]({}) \n\n".format(text, url)
-                f = "searched Google for {} in {} seconds. \n{}".format(input_str, ms, x)
+               
                 end = datetime.now()
                 ms = (end - start).seconds
+                f = "searched Google for {} in {} seconds. \n{}".format(input_str, ms, x)
                 bot.sendMessage(msg['chat']['id'], f, 'Markdown', link_preview=False,
                                 reply_to_message_id=msg['message_id'])
                 try:
