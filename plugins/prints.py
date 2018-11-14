@@ -45,7 +45,7 @@ def prints(msg):
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-            else:
+            try:
                 start = datetime.now()
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = ''
@@ -56,7 +56,7 @@ def prints(msg):
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
                 bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
-                try:
+                except Exception as error:
                     bot.sendLocation(msg['chat']['id'],
                                      latitude=req['lat'],
                                      longitude=req['lon'],
