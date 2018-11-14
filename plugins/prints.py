@@ -53,7 +53,7 @@ def prints(msg):
                 f = "searched Google for {} in {} seconds. \n{}".format(input_str, ms, x)
                 end = datetime.now()
                 ms = (end - start).seconds
-                bot.sendMessage(msg['chat']['id'], f, 'Markdown', link_preview=False
+                bot.sendMessage(msg['chat']['id'], f, 'Markdown', link_preview=False,
                                 reply_to_message_id=msg['message_id'])
                 try:
                     bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
