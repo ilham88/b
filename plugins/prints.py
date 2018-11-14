@@ -72,7 +72,7 @@ def prints(msg):
                 sents = bot.sendMessage(msg['chat']['id'], '*Processing wiki query..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
                 result=wikipedia.summary(match)
-                bot.editMessageText((msg['chat']['id'], sents), "**🔎 Query:**\n `{}'\n\n **Result:**\n{}".format(match, result), 'Markdown', disable_web_page_preview=True)
+                bot.editMessageText((msg['chat']['id'], sents), **Search:**\n`' + match + '`\n\n**Result:**\n' + result, 'Markdown', disable_web_page_preview=True)
     
     
     
