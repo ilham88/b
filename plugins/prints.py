@@ -40,8 +40,8 @@ def escape_definition(definition):
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
-            input_str = msg['text'][2:]
-            if text == '':
+            input_str = msg['text'][3:]
+            if input_str == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
@@ -56,9 +56,8 @@ def prints(msg):
                 bot.sendMessage(msg['chat']['id'], f, 'Markdown', link_preview=False
                                 reply_to_message_id=msg['message_id'])
                 try:
-                    bot.sendLocation(msg['chat']['id'],
-                                     latitude=req['lat'],
-                                     longitude=req['lon'],
-                                     reply_to_message_id=msg['message_id'])
+                    bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
+                                parse_mode='Markdown',
+                                reply_to_message_id=msg['message_id'])
                 except KeyError:
                     pass
