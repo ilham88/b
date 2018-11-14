@@ -57,6 +57,6 @@ def prints(msg):
                 bot.deleteMessage((msg['chat']['id'],last_search)
                 last_search = bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
-                
+                bot.sendMessage(msg['chat']['id'], last_search)
                 
                
