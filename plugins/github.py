@@ -15,7 +15,7 @@ def github(msg):
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
                 json = requests.post(url.format(msg['text'][6:])).json()
-                if json['status_code'] != 404:
+                if json.status_code != 404:
                     print(json)
                     res = json['message']
                 else:
