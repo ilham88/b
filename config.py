@@ -26,7 +26,7 @@ enabled_plugins = [
     'traduzir',
     'inlines',
     'admins',
-    'prints',
+    'google',
     'pypi',
     'clima',
     'youtube',
