@@ -17,16 +17,24 @@ def github(msg):
                 url = 'https://api.github.com/users/{}'.format(msg['text'][6:])
                 j = requests.get(url)
                 if j.status_code != 404:
-                    json = j.json()
-                    print(json)
+                    b = j.json()
+                    print(b)
+                    avatar_url = b["avatar_url"]
+                    html_url = b["html_url"]
+                    gh_type = b["type"]
+                    name = b["name"]
+                    company = b["company"]
+                    blog = b["blog"]
+                    location = b["location"]
+                    bio = b["bio"]
+                    created_at = b["created_at"]
                     res = """[\u2063]({})Name: [{}]({})
 Type: {}
 Company: {}
 Blog: {}
 Location: {}
 Bio: {}
-Profile Created: {}""".format(json['avatar_url'], json['name'], json['html_url']['gh_type'],
-                              json['company']['blog'], json['location'], json['bio'], json['created_at'])
+Profile Created: {}""".format(avatar_url, name, html_url, gh_type, company, blog, location, bio, created_at)
             bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
             return True
 
