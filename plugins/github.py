@@ -19,8 +19,6 @@ def github(msg):
                 if j.status_code != 404:
                     json = j.json()
                     print(json)
-                    res = json['message']
-                else:
                     res = """[\u2063]({})Name: [{}]({})
 Type: {}
 Company: {}
@@ -30,5 +28,8 @@ Bio: {}
 Profile Created: {}""".format(json['avatar_url'], json['name'], json['html_url']['gh_type'],
                               json['company']['blog'], json['location'], json['bio'], json['created_at'])
             bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
+                else:
+                    res = "`{}`: {}".format(msg['text'][6:], j.text)
+                    bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
             return True
 
