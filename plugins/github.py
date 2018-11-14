@@ -9,7 +9,7 @@ def github(msg):
         if msg['text'].startswith('/gith ') or msg['text'].startswith('!gith '):
           text = msg['text'][6:]
           try:
-            url = requests.get(f'https://api.github.com/users/{}".format(text)
+            url = requests.get('https://api.github.com/users/{}".format(text)
             r = requests.get(url)
             if r.status_code != 404:
                 b = r.json()
