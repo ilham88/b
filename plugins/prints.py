@@ -46,6 +46,7 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
+                start = datetime.now()
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = " "
                 for text, url in req:
