@@ -2,6 +2,8 @@ import sys
 import config
 import requests
 import re
+bot = config.bot
+bot_username = config.bot_username
 try:
     import urllib.request
     python3 = True
