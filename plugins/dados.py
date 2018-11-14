@@ -29,7 +29,8 @@ def prints(msg):
                 'message_id']
                 start = datetime.now()
                 url = input_str
-                r = requests.get(url, allow_redirects=True)filename = get_filename_from_cd(r.headers.get('content-disposition'))
+                r = requests.get(url, allow_redirects=True)
+                filename = get_filename_from_cd(r.headers.get('content-disposition'))
                 f = open(filename, 'wb').write(r.content)
                 j = f.json
                 print(j)
