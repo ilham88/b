@@ -68,23 +68,7 @@ except:
     traceback.print_exc()
     input()
     
-def dados(msg):
-    if msg.get('text'):
-        if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
-            input_str = msg['text'][3:]
-            if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
-                                parse_mode='Markdown',
-                                reply_to_message_id=msg['message_id'])
-            else:
-                sent = bot.sendMessage(msg['chat']['id'], download', 'Markdown', reply_to_message_id=msg['message_id'])[
-                'message_id']
-                url = input_str
-                filename = url.split('/')[-1]
-                bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                bot.sendDocument(msg['chat']['id'], out_file, reply_to_message_id=msg['message_id'])
-                bot.editMessageText((msg['chat']['id'], sent), "searched Google", 'Markdown', disable_web_page_preview=True)
-                return True
+
 				
 
 
