@@ -41,18 +41,22 @@ def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
             text = msg['text'][2:]
+            input_str = msg['text'][2:]
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                start = datetime.now()
-                send_id = bot.sendMessage(msg['chat']['id'], "Processing ...", 'Markdown',
+                req = search(input_str, num_results=GLOBAL_LIMIT)
+                x = ''
+                for i in req:
+                    x += "*{}*: `{}`\n".format(i.title(), req[i])
+                bot.sendMessage(msg['chat']['id'], x, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
-                req = search(text, num_results=GLOBAL_LIMIT)
-                x = " "
-                for text, url in req:
-                    x += "searched Google for {} in {} seconds. \n🔎 [{}]({}) \n\n".format(req, ms, x, text, url)
-                end = datetime.now()
-                ms = (end - start).seconds
-                bot.editMessageText((msg['chat']['id'],sent_id), x, link_preview=False, 'Markdown')
+                try:
+                    bot.sendLocation(msg['chat']['id'],
+                                     latitude=req['lat'],
+                                     longitude=req['lon'],
+                                     reply_to_message_id=msg['message_id'])
+                except KeyError:
+                    pass
