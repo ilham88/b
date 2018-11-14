@@ -46,10 +46,13 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
+                start = datetime.now()
                 req = requests.get('http://ip-api.com/json/' + text).json()
                 x = ''
                 for i in req:
                     x += "*{}*: `{}`\n".format(i.title(), req[i])
+                end = datetime.now()
+                ms = (end - start).seconds
                 bot.sendMessage(msg['chat']['id'], x, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
                 try:
