@@ -63,13 +63,3 @@ def prints(msg):
                                      reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
                 except KeyError:
                     pass
-                
-        
-                
-                
-                
-                
-                
-              
-                
-               
