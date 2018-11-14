@@ -31,7 +31,7 @@ def dados(msg):
                 r = requests.get(input_str, allow_redirects=True)
                 filename = get_filename_from_cd(r.headers.get('content-disposition'))
                 f = open(filename, 'wb').write(r.content)
-                j = f.json
-                print(j)
+                bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                bot.sendDocument(msg['chat']['id'], f, reply_to_message_id=msg['message_id'])
                 bot.editMessageText((msg['chat']['id'], sent), "searched Google", 'Markdown', disable_web_page_preview=True)
                 return True
