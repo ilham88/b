@@ -54,9 +54,9 @@ def prints(msg):
                 end = datetime.now()
                 ms = (end - start).seconds
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
-                
+                bot.deleteMessage((msg['chat']['id'],last_search)
                 last_search = bot.sendMessage(msg['chat']['id'], f, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
-                bot.deleteMessage((msg['chat']['id'],last_search)
+                
                 
                
