@@ -78,7 +78,7 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                sents = bot.sendMessage(msg['chat']['id'], '*Processing wiki query..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
+                sents = bot.sendMessage(msg['chat']['id'], download, 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
                 result=wikipedia.summary(match)
                 bot.editMessageText((msg['chat']['id'], sents), '**Search:**\n`' + match + '`\n\n**Result:**\n' + result, 'Markdown', disable_web_page_preview=True)
