@@ -36,30 +36,28 @@ def escape_definition(definition):
         if isinstance(value, str):
             definition[key] = html.escape(cleanhtml(value))
     return definition
-  
+
 def prints(msg):
     if msg.get('text'):
-        if msg['text'].startswith('/s') or msg['text'].startswith('!s') or msg['text'].startswith('#s'):
-            text = msg['text'][3:]
+        if msg['text'].startswith('/ip') or msg['text'].startswith('!ip'):
+            text = msg['text'][4:].split('://')[-1]
             if text == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
+                bot.sendMessage(msg['chat']['id'], '*Uso:* `/ip IP/endereço`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-            try:
-                start = datetime.now()
-                req = search(input_str, num_results=GLOBAL_LIMIT)
-                x = " "
+            else:
+                req = requests.get('http://ip-api.com/json/' + text).json()
+                x = ''
                 for i in req:
-                    x += "  🔎 [{}]({}) \n\n".format(text, url)
-                end = datetime.now()
-                ms = (end - start).seconds
-                f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
-                bot.sendMessage(msg['chat']['id'], f, 'Markdown',
+                    x += "*{}*: `{}`\n".format(i.title(), req[i])
+                bot.sendMessage(msg['chat']['id'], x, 'Markdown',
                                 reply_to_message_id=msg['message_id'])
                 try:
                     bot.sendLocation(msg['chat']['id'],
                                      latitude=req['lat'],
                                      longitude=req['lon'],
-                                     reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
+                                     reply_to_message_id=msg['message_id'])
                 except KeyError:
                     pass
+
+
