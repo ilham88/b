@@ -70,5 +70,5 @@ def github(msg):
                 end = datetime.now()
                 ms = (end - start).seconds  
                 res = "searched Google for {} in {} seconds. \n{}"
-            bot.sendMessage(msg['chat']['id'], res.format(msg['text'][3:], ms, output_str), link_preview=False, 'Markdown', reply_to_message_id=msg['message_id'])
-            return True
+                bot.sendMessage(msg['chat']['id'], res.format(msg['text'][3:], ms, output_str), link_preview=False, 'Markdown', reply_to_message_id=msg['message_id'])
+                return True
