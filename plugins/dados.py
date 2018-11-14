@@ -1,6 +1,13 @@
+import sys
 import config
 import requests
 import re
+try:
+    import urllib.request
+    python3 = True
+except ImportError:
+    import urllib2
+    python3 = False
 
 def get_filename_from_cd(cd):
     """
@@ -12,10 +19,55 @@ def get_filename_from_cd(cd):
     if len(fname) == 0:
         return None
     return fname[0]
-bot = config.bot
-bot_username = config.bot_username
+def progress_callback_simple(downloaded,total):
+    sys.stdout.write(
+        "\r" +
+        (len(str(total))-len(str(downloaded)))*" " + str(downloaded) + "/%d"%total +
+        " [%3.2f%%]"%(100.0*float(downloaded)/float(total))
+    )
+    sys.stdout.flush()
 
+def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
+    def _download_helper(response, out_file, file_size):
+        if progress_callback!=None: progress_callback(0,file_size)
+        if block_size == None:
+            buffer = response.read()
+            out_file.write(buffer)
 
+            if progress_callback!=None: progress_callback(file_size,file_size)
+        else:
+            file_size_dl = 0
+            while True:
+                buffer = response.read(block_size)
+                if not buffer: break
+
+                file_size_dl += len(buffer)
+                out_file.write(buffer)
+
+                if progress_callback!=None: progress_callback(file_size_dl,file_size)
+               
+    with open(dstfilepath,"wb") as out_file:
+        if python3:
+            with urllib.request.urlopen(srcurl) as response:
+                file_size = int(response.getheader("Content-Length"))
+                _download_helper(response,out_file,file_size)
+        else:
+            response = urllib2.urlopen(srcurl)
+            meta = response.info()
+            file_size = int(meta.getheaders("Content-Length")[0])
+            _download_helper(response,out_file,file_size)
+
+import traceback
+try:
+    download(
+        url,
+        filename,
+        progress_callback_simple
+    )
+except:
+    traceback.print_exc()
+    input()
+    
 def dados(msg):
     if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
@@ -25,13 +77,18 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                sent = bot.sendMessage(msg['chat']['id'], '*Processing your request..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
+                sent = bot.sendMessage(msg['chat']['id'], download', 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
                 url = input_str
-                r = requests.get(input_str, allow_redirects=True)
-                filename = get_filename_from_cd(r.headers.get('content-disposition'))
-                f = open(filename, 'wb').write(r.content)
+                filename = url.split('/')[-1]
                 bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                bot.sendDocument(msg['chat']['id'], f, reply_to_message_id=msg['message_id'])
+                bot.sendDocument(msg['chat']['id'], out_file, reply_to_message_id=msg['message_id'])
                 bot.editMessageText((msg['chat']['id'], sent), "searched Google", 'Markdown', disable_web_page_preview=True)
                 return True
+				
+
+
+
+
+
+
