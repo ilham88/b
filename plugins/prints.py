@@ -36,7 +36,7 @@ def escape_definition(definition):
         if isinstance(value, str):
             definition[key] = html.escape(cleanhtml(value))
     return definition
-last_search = {}
+
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
@@ -46,8 +46,6 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                last_search = bot.sendMessage(msg['chat']['id'], 'processing search query...', 'Markdown',
-                                          reply_to_message_id=msg['message_id'])['message_id']
                 start = datetime.now()
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = " "
@@ -56,19 +54,9 @@ def prints(msg):
                 end = datetime.now()
                 ms = (end - start).seconds
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
-                bot.editMessageText((msg['chat']['id'],last_search), f, 'Markdown')
-                try:
-                req = requests.get('http://ip-api.com/json/' + text).json()
-                x = ''
-                for i in req:
-                    x += "*{}*: `{}`\n".format(i.title(), req[i])
-                bot.sendLocation(msg['chat']['id'],
-                                     latitude=req['lat'],
-                                     longitude=req['lon'],
-                                     reply_to_message_id=msg['message_id'])
-                bot.deleteMessage((msg['chat']['id'],last_search)
-                except KeyError:
-                    pass
+                bot.sendMessage(msg['chat']['id'], f, parse_mode='Markdown',
+                                reply_to_message_id=msg['message_id']disable_web_page_preview=True)
+                
                 
                 
               
