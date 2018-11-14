@@ -46,19 +46,22 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-      
                 start = datetime.now()
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = " "
                 for text, url in req:
                     x += "  🔎 [{}]({}) \n\n".format(text, url)
-               
                 end = datetime.now()
                 ms = (end - start).seconds
                 f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
-                last_search = bot.sendMessage(msg['chat']['id'], f, 'Markdown',
-                                reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
+                
+                bot.sendMessage(msg['chat']['id'], f, 'Markdown',
+                                reply_to_message_id=msg['message_id'])
                 try:
-                    bot.deleteMessage((msg['chat']['id'],last_search)
+                    bot.sendLocation(msg['chat']['id'],
+                                     latitude=req['lat'],
+                                     longitude=req['lon'],
+                                     reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
                 except KeyError:
                     pass
+                
