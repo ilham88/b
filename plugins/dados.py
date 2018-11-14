@@ -2,6 +2,11 @@ import sys
 import config
 import requests
 import re
+import html
+import time
+bot = config.bot
+bot_username = config.bot_username
+import requests
 import sys
 try:
     import urllib.request
