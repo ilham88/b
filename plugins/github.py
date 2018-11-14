@@ -5,7 +5,7 @@ import os
 
 
 
-url = 'https://api.github.com/users/{}'
+
 bot = config.bot
 
 def github(msg):
@@ -14,8 +14,10 @@ def github(msg):
             if msg['text'][6:] == '':
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
-                json = requests.get(url.format(msg['text'][6:])).json()
-                if json.status_code != 404:
+                url = 'https://api.github.com/users/{}'.format(msg['text'][6:])
+                j = requests.get(url)
+                if j.status_code != 404:
+                    json = j.json()
                     print(json)
                     res = json['message']
                 else:
