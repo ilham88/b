@@ -48,7 +48,7 @@ def prints(msg):
             else:
                 sent = bot.sendMessage(msg['chat']['id'], '*Processing your request..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
                 'message_id']
-                start = round(time.time() * 1000)
+                start = datetime.now()
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = ''
                 for text, url in req:
