@@ -58,10 +58,6 @@ def prints(msg):
                 bot.editMessageText((msg['chat']['id'], sent), "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x), 'Markdown', disable_web_page_preview=True)
                 
                 
-       
-    
-def print(msg):
-    if msg.get('text'):
         if msg['text'].startswith('/w') or msg['text'].startswith('!w'):
             match = msg['text'][3:]
             if match == '':
@@ -74,9 +70,6 @@ def print(msg):
                 result=wikipedia.summary(match)
                 bot.editMessageText((msg['chat']['id'], sents), '**Search:**\n`' + match + '`\n\n**Result:**\n' + result, 'Markdown', disable_web_page_preview=True)
     
-
-def prin(msg):
-    if msg.get('text'):
         if msg['text'].startswith('/u') or msg['text'].startswith('!u'):
             str = msg['text'][3:]
             if str == '':
@@ -92,3 +85,5 @@ def prin(msg):
                 except Exception as error:
                     return bot.editMessageText((msg['chat']['id'], sents), "Can't find *{str}* in the dictionary", parse_mode="Markdown", disable_web_page_preview=True)
                 
+
+
