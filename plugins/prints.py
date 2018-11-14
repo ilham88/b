@@ -40,21 +40,22 @@ def escape_definition(definition):
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/s') or msg['text'].startswith('!s'):
-            text = msg['text'][3:]
+            input_str = msg['text'][3:]
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
                 start = datetime.now()
-                req = requests.get('http://ip-api.com/json/' + text).json()
+                req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = ''
-                for i in req:
-                    x += "*{}*: `{}`\n".format(i.title(), req[i])
+                for text, url in req:
+                    x += "  🔎 [{}]({}) \n\n".format(text, url)
                 end = datetime.now()
                 ms = (end - start).seconds
-                bot.sendMessage(msg['chat']['id'], x, 'Markdown',
-                                reply_to_message_id=msg['message_id'])
+                f = "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x)
+                bot.sendMessage(msg['chat']['id'], f, 'Markdown',
+                                reply_to_message_id=msg['message_id'], disable_web_page_preview=True)
                 try:
                     bot.sendLocation(msg['chat']['id'],
                                      latitude=req['lat'],
