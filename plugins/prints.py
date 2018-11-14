@@ -46,16 +46,14 @@ def prints(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                req = requests.get('http://ip-api.com/json/' + text).json()
-                x = ''
-                for i in req:
-                    x += "*{}*: `{}`\n".format(i.title(), req[i])
-                bot.sendMessage(msg['chat']['id'], x, 'Markdown',
+                start = datetime.now()
+                send_id = bot.sendMessage(msg['chat']['id'], "Processing ...", 'Markdown',
                                 reply_to_message_id=msg['message_id'])
-                try:
-                    bot.sendLocation(msg['chat']['id'],
-                                     latitude=req['lat'],
-                                     longitude=req['lon'],
-                                     reply_to_message_id=msg['message_id'])
-                except KeyError:
-                    pass
+                req = search(text, num_results=GLOBAL_LIMIT)
+                x = " "
+                for text, url in req:
+                    x += "  🔎 [{}]({}) \n\n".format(text, url)
+                end = datetime.now()
+                ms = (end - start).seconds
+                bot.editMessageText((msg['chat']['id'],sent_id),
+                                        "searched Google for {} in {} seconds. \n{}".format(req, ms, x), link_preview=False, 'Markdown')
