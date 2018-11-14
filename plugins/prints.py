@@ -36,7 +36,7 @@ def escape_definition(definition):
         if isinstance(value, str):
             definition[key] = html.escape(cleanhtml(value))
     return definition
-
+  
 def prints(msg):
     if msg.get('text'):
         if msg['text'].startswith('/g') or msg['text'].startswith('!g'):
