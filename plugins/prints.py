@@ -11,9 +11,25 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import os
 import re
+from amanobot.namedtuple import InlineKeyboardMarkup
+import config
+import requests
+import re
+import html
 
 bot = config.bot
-papi = os.environ["screenshots"]
+bot_username = config.bot_username
+
+def cleanhtml(raw_html):
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, '', raw_html)
+    return cleantext
+
+def escape_definition(definition):
+    for key, value in definition.items():
+        if isinstance(value, str):
+            definition[key] = html.escape(cleanhtml(value))
+    return definition
 
 def prints(msg):
      if msg.get('text'):
