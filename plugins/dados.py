@@ -53,6 +53,7 @@ def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
             with urllib.request.urlopen(srcurl) as response:
                 file_size = int(response.getheader("Content-Length"))
                 _download_helper(response,out_file,file_size)
+                file = response.read()
         else:
             response = urllib2.urlopen(srcurl)
             meta = response.info()
@@ -75,7 +76,7 @@ def dados(msg):
                 filename = url.split('/')[-1]
                 download(url, filename, progress_callback_simple)
                 bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                bot.sendDocument(msg['chat']['id'], out_file, reply_to_message_id=msg['message_id'])
+                bot.sendDocument(msg['chat']['id'], file, reply_to_message_id=msg['message_id'])
                 bot.editMessageText((msg['chat']['id'], sent), "searched Google", 'Markdown', disable_web_page_preview=True)
                 return True
     
