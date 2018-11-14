@@ -56,4 +56,29 @@ def prints(msg):
                 end = datetime.now()
                 ms = (end - start).seconds
                 bot.editMessageText((msg['chat']['id'], sent), "searched Google for {} in {} seconds. \n\n{}".format(input_str, ms, x), 'Markdown', disable_web_page_preview=True)
-
+                
+                
+       
+    
+def prints(msg):
+    if msg.get('text'):
+        if msg['text'].startswith('/w') or msg['text'].startswith('!w'):
+            match = msg['text'][3:]
+            if match == '':
+                bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
+                                parse_mode='Markdown',
+                                reply_to_message_id=msg['message_id'])
+            else:
+                sents = bot.sendMessage(msg['chat']['id'], '*Processing wiki query..... 🔁*', 'Markdown', reply_to_message_id=msg['message_id'])[
+                'message_id']
+                start = datetime.now()
+                result=wikipedia.summary(match)
+                x = ''
+                for text, url in req:
+                    x += "  🔎 [{}]({}) \n\n".format(text, url)
+                end = datetime.now()
+                ms = (end - start).seconds
+                bot.editMessageText((msg['chat']['id'], sents), "**Query:**\n `{}'\n\n **Result:**\n{}".format(match, result), 'Markdown', disable_web_page_preview=True)
+    
+    
+    
