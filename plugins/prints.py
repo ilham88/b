@@ -49,7 +49,7 @@ def prints(msg):
                 f = bot.sendMessage(msg['chat']['id'], 'Processing your request.....',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-                start = round(datetime.now() * 1000)
+                start = datetime.now()
                 req = search(input_str, num_results=GLOBAL_LIMIT)
                 x = ''
                 for text, url in req:
