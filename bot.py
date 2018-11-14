@@ -59,7 +59,7 @@ def handle(msg):
 {}'''.format(plugin, res))
 
 
-print('\n\nBot iniciado! {}\n'.format(config.version))
+print('\n\nBot Initialized! {}\n'.format(config.version))
 
 MessageLoop(bot, handle_thread).run_as_thread()
 
@@ -72,11 +72,11 @@ if wr:
         pass
     db.del_restarted()
 else:
-    bot.sendMessage(config.logs, '''Bot iniciado
+    bot.sendMessage(config.logs, '''Bot Details
 
-Versão: {}
-Plugins carregados: {}
-Ocorreram erros em {} plugin(s){}'''.format(config.version, len(ep), len(n_ep), ': '+(', '.join(n_ep)) if n_ep else ''))
+Verion: {}
+Plugins Loaded: {}
+An error occured in {} plugin(s){}'''.format(config.version, len(ep), len(n_ep), ': '+(', '.join(n_ep)) if n_ep else ''))
 
 while True:
     time.sleep(10)
