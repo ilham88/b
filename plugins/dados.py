@@ -82,12 +82,17 @@ def dados(msg):
                         parsed = urlparse(download_link)
                         root, ext = splitext(parsed.path)
                         return ext
-                        dst = app_name + ".iso"
+                        dst = app_name + ".apk"
                         urlretrieve(download_link, dst)
-                        bot.editMessageText((msg['chat']['id'], sent), "✅ done. file saved to {}".format(dst), 'Markdown', disable_web_page_preview=True)
+                        with open(dst,"wb") as out_file:
+                            with urllib.request.urlopen(download_link) as response:
+                            file_size = int(response.getheader("Content-Length"))
+                            buffer = response.read()
+                            out_file.write(buffer)
+                        bot.sendMessage(msg['chat']['id'], "✅ done. file saved to {}".format(dst), 'Markdown', disable_web_page_preview=True)
                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                        bot.sendDocument(msg['chat']['id'], dst, reply_to_message_id=msg['message_id'])
-                        bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
+                        bot.sendDocument(msg['chat']['id'], out_file, reply_to_message_id=msg['message_id'])
+                       
                         return True     
     
 def main(args):
