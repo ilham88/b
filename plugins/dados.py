@@ -63,13 +63,13 @@ def dados(msg):
                     parse2 = BeautifulSoup(html2.text, features="lxml")
                     links = []
                     for link in parse2.find_all('a', {'id': 'download_link'}):
-                        download_link = link["href"]
                         links.append(link.get('href'))
+                        download_link = links
                         print(links)
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n".format(app_name), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]{}".format(app_name, links), 'Markdown', disable_web_page_preview=True)
                         output_file = "dis/" + app_name + ".apk"
-                        r = requests.get(url=download_link, stream=True)
+                        r = requests.get(links, stream=True)
                         with open(output_file, 'wb') as f:
                             total_length = int(r.headers.get('content-length'))
                             bar = make_progress_bar()
