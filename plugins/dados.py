@@ -8,6 +8,8 @@ import sys
 import config
 import requests
 import re
+import json
+
 try:
     import urllib.request
     python3 = True
@@ -59,8 +61,9 @@ def dados(msg):
                     app_url = site + a_url + "/download?from=details"
                     html2 = requests.get(app_url)
                     parse2 = BeautifulSoup(html2.text)
-                    for link in parse2.find_all("div",class="ny-down"):
+                    for link in parse2.find_all("a",id="download_link"):
                         download_link = link["href"]
+                        return json.dumps({"app_name": app_name,"download_link":download_link})
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)
                         output_file = "dis/" + app_name + ".apk"
                         r = requests.get(url=download_link, stream=True)
