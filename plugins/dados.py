@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -45,7 +44,6 @@ def dados(msg):
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-
             else:
                 app_name = input_str.split('/')[-1]
                 sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
@@ -67,6 +65,33 @@ def dados(msg):
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
+                        surl, file_name = download_link.split("|")
+                        surl = surl.strip()
+                            # https://stackoverflow.com/a/761825/4723940
+                        file_name = file_name.strip()
+                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
+                        start = datetime.now()
+                        r = requests.get(url, stream=True)
+                        with open(required_file_name, "wb") as fd:
+                            total_length = r.headers.get('content-length')
+                                # https://stackoverflow.com/a/15645088/4723940
+                            if total_length is None: # no content length header
+                                fd.write(r.content)
+                            else:
+                                dl = 0
+                                total_length = int(total_length)
+                                for chunk in r.iter_content(chunk_size=128):
+                                    dl += len(chunk)
+                                    fd.write(chunk)
+                                    done = int(100 * dl / total_length)
+                                    download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
+                                        # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
+                                        # download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
+                                    bot.deleteMessage(msg['chat']['id'], sent)
+                                    sent = bot.sendMessage(msg['chat']['id'], download_progress_string, 'Markdown', disable_web_page_preview=True)
+                                    end = datetime.now()
+                                    ms = (end - start).seconds
+                                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ Downloaded to `{}` in {} seconds.".format(required_file_name, ms), 'Markdown', disable_web_page_preview=True)
                     
     
 def main(args):
