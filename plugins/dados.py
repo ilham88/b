@@ -21,7 +21,7 @@ bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
-
+TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
 
  
 
@@ -68,21 +68,16 @@ def dados(msg):
                         print(download_link)
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        output_file = "dis/" + app_name + ".apk"
-                        r = requests.get(download_link, stream=True)
-                        with open(output_file, 'wb') as f:
-                            total_length = int(r.headers.get('content-length'))
-                            bar = make_progress_bar()
-                            bar.start(total_length)
-                            readsofar = 0
-                            for chunk in r.iter_content(chunk_size=1024):
-                                if chunk:
-                                    readsofar += len(chunk)
-                                    bar.update(readsofar)
-                                    f.write(chunk)
-                                    f.flush()
-                            bar.finish()
-                        bot.editMessageText((msg['chat']['id'], sent), "{} done. file saved to {}".format(bar, output_file), 'Markdown', disable_web_page_preview=True)
+                        if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+                        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+                        output_file = TEMP_DOWNLOAD_DIRECTORY + app_name + ".apk"
+                        r = urllib2.urlopen(download_link)
+                        data = r.read()
+                        filen = output_file
+                        file_ = open(filen, 'w')
+                        file_.write(data)
+                        file_.close()
+                        bot.editMessageText((msg['chat']['id'], sent), "✅ done. file saved to {}".format(output_file), 'Markdown', disable_web_page_preview=True)
                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
                         bot.sendDocument(msg['chat']['id'], output_file, reply_to_message_id=msg['message_id'])
                         bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
