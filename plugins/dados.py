@@ -147,39 +147,17 @@ def dados(msg):
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
                         start = datetime.now()
                         with open(dstfilepath,"wb") as out_file:
-        					if python3:
-            					with urllib.request.urlopen(srcurl) as response:
-                					file_size = int(response.getheader("Content-Length"))
-                					_download_helper(response,out_file,file_size)
-        					else:
-            					response = urllib2.urlopen(srcurl)
-            					meta = response.info()
-            					file_size = int(meta.getheaders("Content-Length")[0])
-            					_download_helper(response,out_file,file_size)
+                            with urllib.request.urlopen(srcurl) as response:
+                                file_size = int(response.getheader("Content-Length"))
+				_download_helper(response,out_file,file_size)
 
 import traceback
 try:
-	sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, progress_callback_simple), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-    download(
-        "https://geometrian.com/data/programming/projects/glLib/glLib%20Reloaded%200.5.9/0.5.9.zip",
-        "output.zip",
-        progress_callback_simple
-    )
-    if os.path.exists(required_file_name):
-       bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
-       bot.sendChatAction(chat_id, 'upload_document')
-       tr = bot.sendDocument(chat_id, open(dstfilepath, 'rb'))
-       examine(tr, amanobot.namedtuple.Message)
-       time.sleep(0.5)
-       bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-    else:
-        bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+    download("https://geometrian.com/data/programming/projects/glLib/glLib%20Reloaded%200.5.9/0.5.9.zip", "output.zip", progress_callback_simple)
+    sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, progress_callback_simple), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
 except:
     traceback.print_exc()
     input()
-                                    
-        
-                                    
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
