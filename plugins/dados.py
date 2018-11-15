@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -27,7 +28,7 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 
- 
+
 try:
     import urllib.request
     python3 = True
@@ -86,7 +87,7 @@ def examine(result, type):
 
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
-        if msg.get('text'):
+    if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
             if input_str == '':
@@ -153,9 +154,6 @@ def dados(msg):
                                         bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
                                     else:
                                         bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-                                        
-                                        
-
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
