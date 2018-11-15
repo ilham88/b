@@ -27,7 +27,7 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 
-
+ 
 try:
     import urllib.request
     python3 = True
