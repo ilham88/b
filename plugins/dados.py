@@ -121,7 +121,7 @@ def dados(msg):
                         file_name = file_name.strip()
                         required_file_name = app_name + ".apk"
                         start = datetime.now()
-                        r = urllib.request.urlretrieve(surl, 'filename.zip')
+                        r = urllib.request.urlretrieve(surl, required_file_name)
                         with open(required_file_name, "wb") as fd:
                             total_length = r.headers.get('content-length')
                                 # https://stackoverflow.com/a/15645088/4723940
