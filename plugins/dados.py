@@ -84,8 +84,7 @@ def examine(result, type):
         if answer != 'y':
             exit(1)
 
-def dados(msg):
-    content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
+
     def progress_callback_simple(downloaded,total):
         sys.stdout.write(
             "\r" +
@@ -125,6 +124,8 @@ def dados(msg):
             
     import traceback
     try:
+    	def dados(msg):
+    	content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
         if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
@@ -153,7 +154,6 @@ def dados(msg):
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        download(download_link, "output.apk", progress_callback_simple)
                         surl = download_link
                         surl = surl.strip()
                             # https://stackoverflow.com/a/761825/4723940
@@ -162,7 +162,7 @@ def dados(msg):
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
                         start = datetime.now()
                         r = requests.get(surl, stream=True)
-                        with open("output.apk", "wb") as fd:
+                        with open(required_file_name, "wb") as fd:
                             total_length = r.headers.get('content-length')
                                 # https://stackoverflow.com/a/15645088/4723940
                             if total_length is None: # no content length header
@@ -175,8 +175,8 @@ def dados(msg):
                                     fd.write(chunk)
                                     done = int(100 * dl / total_length)
                                     #download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
-                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                                    #download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
+                                        # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
+                                    download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
                                     
                                     sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                                     end = datetime.now()
@@ -185,7 +185,7 @@ def dados(msg):
                                     if os.path.exists(required_file_name):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                                         bot.sendChatAction(chat_id, 'upload_document')
-                                        tr = bot.sendDocument(chat_id, open("output.apk", 'rb'))
+                                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
                                         examine(tr, amanobot.namedtuple.Message)
                                         time.sleep(0.5)
                                         ends = datetime.now()
@@ -193,8 +193,14 @@ def dados(msg):
                                         bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
                                     else:
                                         bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
- 
-        
+            
+    import traceback
+    try:
+        download(
+            "https://geometrian.com/data/programming/projects/glLib/glLib%20Reloaded%200.5.9/0.5.9.zip",
+            "output.zip",
+            progress_callback_simple
+        )
     except:
         traceback.print_exc()
         input()
@@ -207,3 +213,4 @@ def main(args):
 
 if __name__ == "__main__":
     main(args=sys.argv)
+    
