@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -65,7 +66,7 @@ def dados(msg):
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        surl, file_name = download_link.split("|")
+                        surl, file_name = download_link.split('/')[-1]
                         surl = surl.strip()
                             # https://stackoverflow.com/a/761825/4723940
                         file_name = file_name.strip()
