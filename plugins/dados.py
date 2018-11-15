@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -84,57 +83,42 @@ def examine(result, type):
         answer = input('Do you want to continue? [y] ')
         if answer != 'y':
             exit(1)
+def progress_callback_simple(downloaded,total):
+        sys.stdout.write(
+            "\r" +
+            (len(str(total))-len(str(downloaded)))*" " + str(downloaded) + "/%d"%total +
+            " [%3.2f%%]"%(100.0*float(downloaded)/float(total))
+        )
+        sys.stdout.flush()
+    
+def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
+    def _download_helper(response, out_file, file_size):
+        if progress_callback!=None: progress_callback(0,file_size)
+        if block_size == None:
+            buffer = response.read()
+            out_file.write(buffer)
 
+            if progress_callback!=None: progress_callback(file_size,file_size)
+        else:
+            file_size_dl = 0
+            while True:
+                buffer = response.read(block_size)
+                if not buffer: break
+
+                file_size_dl += len(buffer)
+                out_file.write(buffer)
+
+                if progress_callback!=None: progress_callback(file_size_dl,file_size)
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
-        if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
-            input_str = msg['text'][3:]
-            if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
-                                parse_mode='Markdown',
-                                reply_to_message_id=msg['message_id'])
+        if msg['text'].startswith('/dith '):
+            if msg['text'][7:] == '':
+                res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
-                app_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-                    os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                site = "https://apkpure.com"
-                url = "https://apkpure.com/search?q=%s" %(app_name)
-                html = requests.get(url)
-                parse = BeautifulSoup(html.text)
-                for i in parse.find("p"):
-                    a_url = i["href"]
-                    app_url = site + a_url + "/download?from=details"
-                    html2 = requests.get(app_url)
-                    parse2 = BeautifulSoup(html2.text, features="lxml")
-                    links = []
-                    for link in parse2.find_all('a', {'id': 'download_link'}):
-                        links.append(link.get('href'))
-                        download_link = link.get('href')
-                        retu = json.dumps({"app_name": app_name,"download_link":download_link})
-                        print(retu)
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        urllib.request.urlretrieve(download_link, 'filename.apk')
-                        if os.path.exists(required_file_name):
-                            sents = bot.sendMessage(msg['chat']['id'], "{} Uploading in progress".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                            bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'))
-                            examine(tr, amanobot.namedtuple.Message)
-                            bot.editMessageText((msg['chat']['id'],sents), 'File Upload Successful...')
-                            time.sleep(0.5)
-                        else:
-                             bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-                        return True
-                       
-                                 
-                                        
-                                    
-def main(args):
-    if len(args) != 2:
-        sys.exit("use: %s com.blah.blah" %(args[0]))
-    get_apk(args[1])
-
-if __name__ == "__main__":
-    main(args=sys.argv)
-    
+                url = msg['text'][7:]
+                urllib.request.urlretrieve(url, 'filename.apk')
+                tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'), reply_to_message_id=msg['message_id'])['message_id'])['message_id']
+                examine(tr, amanobot.namedtuple.Message)
+                time.sleep(0.5)
+            return True
