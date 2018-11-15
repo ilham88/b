@@ -77,11 +77,11 @@ def dados(msg):
                     parse2 = BeautifulSoup(html2.text)
                     for link in parse2.find_all("a",id="download_link"):
                         download_link = link["href"]
-                bot.editMessageText((msg['chat']['id'], sent), "{+} downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)        download_link = link["href"]
-                bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                bot.sendDocument(msg['chat']['id'], output_file, reply_to_message_id=msg['message_id'])
-                bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
-                return True     
+                    bot.editMessageText((msg['chat']['id'], sent), "{+} downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)        download_link = link["href"]
+                    bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                    bot.sendDocument(msg['chat']['id'], output_file, reply_to_message_id=msg['message_id'])
+                    bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
+                    return True     
     
 def main(args):
     if len(args) != 2:
