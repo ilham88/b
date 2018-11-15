@@ -18,7 +18,7 @@ from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
-
+from urllib.request import urllib, urllib2
 
 
 
@@ -85,7 +85,7 @@ def dados(msg):
                         return ext
                         dst = app_name + ".iso"
                         urlretrieve(download_link, dst)
-                        bot.editMessageText((msg['chat']['id'], sent), "✅ done. file saved to {}".format(output_file), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "✅ done. file saved to {}".format(dst), 'Markdown', disable_web_page_preview=True)
                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
                         bot.sendDocument(msg['chat']['id'], dst, reply_to_message_id=msg['message_id'])
                         bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
