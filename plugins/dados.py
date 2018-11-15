@@ -107,7 +107,7 @@ def dados(msg):
                                     if os.path.exists(required_file_name):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                                        bot.sendDocument(msg['chat']['id'], required_file_name, reply_to_message_id=msg['message_id'], progress_callback=progress)
+                                        bot.sendDocument(msg['chat']['id'], required_file_name, reply_to_message_id=msg['message_id'], progress)
                                         ends = datetime.now()
                                         mss = (ends - starts).seconds
                                         bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(ms), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
