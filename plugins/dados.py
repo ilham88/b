@@ -21,7 +21,12 @@ from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
-
+import threading
+import pprint
+import traceback
+import urllib.request
+import amanobot
+import amanobot.namedtuple
 
 
 try:
@@ -81,7 +86,7 @@ def dados(msg):
                             # https://stackoverflow.com/a/761825/4723940
                         file_name = input_str.split('/')[-1]
                         file_name = file_name.strip()
-                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
+                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
                         start = datetime.now()
                         r = requests.get(surl, stream=True)
                         with open(required_file_name, "wb") as fd:
@@ -97,8 +102,8 @@ def dados(msg):
                                     fd.write(chunk)
                                     done = int(100 * dl / total_length)
                                     #download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
-                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                                        # download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
+                                        # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
+                                    download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
                                     
                                     sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                                     end = datetime.now()
@@ -106,8 +111,6 @@ def dados(msg):
                                     starts = datetime.now()
                                     if os.path.exists(required_file_name):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
-                                        furl = urllib.request.urlopen(download_link)
-                                        bot.sendDocument(msg['chat']['id'], ('com.whatsapp.apk', furl))
                                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
                                         bot.sendDocument(msg['chat']['id'], open(required_file_name, "rb"), reply_to_message_id=msg['message_id'])
                                         ends = datetime.now()
