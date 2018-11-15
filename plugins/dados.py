@@ -117,12 +117,13 @@ def dados(msg):
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
                 #url = '{}'.format(msg['text'][6:])
-                url = 'https://readthedocs.org/projects/django/downloads/pdf/latest/'
-                r = requests.head(url, allow_redirects=True)  # to get content after redirection
-                pdf_url = r.url # 'https://media.readthedocs.org/pdf/django/latest/django.pdf'
-                with open('file_name.pdf', 'wb') as f:
-                    f.write(r.content)
-                tr = bot.sendDocument(chat_id, open('file_name.pdf', 'rb'))
+                image_url = "https://www.python.org/static/community_logos/python-logo-master-v3-TM.png"
+
+                    # URL of the image to be downloaded is defined as image_url 
+                r = requests.get(image_url) # create HTTP response object 
+                with open("python_logo.png",'wb') as f: 
+	                f.write(r.content) 
+                tr = bot.sendDocument(chat_id, open("python_logo.png", 'rb'))
                 examine(tr, amanobot.namedtuple.Message)
                 time.sleep(0.5)
             return True
