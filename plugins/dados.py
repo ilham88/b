@@ -115,44 +115,21 @@ def dados(msg):
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        surl = download_link
-                            # https://stackoverflow.com/a/761825/4723940
-                        file_name = input_str.split('/')[-1]
-                        file_name = file_name.strip()
-                        required_file_name = app_name + ".apk"
-                        start = datetime.now()
-                        r = urllib.request.urlretrieve(surl, required_file_name)
-                        with open(required_file_name, "wb") as fd:
-                            total_length = r.headers.get('content-length')
-                                # https://stackoverflow.com/a/15645088/4723940
-                            if total_length is None: # no content length header
-                                fd.write(r.content)
-                            else:
-                                dl = 0
-                                total_length = int(total_length)
-                                for chunk in r.iter_content(chunk_size=128):
-                                    dl += len(chunk)
-                                    fd.write(chunk)
-                                    done = int(100 * dl / total_length)
-                                    #download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
-                                        # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                                    download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
+                        urllib.request.urlretrieve(url, 'filename.zip')
+                        if os.path.exists(required_file_name):
+                            sents = bot.sendMessage(msg['chat']['id'], "{} Uploading in progress".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                            bot.sendChatAction(chat_id, 'upload_document')
+                            tr = bot.sendDocument(chat_id, open('filename.zip', 'rb'), reply_to_message_id=msg['message_id'])['message_id'])['message_id']
+                            examine(tr, amanobot.namedtuple.Message)
+                            bot.editMessageText((msg['chat']['id'],sents), 'File Upload Successful...')
+                            time.sleep(0.5)
+                        else:
+                             bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                        return True
+                       
+                                 
+                                        
                                     
-                                    sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                                    end = datetime.now()
-                                    ms = (end - start).seconds
-                                    starts = datetime.now()
-                                    if os.path.exists(required_file_name):
-                                        bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
-                                        bot.sendChatAction(chat_id, 'upload_document')
-                                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
-                                        examine(tr, amanobot.namedtuple.Message)
-                                        time.sleep(0.5)
-                                        ends = datetime.now()
-                                        mss = (ends - starts).seconds
-                                        bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-                                    else:
-                                        bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
