@@ -118,7 +118,7 @@ def dados(msg):
             else:
                 url = msg['text'][7:]
                 urllib.request.urlretrieve(url, 'filename.apk')
-                tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'), reply_to_message_id=msg['message_id'])['message_id'])['message_id']
+                tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'))
                 examine(tr, amanobot.namedtuple.Message)
                 time.sleep(0.5)
             return True
