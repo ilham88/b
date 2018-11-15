@@ -112,11 +112,11 @@ def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
-        if msg['text'].startswith('/dith '):
-            if msg['text'][7:] == '':
+        if msg['text'].startswith('/dith'):
+            if msg['text'][6:] == '':
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
-                url = msg['text'][7:]
+                url = '{}'.format(msg['text'][6:])
                 urllib.request.urlretrieve(url, 'filename.zip')
                 tr = bot.sendDocument(chat_id, open('filename.zip', 'rb'))
                 examine(tr, amanobot.namedtuple.Message)
