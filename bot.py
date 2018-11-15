@@ -29,12 +29,12 @@ n_ep = []
 
 for num, i in enumerate(config.enabled_plugins):
     try:
-        print(Fore.RESET + 'Carregando plugins... [{}/{}]'.format(num+1, len(config.enabled_plugins)), end='\r')
+        print(Fore.RESET + 'Loading plugins... [{}/{}]'.format(num+1, len(config.enabled_plugins)), end='\r')
         exec('from plugins.{0} import {0}'.format(i))
         ep.append(i)
     except Exception as erro:
         n_ep.append(i)
-        print('\n'+Fore.RED+'Erro ao carregar o plugin {}:{}'.format(i, Fore.RESET), erro)
+        print('\n'+Fore.RED+'Error loading the plugin {}:{}'.format(i, Fore.RESET), erro)
 
 
 def handle_thread(*args):
@@ -54,12 +54,12 @@ def handle(msg):
         with io.StringIO() as buf, redirect_stdout(buf):
             traceback.print_exc(file=sys.stdout)
             res = buf.getvalue()
-        bot.sendMessage(config.logs, '''Ocorreu um erro no plugin {}:
+        bot.sendMessage(config.logs, '''There was an error in the plugin {}:
 
 {}'''.format(plugin, res))
 
 
-print('\n\nBot Initialized! {}\n'.format(config.version))
+print('\n\nBot started! {}\n'.format(config.version))
 
 MessageLoop(bot, handle_thread).run_as_thread()
 
@@ -67,7 +67,7 @@ wr = db.get_restarted()
 
 if wr: 
     try:
-        bot.editMessageText(wr, 'Reiniciado com sucesso!')
+        bot.editMessageText(wr, 'Restart successfully')
     except:
         pass
     db.del_restarted()
