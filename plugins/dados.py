@@ -84,28 +84,11 @@ def dados(msg):
                         return ext
                         dst = app_name + ".apk"
                         urlretrieve(download_link, dst)
-                        srcurl = download_link
-                		with open(dst,"wb") as out_file:
-                    		with urllib.request.urlopen(srcurl) as response:
-                        		file_size = int(response.getheader("Content-Length"))
-							print "Downloading: %s Bytes: %s" % (file_name, file_size)
 	
-							file_size_dl = 0
-							block_sz = 8192
-							while True:
-							buffer = response.read(block_sz)
-							if not buffer:
-							break
-	
-						file_size_dl += len(buffer)
-						out_file.write(buffer)
-						status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-						status = status + chr(8)*(len(status)+1)
-						print status,
-	
-						f.close()
-	
-                          
+                        bot.sendMessage(msg['chat']['id'], "✅ done. file saved to {}".format(dst), 'Markdown', disable_web_page_preview=True)
+                        bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                        bot.sendDocument(msg['chat']['id'], out_file, reply_to_message_id=msg['message_id'])
+                            return True     
     
 def main(args):
     if len(args) != 2:
