@@ -77,14 +77,14 @@ def dados(msg):
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
                         download_link = link.get('href')
-                        print(download_link)
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
+                        print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
                         parsed = urlparse(download_link)
                         root, ext = splitext(parsed.path)
                         return ext
                         dst = app_name + ".iso"
-                        urlretrieve(url, dst)
+                        urlretrieve(download_link, dst)
                         bot.editMessageText((msg['chat']['id'], sent), "✅ done. file saved to {}".format(output_file), 'Markdown', disable_web_page_preview=True)
                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
                         bot.sendDocument(msg['chat']['id'], dst, reply_to_message_id=msg['message_id'])
