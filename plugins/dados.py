@@ -86,9 +86,7 @@ def dados(msg):
                         urlretrieve(download_link, dst)
 	
                         bot.sendMessage(msg['chat']['id'], "✅ done. file saved to {}".format(dst), 'Markdown', disable_web_page_preview=True)
-                        bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                        bot.sendDocument(msg['chat']['id'], out_file, reply_to_message_id=msg['message_id'])
-                            return True     
+                      	return True     
     
 def main(args):
     if len(args) != 2:
