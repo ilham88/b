@@ -148,8 +148,8 @@ def dados(msg):
                         start = datetime.now()
                         r = requests.get(surl, stream=True)
                         with open(required_file_name, "wb") as fd:
-            				total_length = r.headers.get('content-length')
-                                # https://stackoverflow.com/a/15645088/4723940
+            			    total_length = r.headers.get('content-length')
+                            # https://stackoverflow.com/a/15645088/4723940
                             if total_length is None: # no content length header
                                 fd.write(r.content)
                             else:
