@@ -59,7 +59,7 @@ def dados(msg):
                     app_url = site + a_url + "/download?from=details"
                     html2 = requests.get(app_url)
                     parse2 = BeautifulSoup(html2.text)
-                    for link in parse2.find_all("a",class=" da"):
+                    for link in parse2.find_all("a",class="da"):
                         download_link = link["href"]
                         ret = json.dumps({"app_name": app_name,"download_link":download_link})
                         print(ret)
