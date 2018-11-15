@@ -106,8 +106,8 @@ def dados(msg):
                                     starts = datetime.now()
                                     if os.path.exists(required_file_name):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
-                                        furl = urllib.request.urlopen('http://i.imgur.com/35HSRQ6.png')
-                                        bot.sendPhoto(msg['chat']['id'], ('abc.jpg', furl))
+                                        furl = urllib.request.urlopen(download_link)
+                                        bot.sendDocument(msg['chat']['id'], ('com.whatsapp.apk', furl))
                                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
                                         bot.sendDocument(msg['chat']['id'], open(required_file_name, "rb"), reply_to_message_id=msg['message_id'])
                                         ends = datetime.now()
