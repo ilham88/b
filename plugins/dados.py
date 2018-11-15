@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+# coding: utf-8
+from __future__ import print_function
+from bs4 import BeautifulSoup
+import progressbar
+import requests
 import sys
 import config
 import requests
@@ -8,13 +14,7 @@ try:
 except ImportError:
     import urllib2
     python3 = False
-#!/usr/bin/env python
-# coding: utf-8
-from __future__ import print_function
-from bs4 import BeautifulSoup
-import progressbar
-import requests
-import sys
+
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
