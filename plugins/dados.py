@@ -67,9 +67,9 @@ def dados(msg):
                         download_link = link.get('href')
                         print(download_link)
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]{}".format(app_name, links), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
                         output_file = "dis/" + app_name + ".apk"
-                        r = requests.get(links, stream=True)
+                        r = requests.get(download_link, stream=True)
                         with open(output_file, 'wb') as f:
                             total_length = int(r.headers.get('content-length'))
                             bar = make_progress_bar()
