@@ -59,28 +59,30 @@ def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
 
 import traceback
 try:
-def dados(msg):
-    if msg.get('text'):
-        if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
-            input_str = msg['text'][3:]
-            if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
+    def dados(msg):
+        if msg.get('text'):
+            if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
+                input_str = msg['text'][3:]
+                if input_str == '':
+                    bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-            else:
-                sent = bot.sendMessage(msg['chat']['id'], "searched Google........", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                url = input_str
-                filename = url.split('/')[-1]
-                with open(filename,"wb") as out_file:
-                    with urllib.request.urlopen(url) as response:
-                    file_size = int(response.getheader("Content-Length"))
-                    _download_helper(response,out_file,file_size)
-                    file = download(url, filename, progress_callback_simple)
-                    bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                    bot.sendDocument(msg['chat']['id'], file, reply_to_message_id=msg['message_id'])
-                    bot.editMessageText((msg['chat']['id'], sent), "searched Google", 'Markdown', disable_web_page_preview=True)
-                    return True    
+                else:
+                    sent = bot.sendMessage(msg['chat']['id'], "searched Google........", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                    url = input_str
+                    filename = url.split('/')[-1]
+                    with open(filename,"wb") as out_file:
+                        with urllib.request.urlopen(url) as response:
+                        file_size = int(response.getheader("Content-Length"))
+                        _download_helper(response,out_file,file_size)
+                        file = download(url, filename, progress_callback_simple)
+                        bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                        bot.sendDocument(msg['chat']['id'], file, reply_to_message_id=msg['message_id'])
+                        bot.editMessageText((msg['chat']['id'], sent), "searched Google", 'Markdown', disable_web_page_preview=True)
+                        return True    
 except:
     traceback.print_exc()
     input()
     
+
+                
