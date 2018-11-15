@@ -146,11 +146,39 @@ def dados(msg):
                         file_name = file_name.strip()
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
                         start = datetime.now()
-                        with open(dstfilepath,"wb") as out_file:
-                            with urllib.request.urlopen(srcurl) as response:
-                                file_size = int(response.getheader("Content-Length"))
-				_download_helper(response,out_file,file_size)
-
+                        r = requests.get(surl, stream=True)
+                        with open(required_file_name, "wb") as fd:
+            				total_length = r.headers.get('content-length')
+                                # https://stackoverflow.com/a/15645088/4723940
+                            if total_length is None: # no content length header
+                                fd.write(r.content)
+                            else:
+                                dl = 0
+                                total_length = int(total_length)
+                                for chunk in r.iter_content(chunk_size=128):
+                                    dl += len(chunk)
+                                    fd.write(chunk)
+                                    done = int(100 * dl / total_length)
+                                    #download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
+                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
+                                    #download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
+                                    
+                                    sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                                    end = datetime.now()
+                                    ms = (end - start).seconds
+                                    starts = datetime.now()
+                                    if os.path.exists(required_file_name):
+                                        bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
+                                        bot.sendChatAction(chat_id, 'upload_document')
+                                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
+                                        examine(tr, amanobot.namedtuple.Message)
+                                        time.sleep(0.5)
+                                        ends = datetime.now()
+                                        mss = (ends - starts).seconds
+                                        bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                                    else:
+                                        bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+           
 import traceback
 try:
     download("https://geometrian.com/data/programming/projects/glLib/glLib%20Reloaded%200.5.9/0.5.9.zip", "output.zip", progress_callback_simple)
