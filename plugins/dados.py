@@ -51,8 +51,27 @@ def get_lst_of_files(input_directory, output_lst):
             return get_lst_of_files(current_file_name, output_lst)
         else:
             output_lst.append(current_file_name)
-    return output_lst 
+    return output_lst
+
+
+def examine(result, type):
+    try:
+        print('Examining %s ......' % type)
+
+        nt = type(**result)
+        assert equivalent(result, nt), 'Not equivalent:::::::::::::::\n%s\n::::::::::::::::\n%s' % (result, nt)
+
+        pprint.pprint(result)
+        pprint.pprint(nt)
+        print()
+    except AssertionError:
+        traceback.print_exc()
+        answer = input('Do you want to continue? [y] ')
+        if answer != 'y':
+            exit(1)
+
 def dados(msg):
+    content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
