@@ -118,13 +118,11 @@ def dados(msg):
             else:
                 #url = '{}'.format(msg['text'][6:])
                 image_url = '{}'.format(msg['text'][6:])
-
-                    # URL of the image to be downloaded is defined as image_url 
-                r = requests.get(image_url, stream = True) # create HTTP response object 
-                with open("python_logo.pdf",'wb') as pdf:
-		    for chunk in r.iter_content(chunk_size=1024): 
-			f chunk: 
-             			pdf.write(chunk)
+		r = requests.get(image_url, stream = True)
+                        with open("python_logo.pdf",'wb') as pdf:
+                            for chunk in r.iter_content(chunk_size=1024):
+                            if chunk:
+                            	pdf.write(chunk)
                 tr = bot.sendDocument(chat_id, open("python_logo.pdf", 'rb'))
                 examine(tr, amanobot.namedtuple.Message)
                 time.sleep(0.5)
