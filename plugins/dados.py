@@ -74,7 +74,7 @@ def dados(msg):
                         file_name = input_str.split('/')[-1]
                         file_name = file_name.strip()
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
-                        start = datetime.datetime.now()
+                        start = datetime.now()
                         r = requests.get(surl, stream=True)
                         with open(required_file_name, "wb") as fd:
                             total_length = r.headers.get('content-length')
@@ -93,7 +93,7 @@ def dados(msg):
                                         # download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
                                     
                                     sents = bot.sendMessage(msg['chat']['id'], download_progress_string, 'Markdown', disable_web_page_preview=True)
-                                    end = datetime.datetime.now()
+                                    end = datetime.now()
                                     ms = (end - start).seconds
                                     bot.editMessageText((msg['chat']['id'], sents), "⬇️ Downloaded to `{}` in {} seconds.".format(required_file_name, ms), 'Markdown', disable_web_page_preview=True)
                     
