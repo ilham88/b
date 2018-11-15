@@ -92,11 +92,11 @@ def dados(msg):
                                     download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
                                         # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
                                         # download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
-                                    bot.deleteMessage(msg['chat']['id'], sent)
-                                    sent = bot.sendMessage(msg['chat']['id'], download_progress_string, 'Markdown', disable_web_page_preview=True)
+                                    
+                                    sents = bot.sendMessage(msg['chat']['id'], download_progress_string, 'Markdown', disable_web_page_preview=True)
                                     end = datetime.now()
                                     ms = (end - start).seconds
-                                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ Downloaded to `{}` in {} seconds.".format(required_file_name, ms), 'Markdown', disable_web_page_preview=True)
+                                    bot.editMessageText((msg['chat']['id'], sents), "⬇️ Downloaded to `{}` in {} seconds.".format(required_file_name, ms), 'Markdown', disable_web_page_preview=True)
                     
     
 def main(args):
