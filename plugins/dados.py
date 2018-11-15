@@ -13,7 +13,7 @@ import json
 import os
 import html
 import time
-from datetime import datetime
+import datetime
 from datetime import datetime
 from urllib.parse import urlparse
 from os.path import splitext
@@ -74,6 +74,7 @@ def dados(msg):
                         file_name = input_str.split('/')[-1]
                         file_name = file_name.strip()
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
+                        import datetime
                         start = datetime.now()
                         r = requests.get(surl, stream=True)
                         with open(required_file_name, "wb") as fd:
