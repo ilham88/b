@@ -117,7 +117,7 @@ def dados(msg):
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
                 #url = '{}'.format(msg['text'][6:])
-                image_url = "https://www.python.org/static/community_logos/python-logo-master-v3-TM.png"
+                image_url = '{}'.format(msg['text'][6:])
 
                     # URL of the image to be downloaded is defined as image_url 
                 r = requests.get(image_url) # create HTTP response object 
