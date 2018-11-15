@@ -84,48 +84,8 @@ def examine(result, type):
         if answer != 'y':
             exit(1)
 
-
-    def progress_callback_simple(downloaded,total):
-        sys.stdout.write(
-            "\r" +
-            (len(str(total))-len(str(downloaded)))*" " + str(downloaded) + "/%d"%total +
-            " [%3.2f%%]"%(100.0*float(downloaded)/float(total))
-        )
-        sys.stdout.flush()
-    
-    def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
-        def _download_helper(response, out_file, file_size):
-            if progress_callback!=None: progress_callback(0,file_size)
-            if block_size == None:
-                buffer = response.read()
-                out_file.write(buffer)
-                
-                if progress_callback!=None: progress_callback(file_size,file_size)
-            else:
-                file_size_dl = 0
-                while True:
-                    buffer = response.read(block_size)
-                    if not buffer: break
-    
-                    file_size_dl += len(buffer)
-                    out_file.write(buffer)
-    
-                    if progress_callback!=None: progress_callback(file_size_dl,file_size)
-        with open(dstfilepath,"wb") as out_file:
-            if python3:
-                with urllib.request.urlopen(srcurl) as response:
-                    file_size = int(response.getheader("Content-Length"))
-                    _download_helper(response,out_file,file_size)
-            else:
-                response = urllib2.urlopen(srcurl)
-                meta = response.info()
-                file_size = int(meta.getheaders("Content-Length")[0])
-                _download_helper(response,out_file,file_size)
-            
-    import traceback
-    try:
-    	def dados(msg):
-    	content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
+def dados(msg):
+    content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
         if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
@@ -193,18 +153,8 @@ def examine(result, type):
                                         bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
                                     else:
                                         bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-            
-    import traceback
-    try:
-        download(
-            "https://geometrian.com/data/programming/projects/glLib/glLib%20Reloaded%200.5.9/0.5.9.zip",
-            "output.zip",
-            progress_callback_simple
-        )
-    except:
-        traceback.print_exc()
-        input()
-
+                                        
+                                        
 
 def main(args):
     if len(args) != 2:
