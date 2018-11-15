@@ -61,8 +61,6 @@ def dados(msg):
                     parse2 = BeautifulSoup(html2.text)
                     for link in parse2.find_all("a",class="a"):
                         download_link = link["href"]
-                        ret = json.dumps({"app_name": app_name,"download_link":download_link})
-                        print(ret)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)
                         output_file = "dis/" + app_name + ".apk"
                         r = requests.get(url=download_link, stream=True)
