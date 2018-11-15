@@ -92,24 +92,7 @@ def progress_callback_simple(downloaded,total):
         )
         sys.stdout.flush()
     
-    def download(srcurl, dstfilepath, progress_callback=None, block_size=8192):
-        def _download_helper(response, out_file, file_size):
-            if progress_callback!=None: progress_callback(0,file_size)
-            if block_size == None:
-                buffer = response.read()
-                out_file.write(buffer)
-                
-                if progress_callback!=None: progress_callback(file_size,file_size)
-            else:
-                file_size_dl = 0
-                while True:
-                    buffer = response.read(block_size)
-                    if not buffer: break
-    
-                    file_size_dl += len(buffer)
-                    out_file.write(buffer)
-    
-                    if progress_callback!=None: progress_callback(file_size_dl,file_size)
+
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
