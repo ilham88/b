@@ -117,8 +117,8 @@ def dados(msg):
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
                 url = msg['text'][7:]
-                urllib.request.urlretrieve(url, 'filename.apk')
-                tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'))
+                urllib.request.urlretrieve(url, 'filename.zip')
+                tr = bot.sendDocument(chat_id, open('filename.zip', 'rb'))
                 examine(tr, amanobot.namedtuple.Message)
                 time.sleep(0.5)
             return True
