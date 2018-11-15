@@ -119,7 +119,7 @@ def dados(msg):
                         if os.path.exists(required_file_name):
                             sents = bot.sendMessage(msg['chat']['id'], "{} Uploading in progress".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                             bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open('filename.zip', 'rb'), reply_to_message_id=msg['message_id'])['message_id'])['message_id']
+                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
                             examine(tr, amanobot.namedtuple.Message)
                             bot.editMessageText((msg['chat']['id'],sents), 'File Upload Successful...')
                             time.sleep(0.5)
