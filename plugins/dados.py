@@ -12,6 +12,15 @@ import json
 import os
 import html
 import time
+from urlparse import urlparse
+from os.path import splitext
+from urllib.request import urlretrieve
+from urllib.request import urlopen
+from shutil import copyfileobj
+from tempfile import NamedTemporaryFile
+
+
+
 
 try:
     import urllib.request
@@ -71,18 +80,14 @@ def dados(msg):
                         print(download_link)
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-                            os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                        output_file = TEMP_DOWNLOAD_DIRECTORY + app_name + ".apk"
-                        r = urllib.request.urlopen(download_link)
-                        data = r.read()
-                        filen = output_file
-                        file_ = open(filen, 'w')
-                        file_.write(data)
-                        file_.close()
+                        parsed = urlparse(download_link)
+                        root, ext = splitext(parsed.path)
+                        return ext
+                        dst = app_name + ".iso"
+                        urlretrieve(url, dst)
                         bot.editMessageText((msg['chat']['id'], sent), "✅ done. file saved to {}".format(output_file), 'Markdown', disable_web_page_preview=True)
                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                        bot.sendDocument(msg['chat']['id'], output_file, reply_to_message_id=msg['message_id'])
+                        bot.sendDocument(msg['chat']['id'], dst, reply_to_message_id=msg['message_id'])
                         bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
                         return True     
     
