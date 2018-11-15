@@ -74,7 +74,7 @@ def dados(msg):
                         if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                             os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                         output_file = TEMP_DOWNLOAD_DIRECTORY + app_name + ".apk"
-                        r = urllib2.urlopen(download_link)
+                        r = urllib.request.urlopen(download_link)
                         data = r.read()
                         filen = output_file
                         file_ = open(filen, 'w')
