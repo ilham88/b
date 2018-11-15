@@ -14,7 +14,8 @@ try:
 except ImportError:
     import urllib2
     python3 = False
-
+bot = config.bot
+bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
