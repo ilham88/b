@@ -116,14 +116,12 @@ def dados(msg):
                         print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
                         surl = download_link
-                        surl = surl.strip()
                             # https://stackoverflow.com/a/761825/4723940
                         file_name = input_str.split('/')[-1]
                         file_name = file_name.strip()
-                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
+                        required_file_name = app_name + ".apk"
                         start = datetime.now()
-                        urllib.request.urlretrieve(download_link, 'filename.apk')
-                        r = requests.get(surl, stream=True)
+                        r = urllib.request.urlretrieve(surl, 'filename.zip')
                         with open(required_file_name, "wb") as fd:
                             total_length = r.headers.get('content-length')
                                 # https://stackoverflow.com/a/15645088/4723940
@@ -147,7 +145,7 @@ def dados(msg):
                                     if os.path.exists(required_file_name):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                                         bot.sendChatAction(chat_id, 'upload_document')
-                                        tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'), reply_to_message_id=msg['message_id'])['message_id'])['message_id']
+                                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
                                         examine(tr, amanobot.namedtuple.Message)
                                         time.sleep(0.5)
                                         ends = datetime.now()
