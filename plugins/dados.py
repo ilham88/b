@@ -64,8 +64,8 @@ def dados(msg):
                     links = []
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
-                        download_link = links
-                        print(links)
+                        download_link = link.get('href')
+                        print(download_link)
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]{}".format(app_name, links), 'Markdown', disable_web_page_preview=True)
                         output_file = "dis/" + app_name + ".apk"
