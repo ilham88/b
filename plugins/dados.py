@@ -62,7 +62,7 @@ def dados(msg):
                     for link in parse2.find_all("a",id="download_link"):
                         download_link = link["href"]
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)
-                        output_file = "output/" + app_name + ".apk"
+                        output_file = "dis/" + app_name + ".apk"
                         r = requests.get(url=download_link, stream=True)
                         with open(output_file, 'wb') as f:
                             total_length = int(r.headers.get('content-length'))
