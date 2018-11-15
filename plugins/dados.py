@@ -20,20 +20,8 @@ bot_username = config.bot_username
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 
-def get_apk(app_name): # XXX: this function needs refactoring/cleaning.
-    print("{+} getting download link for %s" %(app_name))
-    site = "https://apkpure.com"
-    url = "https://apkpure.com/search?q=%s" %(app_name)
-    html = requests.get(url)
-    parse = BeautifulSoup(html.text)
-    for i in parse.find("p"):
-        a_url = i["href"]
-        app_url = site + a_url + "/download?from=details"
-        html2 = requests.get(app_url)
-        parse2 = BeautifulSoup(html2.text)
-        for link in parse2.find_all("a",id="download_link"):
-            download_link = link["href"]
-        download_apk(app_name, download_link)
+
+ 
 
 def make_progress_bar():
     return progressbar.ProgressBar(
@@ -76,7 +64,20 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                sent = bot.sendMessage(msg['chat']['id'], "searched Google........", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                sent = bot.sendMessage(msg['chat']['id'], "{+} getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                filename = url.split('/')[-1]
+                site = "https://apkpure.com"
+                url = "https://apkpure.com/search?q=%s" %(app_name)
+                html = requests.get(url)
+                parse = BeautifulSoup(html.text)
+                for i in parse.find("p"):
+                    a_url = i["href"]
+                    app_url = site + a_url + "/download?from=details"
+                    html2 = requests.get(app_url)
+                    parse2 = BeautifulSoup(html2.text)
+                    for link in parse2.find_all("a",id="download_link"):
+                        download_link = link["href"]
+                bot.editMessageText((msg['chat']['id'], sent), "{+} downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)        download_link = link["href"]
                 bot.sendChatAction(msg['chat']['id'], 'upload_document')
                 bot.sendDocument(msg['chat']['id'], output_file, reply_to_message_id=msg['message_id'])
                 bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
