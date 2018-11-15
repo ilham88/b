@@ -53,7 +53,22 @@ def get_lst_of_files(input_directory, output_lst):
             output_lst.append(current_file_name)
     return output_lst
 
+def equivalent(data, nt):
+    if type(data) is dict:
+        keys = list(data.keys())
 
+        # number of dictionary keys == number of non-None values in namedtuple?
+        if len(keys) != len([f for f in nt._fields if getattr(nt, f) is not None]):
+            return False
+
+        # map `from` to `from_`
+        fields = list([k+'_' if k in ['from'] else k for k in keys])
+
+        return all(map(equivalent, [data[k] for k in keys], [getattr(nt, f) for f in fields]))
+    elif type(data) is list:
+        return all(map(equivalent, data, nt))
+    else:
+        return data==nt
 def examine(result, type):
     try:
         print('Examining %s ......' % type)
