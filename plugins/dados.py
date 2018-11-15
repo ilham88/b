@@ -38,7 +38,15 @@ warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
 def progress(current, total):
     print("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
- 
+def get_lst_of_files(input_directory, output_lst):
+    filesinfolder = os.listdir(input_directory)
+    for file_name in filesinfolder:
+        current_file_name = os.path.join(input_directory, file_name)
+        if os.path.isdir(current_file_name):
+            return get_lst_of_files(current_file_name, output_lst)
+        else:
+            output_lst.append(current_file_name)
+    return output_lst 
 def dados(msg):
     if msg.get('text'):
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
@@ -88,16 +96,23 @@ def dados(msg):
                                     dl += len(chunk)
                                     fd.write(chunk)
                                     done = int(100 * dl / total_length)
-                                    download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
-                                        # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
+                                    #download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
+                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
                                         # download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
                                     
-                                    sents = bot.sendMessage(msg['chat']['id'], download_progress_string, 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                                    sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                                     end = datetime.now()
                                     ms = (end - start).seconds
-                                    bot.editMessageText((msg['chat']['id'], sents), "⬇️ Downloaded to `{}` in {} seconds.".format(required_file_name, ms), 'Markdown', disable_web_page_preview=True)
-                    
-    
+                                    starts = datetime.now()
+                                    if os.path.exists(required_file_name):
+                                        bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
+                                        bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                                        bot.sendDocument(msg['chat']['id'], required_file_name, reply_to_message_id=msg['message_id'], progress_callback=progress)
+                                        ends = datetime.now()
+                                        mss = (ends - starts).seconds
+                                        bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(ms), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                                    else:
+                                        bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
@@ -105,5 +120,4 @@ def main(args):
 
 if __name__ == "__main__":
     main(args=sys.argv)
-
- 
+    
