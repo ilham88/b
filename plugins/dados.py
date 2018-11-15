@@ -37,23 +37,7 @@ def make_progress_bar():
             ') ',
         ])
 
-def download_apk(app_name, download_link):
-    print("{+} downloading %s" %(app_name))
-    output_file = "output/" + app_name + ".apk"
-    r = requests.get(url=download_link, stream=True)
-    with open(output_file, 'wb') as f:
-        total_length = int(r.headers.get('content-length'))
-        bar = make_progress_bar()
-        bar.start(total_length)
-        readsofar = 0
-        for chunk in r.iter_content(chunk_size=1024):
-            if chunk:
-                readsofar += len(chunk)
-                bar.update(readsofar)
-                f.write(chunk)
-                f.flush()
-        bar.finish()
-    print("{+} done. file saved to %s" %(output_file))
+
 
 def dados(msg):
     if msg.get('text'):
@@ -65,7 +49,7 @@ def dados(msg):
                                 reply_to_message_id=msg['message_id'])
             else:
                 app_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "{+} getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 site = "https://apkpure.com"
                 url = "https://apkpure.com/search?q=%s" %(app_name)
                 html = requests.get(url)
@@ -77,7 +61,22 @@ def dados(msg):
                     parse2 = BeautifulSoup(html2.text)
                     for link in parse2.find_all("a",id="download_link"):
                         download_link = link["href"]
-                        bot.editMessageText((msg['chat']['id'], sent), "{+} downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}".format(app_name), 'Markdown', disable_web_page_preview=True)
+                        output_file = "output/" + app_name + ".apk"
+                        r = requests.get(url=download_link, stream=True)
+                        with open(output_file, 'wb') as f:
+                            total_length = int(r.headers.get('content-length'))
+                            bar = make_progress_bar()
+                            bar.start(total_length)
+                            readsofar = 0
+                            for chunk in r.iter_content(chunk_size=1024):
+                                if chunk:
+                                    readsofar += len(chunk)
+                                    bar.update(readsofar)
+                                    f.write(chunk)
+                                    f.flush()
+                            bar.finish()
+                        bot.editMessageText((msg['chat']['id'], sent), "{} done. file saved to {}".format(bar, output_file), 'Markdown', disable_web_page_preview=True)
                         bot.sendChatAction(msg['chat']['id'], 'upload_document')
                         bot.sendDocument(msg['chat']['id'], output_file, reply_to_message_id=msg['message_id'])
                         bot.editMessageText((msg['chat']['id'], sent), "done. file savede", 'Markdown', disable_web_page_preview=True)
@@ -90,6 +89,3 @@ def main(args):
 
 if __name__ == "__main__":
     main(args=sys.argv)
-
-
-                
