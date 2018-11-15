@@ -116,9 +116,13 @@ def dados(msg):
             if msg['text'][6:] == '':
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
-                url = '{}'.format(msg['text'][6:])
-                urllib.request.urlretrieve(url, 'filename.mp4')
-                tr = bot.sendDocument(chat_id, open('filename.mp4', 'rb'))
+                #url = '{}'.format(msg['text'][6:])
+                url = 'https://readthedocs.org/projects/django/downloads/pdf/latest/'
+                r = requests.head(url, allow_redirects=True)  # to get content after redirection
+                pdf_url = r.url # 'https://media.readthedocs.org/pdf/django/latest/django.pdf'
+                with open('file_name.pdf', 'wb') as f:
+                f.write(r.content)
+                tr = bot.sendDocument(chat_id, open('file_name.pdf', 'rb'))
                 examine(tr, amanobot.namedtuple.Message)
                 time.sleep(0.5)
             return True
