@@ -18,7 +18,6 @@ from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
-from urllib.request import urllib, urllib2
 
 
 
