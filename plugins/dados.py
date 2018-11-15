@@ -115,11 +115,11 @@ def dados(msg):
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         print(retu)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        urllib.request.urlretrieve(url, 'filename.zip')
+                        urllib.request.urlretrieve(download_link, 'filename.apk')
                         if os.path.exists(required_file_name):
                             sents = bot.sendMessage(msg['chat']['id'], "{} Uploading in progress".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                             bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
+                            tr = bot.sendDocument(chat_id, open('filename.apk', 'rb'))
                             examine(tr, amanobot.namedtuple.Message)
                             bot.editMessageText((msg['chat']['id'],sents), 'File Upload Successful...')
                             time.sleep(0.5)
