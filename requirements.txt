@@ -14,7 +14,7 @@ py_translator
 duckpy
 python-dotenv
 Pillow
-python-telegram-bot
+urlparse
 gsearch
 regex
 urbandict
