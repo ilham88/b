@@ -63,9 +63,9 @@ def dados(msg):
                     parse2 = BeautifulSoup(html2.text, features="lxml")
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         download_link = link["href"]
+                        print(links.get(‘href’))
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
-                        print(link.get(‘href’))
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n{}".format(app_name, link.get(‘href’)), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n{}".format(app_name, links.get(‘href’)), 'Markdown', disable_web_page_preview=True)
                         output_file = "dis/" + app_name + ".apk"
                         r = requests.get(url=download_link, stream=True)
                         with open(output_file, 'wb') as f:
