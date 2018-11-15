@@ -146,7 +146,7 @@ def dados(msg):
                                     if os.path.exists(required_file_name):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                                         bot.sendChatAction(chat_id, 'upload_document')
-                                        tr = bot.sendDocument(chat_id, open('com.whatsapp.apk', 'rb'))
+                                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'))
                                         examine(tr, amanobot.namedtuple.Message)
                                         time.sleep(0.5)
                                         ends = datetime.now()
