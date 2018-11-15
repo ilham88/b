@@ -64,8 +64,8 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
+                app_name = url.split('/')[-1]
                 sent = bot.sendMessage(msg['chat']['id'], "{+} getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                filename = url.split('/')[-1]
                 site = "https://apkpure.com"
                 url = "https://apkpure.com/search?q=%s" %(app_name)
                 html = requests.get(url)
