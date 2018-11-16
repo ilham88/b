@@ -22,6 +22,7 @@ from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
 import mime
+import mimetypes
 from mimetypes import MimeTypes
 import threading
 import pprint
