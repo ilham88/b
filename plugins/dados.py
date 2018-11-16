@@ -120,7 +120,7 @@ def dados(msg):
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
-                        chunk_size = 1024
+                        chunk_size = 128
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
