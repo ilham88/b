@@ -130,7 +130,7 @@ def dados(msg):
                         file_url = "http://codex.cs.yale.edu/avi/db-book/db4/slide-dir/ch1-2.pdf"
                         r = requests.get(downloadlink, stream = True) 
                         #r = requests.get(surl, stream=True)
-                        with open("com.whatsapp.apk","wb") as pdf:
+                        with open(app_name + ".apk","wb") as pdf:
                             for chunk in r.iter_content(chunk_size=1024):
                                 if chunk:
                                     pdf.write(chunk)
@@ -138,7 +138,7 @@ def dados(msg):
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open("com.whatsapp.apk", 'rb'))
+                            tr = bot.sendDocument(chat_id, open(app_name + ".apk", 'rb'))
                             examine(tr, amanobot.namedtuple.Message)
                             time.sleep(0.5)
                             ends = datetime.now()
