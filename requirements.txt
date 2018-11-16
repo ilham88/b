@@ -33,3 +33,4 @@ ffmpeg
 progressbar2
 mime
 rfc6266
+tqdm
