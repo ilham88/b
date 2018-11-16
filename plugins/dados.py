@@ -109,18 +109,17 @@ def dados(msg):
                 for i in parse.find("p"):
                     a_url = i["href"]
                     app_url = site + a_url + "/download?from=details"
-                    html2 = requests.get(app_url)
-                    parse2 = BeautifulSoup(html2.text, features="lxml")
+                    html2 = requests.get(app_url).text
+                    parse2 = BeautifulSoup(html2, features="lxml")
                     links = []
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
                         downloadlink = link.get('href')
                         linko = urllib.request.pathname2url(downloadlink)
-                        on = mimetypes.guess_type(linko)[1]
-                        of = mimetypes.guess_type(linko)[0]
+                        on = mimetypes.guess_type(linko)
+                        of = mimetypes.guess_type(linko)
                         print(on)
-                        print(of)
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, downloadlink), 'Markdown', disable_web_page_preview=True)
                         surl = downloadlink
                         surl = surl.strip()
                             # https://stackoverflow.com/a/761825/4723940
