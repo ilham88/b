@@ -115,35 +115,28 @@ def dados(msg):
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
                         downloadlink = link.get('href')
-                        linko = urllib.request.pathname2url(downloadlink)
-                        on = mimetypes.guess_type(linko)
-                        of = mimetypes.guess_type(linko)
-                        print(on)
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, downloadlink), 'Markdown', disable_web_page_preview=True)
-                        surl = downloadlink
-                        surl = surl.strip()
-                            # https://stackoverflow.com/a/761825/4723940
-                        file_name = input_str.split('/')[-1]
-                        file_name = file_name.strip()
-                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from apkpure.com in progress...", 'Markdown', disable_web_page_preview=True)
+                        #bot.deleteMessage(chat_id, sent)
+                        with urllib.request.urlopen(downloadlink) as jurl:
+                            data = json.loads(jurl.read().decode())
+                                print(data)
+                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
-                        file_url = "http://codex.cs.yale.edu/avi/db-book/db4/slide-dir/ch1-2.pdf"
                         r = requests.get(downloadlink, stream = True) 
-                        #r = requests.get(surl, stream=True)
-                        with open(app_name + ".apk","wb") as pdf:
+                        with open(required_file_name,"wb") as pdf:
                             for chunk in r.iter_content(chunk_size=1024):
                                 if chunk:
                                     pdf.write(chunk)
-                            sents = bot.sendMessage(msg['chat']['id'], "Uploading {} to Telegram".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                            bot.editMessageText((msg['chat']['id'], sent), "Uploading *{}* to Telegram".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                             starts = datetime.now()
-                            bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
+                            bot.editMessageText((msg['chat']['id'],sent), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open(app_name + ".apk", 'rb'))
+                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="[⬇️ External Download Link]({})".format(downloadlink), , parse_mode='Markdown')
                             examine(tr, amanobot.namedtuple.Message)
                             time.sleep(0.5)
                             ends = datetime.now()
                             mss = (ends - starts).seconds
-                            bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                            bot.editMessageText((msg['chat']['id'], sent), "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
                             return True
 def main(args):
     if len(args) != 2:
