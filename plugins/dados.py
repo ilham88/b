@@ -106,7 +106,7 @@ def dados(msg):
                 site = "https://apkpure.com"
                 url = "https://apkpure.com/search?q=%s" %(app_name)
                 html = requests.get(url)
-                parse = BeautifulSoup(html.text)
+                parse = BeautifulSoup(html.text, features="lxml")
                 for i in parse.find("p"):
                     a_url = i["href"]
                     app_url = site + a_url + "/download?from=details"
