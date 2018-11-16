@@ -132,8 +132,8 @@ def dados(msg):
                         #r = requests.get(surl, stream=True)
                         with open("python.pdf","wb") as pdf:
                             for chunk in r.iter_content(chunk_size=1024):
-                                    if chunk:
-                                        pdf.write(chunk)
+                                if chunk:
+                                    pdf.write(chunk)
                        sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                        starts = datetime.now()
                        bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
