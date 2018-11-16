@@ -117,16 +117,16 @@ def dados(msg):
                         downloadlink = link.get('href')
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from apkpure.com in progress...", 'Markdown', disable_web_page_preview=True)
                         #bot.deleteMessage(chat_id, sent)
-                        with urllib.request.urlopen(downloadlink) as jurl:
-                            data = json.loads(jurl.read().decode())
-                            print(data)       
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
                         r = requests.get(downloadlink, stream = True) 
-                        with open(required_file_name,"wb") as pdf:
+                        with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=1024):
                                 if chunk:
-                                    pdf.write(chunk)
+                                    apk.write(chunk)
+                                    apk.flush(chunk)
+                            data = json.loads(r.read().decode())
+                            print(data)  
                             bot.editMessageText((msg['chat']['id'], sent), "Uploading *{}* to Telegram".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sent), 'sending apk...')
@@ -137,6 +137,8 @@ def dados(msg):
                             ends = datetime.now()
                             mss = (ends - starts).seconds
                             bot.editMessageText((msg['chat']['id'], sent), "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                            os.remove(required_file_name)
+                            bot.deleteMessage((msg['chat']['id'],sent))
                             return True
 def main(args):
     if len(args) != 2:
