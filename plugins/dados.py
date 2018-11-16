@@ -96,10 +96,9 @@ def dados(msg):
             if msg['text'][6:] == '':
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
-                url = 'https://api.github.com/users/{}'.format(msg['text'][6:])
+                link = '{}'.format(msg['text'][6:])
                 file_name = "download.data"
                 with open(file_name, "wb") as f:
-                    print "Downloading %s" % file_name
                     response = requests.get(link, stream=True)
                     total_length = response.headers.get('content-length')
 
