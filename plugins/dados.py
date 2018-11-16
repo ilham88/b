@@ -113,15 +113,12 @@ def dados(msg):
                     links = []
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
-                        download_link = link.get('href')
-                        retu = json.dumps({"app_name": app_name,"download_link":download_link})
-                        req = requests.head(download_link)
-                        headersContent = req.headers.get('Content-Disposition')
-                        rfcFilename = rfc6266.parse_headers(headersContent, relaxed=True).filename_unsafe
-                        filen = requests.utils.unquote(rfcFilename)
+                        downloadlink = link.get('href')
+                        retu = json.dumps({"app_name": app_name,"download_link":downloadlink})
+                        print mimetypes.guess_type(downloadlink)
                         print(filen)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
-                        surl = download_link
+                        surl = downloadlink
                         surl = surl.strip()
                             # https://stackoverflow.com/a/761825/4723940
                         file_name = input_str.split('/')[-1]
