@@ -137,7 +137,7 @@ def dados(msg):
                                     apk.flush()
                                     bar.finish()
                             
-                            bot.editMessageText((msg['chat']['id'], sent), "{+} Uploading *{}* to Telegram".format(app_name), 'Markdown')
+                            bot.editMessageText((msg['chat']['id'], sent), "{+} Uploading *{}* to Telegram \n\n{}".format(app_name, bar), 'Markdown')
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sent), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
