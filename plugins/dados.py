@@ -151,7 +151,7 @@ def dados(msg):
                                     end = datetime.now()
                                     ms = (end - start).seconds
                                     starts = datetime.now()
-                                    if os.path.exists(required_file_name):
+                                    if os.path.exists("python.pdf"):
                                         bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                                         bot.sendChatAction(chat_id, 'upload_document')
                                         tr = bot.sendDocument(chat_id, open("python.pdf", 'rb'))
