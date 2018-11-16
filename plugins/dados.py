@@ -136,8 +136,8 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     bar.finish()
-                            print("{+} downloading %s" %(app_name))
-                            bot.editMessageText((msg['chat']['id'], sent), "Uploading *{}* to Telegram".format(app_name), 'Markdown')
+                            
+                            bot.editMessageText((msg['chat']['id'], sent), "{+} Uploading *{}* to Telegram".format(app_name), 'Markdown')
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sent), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
@@ -149,7 +149,7 @@ def dados(msg):
                             bot.editMessageText((msg['chat']['id'], sent), "Uploaded in {} seconds.".format(mss), parse_mode='Markdown')
                             os.remove(required_file_name)
                             bot.deleteMessage((msg['chat']['id'],sent))
-                            print("{+} done. file saved to %s" %(apk))
+                            
                             return True
 def main(args):
     if len(args) != 2:
