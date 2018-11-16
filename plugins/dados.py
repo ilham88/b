@@ -126,6 +126,7 @@ def dados(msg):
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=1024):
+                                total_length = int(r.headers.get('content-length'))
                                 bar = make_progress_bar()
                                 bar.start(total_length)
                                 readsofar = 0
