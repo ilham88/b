@@ -21,16 +21,13 @@ from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
-import mime
-import mimetypes
-from mimetypes import MimeTypes
 import threading
 import pprint
 import traceback
 import urllib.request
 import amanobot
 import amanobot.namedtuple
-import rfc6266
+from tqdm import tqdm
 
 try:
     import urllib.request
@@ -123,19 +120,16 @@ def dados(msg):
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
+                        chunk_size = 1024
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
-                            for chunk in r.iter_content(chunk_size=1024):
-                                total_length = int(r.headers.get('content-length'))
-                                dl = 0
-                                total_length = int(total_length)
-                                if chunk:
-                                    dl += len(chunk)
-                                    apk.write(chunk)
-                                    apk.flush()
-                                    done = int(100 * dl / total_length)
-                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, download_progress_string), 'Markdown')
+                            for data in tqdm(iterable = r.iter_content(chunk_size = chunk_size), total = total_size/chunk_size, unit = 'KB'):
+                                for chunk in r.iter_content(chunk_size=chunk_size):
+                                    if chunk:
+                                        apk.write(data)
+                                        apk.write(chunk)
+                                        apk.flush()
+                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, data), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             bot.sendChatAction(chat_id, 'upload_document')
