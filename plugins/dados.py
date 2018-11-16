@@ -115,14 +115,15 @@ def dados(msg):
                 image = requests.get(url).content
                 imget = BeautifulSoup(image,'lxml')
                 image_tags = imget.find('dt')
-                div_tags = imget.findAll('div')
+                div_tags = imget.find('div')
                 for i in parse.find("p"):
                     for img in image_tags.find_all('img'):
-                        for ul in image_tags.find_all('div', {'class': 'additional'):
+                        for ul in div_tags.find_all('div', {'class': 'additional'}):
                             a_url = i["href"]
                             img = img["src"]
+                            des = ul["ul"]
                             app_url = site + a_url + "/download?from=details"
-                        #img_url = 
+                            #img_url = 
                             html2 = requests.get(app_url).text
                             parse2 = BeautifulSoup(html2, features="lxml")
                             links = []
@@ -132,7 +133,7 @@ def dados(msg):
                                 retu = json.dumps({"app_name": app_name, "download_link": downloadlink, "img": img})
                                 print(retu)
                                 bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
-                        #bot.deleteMessage(chat_id, sent)
+                                #bot.deleteMessage(chat_id, sent)
                                 required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                                 start = datetime.now()
                                 chunk_size = 1024
