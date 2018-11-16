@@ -127,18 +127,14 @@ def dados(msg):
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=1024):
                                 total_length = int(r.headers.get('content-length'))
-                                bar = make_progress_bar()
-                                bar.start(total_length)
-                                readsofar = 0
+                                dl = 0
+                                total_length = int(total_length)
                                 if chunk:
-                                    readsofar += len(chunk)
-                                    bar.update(readsofar)
+                                    dl += len(chunk)
                                     apk.write(chunk)
                                     apk.flush()
-                                    bar.finish()
-                            bot.editMessageText((msg['chat']['id'], sent), "✅ Download Successful. Now let me upload", 'Markdown')
-                            time.sleep(2.5)
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n{}".format(app_name, bar), 'Markdown')
+                                    download_progress_string = "Downloading ... "(len(str(total_length))-len(str(dl)))*" " + str(dl" [%3.2f%%]"%(100.0*float(dl)/float(total_length))
+                            bot.editMessageText((msg['chat']['id'], sent), "✅ Download Successful. Now \n\n\n⬆️ Uploading *{}* to Telegram".format(app_name, download_progress_string), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             bot.sendChatAction(chat_id, 'upload_document')
@@ -147,7 +143,6 @@ def dados(msg):
                             time.sleep(0.5)
                             ends = datetime.now()
                             mss = (ends - starts).seconds
-                            bot.editMessageText((msg['chat']['id'], sent), "Uploaded in {} seconds.".format(mss), parse_mode='Markdown')
                             os.remove(required_file_name)
                             bot.deleteMessage((msg['chat']['id'],sent))
                             
