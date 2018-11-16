@@ -123,6 +123,7 @@ def dados(msg):
                         chunk_size = 1024
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
+                            total_size = int(r.headers['content-length'])
                             for data in tqdm(iterable = r.iter_content(chunk_size = chunk_size), total = total_size/chunk_size, unit = 'KB'):
                                 for chunk in r.iter_content(chunk_size=chunk_size):
                                     if chunk:
