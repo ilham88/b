@@ -125,14 +125,17 @@ def dados(msg):
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
                                 total_length = r.headers.get('content-length')
-                                dl = 0
-                                total_length = int(total_length)
-                                if chunk:
-                                    dl += len(chunk)
-                                    done = int(100 * dl / total_length)
-                                    apk.write(chunk)
-                                    apk.flush()
-                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
+                                if total_length is None: # no content length header
+                                    apk.write(r.content)
+                                else:
+                                    dl = 0
+                                    total_length = int(total_length)
+                                    if chunk:
+                                        dl += len(chunk)
+                                        done = int(100 * dl / total_length)
+                                        apk.write(chunk)
+                                        apk.flush()
+                                        upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
                             bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
