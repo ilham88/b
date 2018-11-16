@@ -119,7 +119,7 @@ def dados(msg):
                         #bot.deleteMessage(chat_id, sent)
                         with urllib.request.urlopen(downloadlink) as jurl:
                             data = json.loads(jurl.read().decode())
-                               print(data)
+                                print(data)       
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
                         r = requests.get(downloadlink, stream = True) 
