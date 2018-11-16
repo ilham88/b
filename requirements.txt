@@ -31,3 +31,6 @@ rivescript
 iso-639==0.4.5
 ffmpeg
 progressbar2
+mimetypes
+mime
+rfc6266
