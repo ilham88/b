@@ -134,7 +134,7 @@ def dados(msg):
                             for chunk in r.iter_content(chunk_size=1024):
                                 if chunk:
                                     pdf.write(chunk)
-                            sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                            sents = bot.sendMessage(msg['chat']['id'], "Uploading {} to Telegram".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
