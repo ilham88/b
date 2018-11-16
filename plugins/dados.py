@@ -116,6 +116,7 @@ def dados(msg):
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
                         downloadlink = link.get('href')
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
@@ -131,9 +132,7 @@ def dados(msg):
                                     done = int(100 * dl / total_length)
                                     apk.write(chunk)
                                     apk.flush()
-                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...{}".format(downloadlink, download_progress_string), 'Markdown', disable_web_page_preview=True)
-                                    upload_progress_string = "Uploading ... [%s of %s]" % (str(dl), str(total_length))
+                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
                             bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_nam, upload_progress_string), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
