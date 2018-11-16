@@ -130,7 +130,7 @@ def dados(msg):
                             for link in parse2.find_all('a', {'id': 'download_link'}):
                                 links.append(link.get('href'))
                                 downloadlink = link.get('href')
-                                retu = json.dumps({"app_name": app_name, "download_link": downloadlink, "img": img})
+                                retu = json.dumps({"app_name": app_name, "download_link": downloadlink, "img": img, "des": des})
                                 print(retu)
                                 bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
                                 #bot.deleteMessage(chat_id, sent)
@@ -142,7 +142,7 @@ def dados(msg):
                                     total_length = response.headers.get('content-length')
 
                                     if total_length is None: # no content length header
-                                    apk.write(response.content)
+                                        apk.write(response.content)
                                     else:
                                         dl = 0
                                         total_length = int(total_length)
