@@ -131,37 +131,20 @@ def dados(msg):
                         r = requests.get(file_url, stream = True) 
                         #r = requests.get(surl, stream=True)
                         with open("python.pdf","wb") as pdf:
-                            total_length = r.headers.get('content-length')
-                                # https://stackoverflow.com/a/15645088/4723940
-                            if total_length is None: # no content length header
-                                fd.write(r.content)
-                            else:
-                                dl = 0
-                                total_length = int(total_length)
-                                for chunk in r.iter_content(chunk_size=1024):
+                            for chunk in r.iter_content(chunk_size=1024):
                                     if chunk:
-                                        dl += len(chunk)
                                         pdf.write(chunk)
-                                        done = int(100 * dl / total_length)
-                                    #download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
-                                    download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                                    #download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
-                                    
-                                    sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                                    end = datetime.now()
-                                    ms = (end - start).seconds
-                                    starts = datetime.now()
-                                    if os.path.exists("python.pdf"):
-                                        bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
-                                        bot.sendChatAction(chat_id, 'upload_document')
-                                        tr = bot.sendDocument(chat_id, open("python.pdf", 'rb'))
-                                        examine(tr, amanobot.namedtuple.Message)
-                                        time.sleep(0.5)
-                                        ends = datetime.now()
-                                        mss = (ends - starts).seconds
-                                        bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-                                    else:
-                                        bot.sendMessage(msg['chat']['id'], "404: File Not Found", parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                       sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                       starts = datetime.now()
+                       bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
+                       bot.sendChatAction(chat_id, 'upload_document')
+                       tr = bot.sendDocument(chat_id, open("python.pdf", 'rb'))
+                       examine(tr, amanobot.namedtuple.Message)
+                       time.sleep(0.5)
+                       ends = datetime.now()
+                       mss = (ends - starts).seconds
+                       bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                       return true
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
