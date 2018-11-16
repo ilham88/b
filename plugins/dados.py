@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -112,10 +111,12 @@ def dados(msg):
                 site = "https://apkpure.com"
                 url = "https://apkpure.com/search?q=%s" %(app_name)
                 html = requests.get(url)
-                parse = BeautifulSoup(html.text)
-                for i in parse.find("p"):
+                parse = BeautifulSoup(html.text, features="lxml")
+                for i, m in parse.find("p"):
                     a_url = i["href"]
+                    img = m["img"]["src"]
                     app_url = site + a_url + "/download?from=details"
+                    #img_url = 
                     html2 = requests.get(app_url).text
                     parse2 = BeautifulSoup(html2, features="lxml")
                     links = []
@@ -163,8 +164,3 @@ def main(args):
 
 if __name__ == "__main__":
     main(args=sys.argv)
-    
-                    
-                    
-                        
-                            d
