@@ -128,9 +128,9 @@ def dados(msg):
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name + ".apk"
                         start = datetime.now()
                         file_url = "http://codex.cs.yale.edu/avi/db-book/db4/slide-dir/ch1-2.pdf"
-                        r = requests.get(file_url, stream = True) 
+                        r = requests.get(downloadlink, stream = True) 
                         #r = requests.get(surl, stream=True)
-                        with open("python.pdf","wb") as pdf:
+                        with open("com.whatsapp.apk","wb") as pdf:
                             for chunk in r.iter_content(chunk_size=1024):
                                 if chunk:
                                     pdf.write(chunk)
@@ -138,7 +138,7 @@ def dados(msg):
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open("python.pdf", 'rb'))
+                            tr = bot.sendDocument(chat_id, open("com.whatsapp.apk", 'rb'))
                             examine(tr, amanobot.namedtuple.Message)
                             time.sleep(0.5)
                             ends = datetime.now()
