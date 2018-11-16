@@ -114,9 +114,12 @@ def dados(msg):
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
                         downloadlink = link.get('href')
-                        retu = json.dumps({"app_name": app_name,"download_link":downloadlink})
-                        print mimetypes.guess_type(downloadlink)
-                        print(filen)
+                        mime = MimeTypes()
+                        link = urllib.pathname2url(downloadlink)
+                        on = mimetypes.guess_type(link)[1]
+                        of = mimetypes.guess_type(link)[2]
+                        print(on)
+                        print(of)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
                         surl = downloadlink
                         surl = surl.strip()
