@@ -117,7 +117,7 @@ def dados(msg):
                         mime = MimeTypes()
                         link = urllib.request.pathname2url(downloadlink)
                         on = mimetypes.guess_type(link)[1]
-                        of = mimetypes.guess_type(link)[2]
+                        of = mimetypes.guess_type(link)[0]
                         print(on)
                         print(of)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
