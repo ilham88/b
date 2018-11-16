@@ -46,15 +46,19 @@ warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
 def progress(current, total):
     print("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
-def get_lst_of_files(input_directory, output_lst):
-    filesinfolder = os.listdir(input_directory)
-    for file_name in filesinfolder:
-        current_file_name = os.path.join(input_directory, file_name)
-        if os.path.isdir(current_file_name):
-            return get_lst_of_files(current_file_name, output_lst)
-        else:
-            output_lst.append(current_file_name)
-    return output_lst
+def make_progress_bar():
+    return progressbar.ProgressBar(
+        redirect_stdout=True,
+        redirect_stderr=True,
+        widgets=[
+            progressbar.Percentage(),
+            progressbar.Bar(),
+            ' (',
+            progressbar.AdaptiveTransferSpeed(),
+            ' ',
+            progressbar.ETA(),
+            ') ',
+        ])
 
 def equivalent(data, nt):
     if type(data) is dict:
@@ -122,9 +126,17 @@ def dados(msg):
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=1024):
+                                bar = make_progress_bar()
+                                bar.start(total_length)
+                                readsofar = 0
                                 if chunk:
+                                    readsofar += len(chunk)
+                                    bar.update(readsofar)
                                     apk.write(chunk)
-                            bot.editMessageText((msg['chat']['id'], sent), "Uploading *{}* to Telegram".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                                    apk.flush()
+                                    bar.finish()
+                            print("{+} done. file saved to %s" %(apk))
+                            bot.editMessageText((msg['chat']['id'], sent), "Uploading *{}* to Telegram".format(app_name), 'Markdown')
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sent), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
@@ -133,7 +145,7 @@ def dados(msg):
                             time.sleep(0.5)
                             ends = datetime.now()
                             mss = (ends - starts).seconds
-                            bot.editMessageText((msg['chat']['id'], sent), "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                            bot.editMessageText((msg['chat']['id'], sent), "Uploaded in {} seconds.".format(mss), parse_mode='Markdown')
                             os.remove(required_file_name)
                             bot.deleteMessage((msg['chat']['id'],sent))
                             return True
