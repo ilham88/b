@@ -21,7 +21,7 @@ from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
-from mime
+import mime
 from mimetypes import MimeTypes
 import threading
 import pprint
@@ -115,7 +115,11 @@ def dados(msg):
                         links.append(link.get('href'))
                         download_link = link.get('href')
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
-                        print(retu)
+                        req = requests.head(download_link)
+                        headersContent = req.headers['Content-Disposition']
+                        rfcFilename = rfc6266.parse_headers(headersContent, relaxed=True).filename_unsafe
+                        filen = requests.utils.unquote(rfcFilename)
+                        print(filen)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading {}\n\n[⬇️ Download from here]({})".format(app_name, download_link), 'Markdown', disable_web_page_preview=True)
                         surl = download_link
                         surl = surl.strip()
