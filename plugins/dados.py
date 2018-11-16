@@ -21,13 +21,15 @@ from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
+from mime
+from mimetypes import MimeTypes
 import threading
 import pprint
 import traceback
 import urllib.request
 import amanobot
 import amanobot.namedtuple
-
+import rfc6266
 
 try:
     import urllib.request
