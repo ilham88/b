@@ -92,71 +92,28 @@ def examine(result, type):
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
-        if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
-            input_str = msg['text'][3:]
-            if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
-                                parse_mode='Markdown',
-                                reply_to_message_id=msg['message_id'])
+        if msg['text'].startswith('/dith'):
+            if msg['text'][6:] == '':
+                res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
-                app_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-                    os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                site = "https://apkpure.com"
-                url = "https://apkpure.com/search?q=%s" %(app_name)
-                html = requests.get(url)
-                parse = BeautifulSoup(html.text)
-                for i in parse.find("p"):
-                    a_url = i["href"]
-                    app_url = site + a_url + "/download?from=details"
-                    html2 = requests.get(app_url).text
-                    parse2 = BeautifulSoup(html2, features="lxml")
-                    links = []
-                    for link in parse2.find_all('a', {'id': 'download_link'}):
-                        links.append(link.get('href'))
-                        downloadlink = link.get('href')
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
-                        #bot.deleteMessage(chat_id, sent)
-                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
-                        start = datetime.now()
-                        chunk_size = 128
-                        r = requests.get(downloadlink, stream = True) 
-                        with open(required_file_name,"wb") as apk:
-                            total_length = r.headers.get('content-length')
-                                # https://stackoverflow.com/a/15645088/4723940
-                            if total_length is None: # no content length header
-                                apk.write(r.content)
-                            else:
-                            	total_length = r.headers.get('content-length')
-                                dl = 0
-                                total_length = int(total_length)
-                                for chunk in response.iter_content(chunk_size=4096):
-                                    dl += len(chunk)
-                                    done = int(100 * dl / total_length)
-                                    apk.write(chunk)
-                                    apk.flush()
-                                    pro = sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
-                                    sys.stdout.flush()
-                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n\n\n {}".format(app_name, pro), 'Markdown')
-                            time.sleep(5)
-                            starts = datetime.now()
-                            bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
-                            examine(tr, amanobot.namedtuple.Message)
-                            time.sleep(0.5)
-                            ends = datetime.now()
-                            mss = (ends - starts).seconds
-                            os.remove(required_file_name)
-                            bot.deleteMessage((msg['chat']['id'],sent))
-                            
-                            return True
-def main(args):
-    if len(args) != 2:
-        sys.exit("use: %s com.blah.blah" %(args[0]))
-    get_apk(args[1])
+                url = 'https://api.github.com/users/{}'.format(msg['text'][6:])
+                file_name = "download.data"
+                with open(file_name, "wb") as f:
+                    print "Downloading %s" % file_name
+                    response = requests.get(link, stream=True)
+                    total_length = response.headers.get('content-length')
 
-if __name__ == "__main__":
-    main(args=sys.argv)
-    
+                    if total_length is None: # no content length header
+                        f.write(response.content)
+                    else:
+                        dl = 0
+                        total_length = int(total_length)
+                        for data in response.iter_content(chunk_size=4096):
+                            dl += len(data)
+                            f.write(data)
+                            done = int(50 * dl / total_length)
+                            bio = sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
+                            sys.stdout.flush()
+                            res = """Profile Created: {}""".format(bio)
+                bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
+                return True
