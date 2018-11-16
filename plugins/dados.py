@@ -144,7 +144,7 @@ def dados(msg):
                             ends = datetime.now()
                             mss = (ends - starts).seconds
                             bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-                            return true
+                            return True
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
