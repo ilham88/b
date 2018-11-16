@@ -130,7 +130,7 @@ def dados(msg):
                                         apk.write(data)
                                         apk.write(chunk)
                                         apk.flush()
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, data), 'Markdown')
+                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, apk), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             bot.sendChatAction(chat_id, 'upload_document')
