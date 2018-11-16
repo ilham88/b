@@ -125,7 +125,7 @@ def dados(msg):
                                 if chunk:
                                     apk.write(chunk)
                                     apk.flush()
-                            data = json.loads(r.read().decode())
+                            data = r.json()
                             print(data)  
                             bot.editMessageText((msg['chat']['id'], sent), "Uploading *{}* to Telegram".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                             starts = datetime.now()
