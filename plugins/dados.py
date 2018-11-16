@@ -115,7 +115,7 @@ def dados(msg):
                         links.append(link.get('href'))
                         downloadlink = link.get('href')
                         mime = MimeTypes()
-                        link = urllib.pathname2url(downloadlink)
+                        link = urllib.request.pathname2url(downloadlink)
                         on = mimetypes.guess_type(link)[1]
                         of = mimetypes.guess_type(link)[2]
                         print(on)
