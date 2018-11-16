@@ -116,7 +116,7 @@ def dados(msg):
                         download_link = link.get('href')
                         retu = json.dumps({"app_name": app_name,"download_link":download_link})
                         req = requests.head(download_link)
-                        headersContent = req.headers['Content-Disposition']
+                        headersContent = req.headers.get('Content-Disposition')
                         rfcFilename = rfc6266.parse_headers(headersContent, relaxed=True).filename_unsafe
                         filen = requests.utils.unquote(rfcFilename)
                         print(filen)
