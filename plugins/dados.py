@@ -132,7 +132,7 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...{}".format(downloadlink, upload_progress_string), 'Markdown', disable_web_page_preview=True)
+                                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...{}".format(downloadlink, download_progress_string), 'Markdown', disable_web_page_preview=True)
                                     upload_progress_string = "Uploading ... [%s of %s]" % (str(dl), str(total_length))
                             bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_nam, upload_progress_string), 'Markdown')
                             time.sleep(5)
