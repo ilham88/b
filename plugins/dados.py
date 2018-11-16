@@ -123,20 +123,23 @@ def dados(msg):
                         chunk_size = 128
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
-                            for chunk in r.iter_content(chunk_size=chunk_size):
-                                total_length = r.headers.get('content-length')
-                                if total_length is None: # no content length header
-                                    apk.write(r.content)
-                                else:
-                                    dl = 0
-                                    total_length = int(total_length)
-                                    if chunk:
-                                        dl += len(chunk)
-                                        done = int(100 * dl / total_length)
-                                        apk.write(chunk)
-                                        apk.flush()
-                                        upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
+                            total_length = r.headers.get('content-length')
+                                # https://stackoverflow.com/a/15645088/4723940
+                            if total_length is None: # no content length header
+                                apk.write(r.content)
+                            else:
+                            	total_length = r.headers.get('content-length')
+                                dl = 0
+                                total_length = int(total_length)
+                                for chunk in response.iter_content(chunk_size=4096):
+                                    dl += len(chunk)
+                                    done = int(100 * dl / total_length)
+                                    apk.write(chunk)
+                                    apk.flush()
+                                    pro = sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )    
+                                    sys.stdout.flush()
+                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
+                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n\n\n {}".format(app_name, pro), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             bot.sendChatAction(chat_id, 'upload_document')
