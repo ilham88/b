@@ -12,6 +12,11 @@ start_pv = InlineKeyboardMarkup(inline_keyboard=[
     [dict(text='⭐ Rate', url='https://t.me/storebot?start=' + config.bot_username)]
 ])
 
+dl_keyb = InlineKeyboardMarkup(inline_keyboard=[
+    [dict(text='ℹ️ Download from Apkpure', callback_data='apkpure')] +
+    [dict(text='🚹 Download from Uptodown', callback_data='uptodown')]
+])
+
 all_cmds = InlineKeyboardMarkup(inline_keyboard=[
     [dict(text='👮 Admins', callback_data='admin_cmds')] +
     [dict(text='👤 Users', callback_data='user_cmds')],
@@ -35,4 +40,9 @@ del_msg = InlineKeyboardMarkup(inline_keyboard=[
 ia_question = InlineKeyboardMarkup(inline_keyboard=[
     [dict(text='✅ Accept', callback_data='ia_yes')] +
     [dict(text='❌ Cancel', callback_data='ia_no')]
+])
+
+restart_dl = InlineKeyboardMarkup(inline_keyboard=[
+    [dict(text='✅ Accept', callback_data='dl_yes')] +
+    [dict(text='❌ Cancel', callback_data='dl_no')]
 ])
