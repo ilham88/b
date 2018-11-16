@@ -134,17 +134,17 @@ def dados(msg):
                             for chunk in r.iter_content(chunk_size=1024):
                                 if chunk:
                                     pdf.write(chunk)
-                       sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                       starts = datetime.now()
-                       bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
-                       bot.sendChatAction(chat_id, 'upload_document')
-                       tr = bot.sendDocument(chat_id, open("python.pdf", 'rb'))
-                       examine(tr, amanobot.namedtuple.Message)
-                       time.sleep(0.5)
-                       ends = datetime.now()
-                       mss = (ends - starts).seconds
-                       bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
-                       return true
+                            sents = bot.sendMessage(msg['chat']['id'], "{} {}".format(app_name, download_progress_string), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                            starts = datetime.now()
+                            bot.editMessageText((msg['chat']['id'],sents), 'sending apk...')
+                            bot.sendChatAction(chat_id, 'upload_document')
+                            tr = bot.sendDocument(chat_id, open("python.pdf", 'rb'))
+                            examine(tr, amanobot.namedtuple.Message)
+                            time.sleep(0.5)
+                            ends = datetime.now()
+                            mss = (ends - starts).seconds
+                            bot.sendMessage(msg['chat']['id'], "Uploaded in {} seconds.".format(mss), parse_mode='Markdown', reply_to_message_id=msg['message_id'])
+                            return true
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
