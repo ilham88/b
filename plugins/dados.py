@@ -131,7 +131,7 @@ def dados(msg):
                             starts = datetime.now()
                             bot.editMessageText((msg['chat']['id'],sent), 'sending apk...')
                             bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="[⬇️ External Download Link]({})".format(downloadlink), , parse_mode='Markdown')
+                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
                             examine(tr, amanobot.namedtuple.Message)
                             time.sleep(0.5)
                             ends = datetime.now()
