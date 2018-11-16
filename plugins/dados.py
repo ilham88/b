@@ -97,7 +97,7 @@ def dados(msg):
                 res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
             else:
                 link = '{}'.format(msg['text'][6:])
-                file_name = "download.data"
+                file_name = "download.zip"
                 with open(file_name, "wb") as f:
                     response = requests.get(link, stream=True)
                     total_length = response.headers.get('content-length')
@@ -115,4 +115,9 @@ def dados(msg):
                             sys.stdout.flush()
                             res = """Profile Created: {}""".format(bio)
                 bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
+                bot.sendChatAction(chat_id, 'upload_document')
+                tr = bot.sendDocument(chat_id, open(file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                examine(tr, amanobot.namedtuple.Message)
+                time.sleep(0.5)
+                os.remove(file_name)
                 return True
