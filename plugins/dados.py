@@ -112,10 +112,11 @@ def dados(msg):
                         for link in parse2.find_all('a', {'id': 'download_link'}):
                             links.append(link.get('href'))
                             downloadlink = link.get('href')
+                            dl = downloadlink
                             retu = json.dumps({"app_name": app_name, "download_link": downloadlink, "img": img})
-                            res = """[\u2063]({})App Name: [{}]({})
-Download Link: {}""".format(img, app_name, downloadlink)
-                            bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
+                            bb = dl.json()
+                            print(bb)
+                           
                             bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
                             #bot.deleteMessage(chat_id, sent)
                             required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
