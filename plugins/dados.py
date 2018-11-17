@@ -1,5 +1,5 @@
 
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 from __future__ import print_function
 from bs4 import BeautifulSoup
@@ -28,7 +28,29 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 from tqdm import tqdm
+# the logging things
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
+# the PTB
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, DispatcherHandlerStop, run_async
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, MessageEntity, ChatAction
+
+import subprocess
+import math
+
+from telethon import TelegramClient
+from telethon.errors import (
+    RPCError, BrokenAuthKeyError, ServerError,
+    FloodWaitError, FloodTestPhoneWaitError, FileMigrateError,
+    TypeNotFoundError, UnauthorizedError, PhoneMigrateError,
+    NetworkMigrateError, UserMigrateError, SessionPasswordNeededError
+)
+from telethon.utils import get_display_name
+from hachoir.metadata import extractMetadata
+from hachoir.parser import createParser
+from telethon.tl.types import DocumentAttributeVideo
 try:
     import urllib.request
     python3 = True
