@@ -88,7 +88,13 @@ def examine(result, type):
         answer = input('Do you want to continue? [y] ')
         if answer != 'y':
             exit(1)
-
+def pretty_size(size):
+    units = ['B', 'KB', 'MB', 'GB']
+    unit = 0
+    while size >= 1024:
+        size /= 1024
+        unit += 1
+    return '%0.2f %s' % (size, units[unit])
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
