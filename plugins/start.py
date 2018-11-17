@@ -96,7 +96,7 @@ def start(msg):
                                 "Hi, I'm a multipurpose bot, to find out more about my functions click on the buttons below:",
                                 reply_markup=teclado)
 
-
+ 
         elif msg['data'] == 'all_cmds':
             bot.editMessageText((msg['message']['chat']['id'], msg['message']['message_id']),
                                 'Select a command category to view. \n\n If you need help with the bot or have any suggestions from the @Bfas237botdevs',
