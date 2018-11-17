@@ -21,7 +21,6 @@ pkg-resources
 pyaes
 pyasn1
 python-telegram-bo
-requests
 rsa==3.4.2
 Telethon-sync==1.0.4
 urllib3==1.22
