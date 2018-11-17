@@ -17,7 +17,6 @@ hachoir3
 idna
 idna-ssl
 multidict
-python3-pkg-resources
 pyasn1
 python-telegram-bot
 rsa
