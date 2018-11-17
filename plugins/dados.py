@@ -158,9 +158,13 @@ def dados(msg):
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
                                 rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Cancel Job', callback_data='del_msgs')]])
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=rst)
+                                for i in xrange(10,0,-1):
+                                    wr = sys.stdout.write(str(i)+' ')
+                                    sys.stdout.flush()
+                                    time.sleep(1)
+                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?\n\nCountdown to auto delete: {}".format(app_name, wr), 'Markdown', reply_markup=rst)
                                 os.remove(required_file_name)
-                                time.sleep(2)
+                                time.sleep(15)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
     elif msg.get('data'):
