@@ -63,8 +63,7 @@ def DownLoadFile(url, file_name):
     return file_name
 
 
-def humanbytes(size):
-    # http
+
 
 def start(msg):
     if msg.get('text'):
@@ -178,3 +177,5 @@ Partnerships:
                                 parse_mode='html',
                                 reply_markup=keyboard.start_back,
                                 disable_web_page_preview=True)
+def humanbytes(size):
+    # http
