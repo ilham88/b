@@ -61,6 +61,8 @@ def make_progress_bar():
             ') ',
         ])
 dlk = keyboard.restart_dl
+from random import randint
+word = "helloworld"
 def equivalent(data, nt):
     if type(data) is dict:
         keys = list(data.keys())
@@ -157,10 +159,10 @@ def dados(msg):
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Cancel Job', callback_data='del_msgs')]])
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nThe current download job will auto delete in 15 seconds".format(app_name), 'Markdown', reply_markup=rst)
+                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Recycle this message', callback_data='del_msgs')]])
+                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown', reply_markup=rst)
                                 os.remove(required_file_name)
-                                time.sleep(15)
+                                time.sleep(20)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
     elif msg.get('data'):
