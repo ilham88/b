@@ -60,6 +60,5 @@ enabled_plugins = [
     'jsondump',
     'dados',
     'diversos',
-    'github',
-    'DownLoadFile'
+    'github'
 ]
