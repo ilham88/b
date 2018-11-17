@@ -132,11 +132,11 @@ def dados(msg):
                                     done = int(100 * dl / total_length)
                                     apk.write(chunk)
                                     apk.flush()
-                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
+                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
                             bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
-                            if fsize < 52428800:
+                            if total_length < 52428800:
                                 bot.sendChatAction(chat_id, 'upload_document')
                                 tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
                                 examine(tr, amanobot.namedtuple.Message)
