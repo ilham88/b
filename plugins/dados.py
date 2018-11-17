@@ -158,7 +158,7 @@ def dados(msg):
                             else:
                                 bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=teclado)
                                 os.remove(required_file_name)
-                                bot.deleteMessage((msg['chat']['id'],sent))
+                                
                                 return True
 def main(args):
     if len(args) != 2:
