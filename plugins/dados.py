@@ -173,7 +173,7 @@ def dados(msg):
                                 rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Recycle this message', callback_data='del_msgs')]])
                                 bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown', reply_markup=rst)
                                 os.remove(required_file_name)
-                                time.sleep(20)
+                                time.sleep(5)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
     elif msg.get('data'):
