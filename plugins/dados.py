@@ -113,7 +113,7 @@ def dados(msg):
                             links.append(link.get('href'))
                             downloadlink = link.get('href')
                             dl = downloadlink
-                            bot.sendMessage(msg['chat']['id'], "[\u2063]({}) App Name: [{}]({})\n\nDownload Link: {}".format(img, app_name, dl), 'Markdown', reply_to_message_id=msg['message_id'])
+                             bot.sendMessage(msg['chat']['id'], "Download Link:[Download Link]({})\n\nApp Name: {}".format(downloadlink, app_name), 'Markdown', reply_to_message_id=msg['message_id'])
                             bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
                             #bot.deleteMessage(chat_id, sent)
                             required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
