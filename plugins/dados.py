@@ -29,6 +29,7 @@ import amanobot.namedtuple
 from tqdm import tqdm
 from amanobot.namedtuple import InlineKeyboardMarkup
 from amanobot.exception import TelegramError, NotEnoughRightsError
+from random import randint
 try:
     import urllib.request
     python3 = True
@@ -61,8 +62,16 @@ def make_progress_bar():
             ') ',
         ])
 dlk = keyboard.restart_dl
-from random import randint
-word = "helloworld"
+
+def shuffle(word):
+    wordlen = len(word)
+    word = list(word)
+    for i in range(0,wordlen-1):
+        pos = randint(i+1,wordlen-1)
+        word[i], word[pos] = word[pos], word[i]
+    word = "".join(word)
+    return word
+
 def equivalent(data, nt):
     if type(data) is dict:
         keys = list(data.keys())
@@ -129,7 +138,9 @@ def dados(msg):
                     for link in parse2.find_all('a', {'id': 'download_link'}):
                         links.append(link.get('href'))
                         downloadlink = link.get('href')
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
+                        word = "123456789abcdefgh-_"
+                        servers = shuffle(word)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
