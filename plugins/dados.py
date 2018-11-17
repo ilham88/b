@@ -155,17 +155,17 @@ def dados(msg):
                                 mss = (ends - starts).seconds
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
-                            elif msg['chat']['type'] !== 'private':
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job in private? this will keep the group clean".format(app_name), 'Markdown', reply_markup=keyboard.start)
-                                os.remove(required_file_name)
-                                time.sleep(5)
-                                bot.deleteMessage((msg['chat']['id'],sent))
-                            else:
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=keyboard.restart_dl)
-                                os.remove(required_file_name)
-                                time.sleep(5)
-                                bot.deleteMessage((msg['chat']['id'],sent))
-                                return True
+                                elif msg['chat']['type'] == 'group':
+                                    bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job in private? this will keep the group clean".format(app_name), 'Markdown', reply_markup=keyboard.start)
+                                    os.remove(required_file_name)
+                                    time.sleep(5)
+                                    bot.deleteMessage((msg['chat']['id'],sent))
+                                else:
+                                    bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=keyboard.restart_dl)
+                                    os.remove(required_file_name)
+                                    time.sleep(5)
+                                    bot.deleteMessage((msg['chat']['id'],sent))
+                                    return True
                             
     
             
