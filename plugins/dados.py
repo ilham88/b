@@ -104,8 +104,7 @@ def dados(msg):
                 for i in parse.find("p"):
                     for img in image_tags.find_all('img'):
                         a_url = i["href"]
-                        img = img["src"]
-                        
+                        img = image_tag.get('src')
                         app_url = site + a_url + "/download?from=details"
                         html2 = requests.get(app_url).text
                         parse2 = BeautifulSoup(html2, "lxml")
@@ -116,7 +115,6 @@ def dados(msg):
                             dl = downloadlink
                             retu = json.dumps({"app_name": app_name, "download_link": downloadlink, "img": img})
                             print(retu)
-                            img = retu["img"]
                             download_link = retu["download_link"]
                             app_name = retu["app_name"]
                             bot.sendMessage(msg['chat']['id'], "[\u2063]({}) App Name: [{}]({})\n\nDownload Link: {}".format(img, app_name, download_link), 'Markdown', reply_to_message_id=msg['message_id'])
