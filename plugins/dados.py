@@ -179,7 +179,7 @@ def dados(msg):
     elif msg.get('data'):
         if msg['data'] == 'del_msgs':
             os.remove(required_file_name)
-            bot.deleteMessage((msg['from']['id'],sent))
+            bot.deleteMessage((msg['from']['id'], msg['message']['message_id']))
             
 
         
