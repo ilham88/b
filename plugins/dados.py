@@ -156,19 +156,12 @@ def dados(msg):
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Cancel', callback_data='del_msg')]])
+                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Cancel Job', callback_data='del_msg')]])
                                 bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=rst)
                                 os.remove(required_file_name)
                                 time.sleep(2)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
-    elif msg.get('data'):
+ 
         
-def main(args):
-    if len(args) != 2:
-        sys.exit("use: %s com.blah.blah" %(args[0]))
-    get_apk(args[1])
 
-if __name__ == "__main__":
-    main(args=sys.argv)
-    
