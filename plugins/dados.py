@@ -56,7 +56,7 @@ def make_progress_bar():
             progressbar.ETA(),
             ') ',
         ])
-
+dlk = keyboard.restart_dl
 def equivalent(data, nt):
     if type(data) is dict:
         keys = list(data.keys())
