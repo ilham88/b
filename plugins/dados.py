@@ -146,7 +146,7 @@ def dados(msg):
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* with total size ({}) is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name, pretty_size(fsize)), 'Markdown', reply_markup=restart_dl)
+                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=restart_dl)
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
