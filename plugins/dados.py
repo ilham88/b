@@ -28,29 +28,10 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 from tqdm import tqdm
-# the logging things
-import logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
-# the PTB
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, DispatcherHandlerStop, run_async
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, MessageEntity, ChatAction
 
 import subprocess
 import math
 
-from telethon import TelegramClient
-from telethon.errors import (
-    RPCError, BrokenAuthKeyError, ServerError,
-    FloodWaitError, FloodTestPhoneWaitError, FileMigrateError,
-    TypeNotFoundError, UnauthorizedError, PhoneMigrateError,
-    NetworkMigrateError, UserMigrateError, SessionPasswordNeededError
-)
-from telethon.utils import get_display_name
-from hachoir.metadata import extractMetadata
-from hachoir.parser import createParser
-from telethon.tl.types import DocumentAttributeVideo
 try:
     import urllib.request
     python3 = True
@@ -65,19 +46,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
 def progress(current, total):
     print("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
-def make_progress_bar():
-    return progressbar.ProgressBar(
-        redirect_stdout=True,
-        redirect_stderr=True,
-        widgets=[
-            progressbar.Percentage(),
-            progressbar.Bar(),
-            ' (',
-            progressbar.AdaptiveTransferSpeed(),
-            ' ',
-            progressbar.ETA(),
-            ') ',
-        ])
+
 
 def equivalent(data, nt):
     if type(data) is dict:
@@ -127,54 +96,56 @@ def dados(msg):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "https://apkpure.com"
                 url = "https://apkpure.com/search?q=%s" %(app_name)
-                html = requests.get(url)
-                parse = BeautifulSoup(html.text)
+                html = requests.get(url).text
+                parse = BeautifulSoup(html, "lxml")
+                image = requests.get(url).content
+                imget = BeautifulSoup(image,'lxml')
+                image_tags = imget.find('dt')
                 for i in parse.find("p"):
-                    a_url = i["href"]
-                    app_url = site + a_url + "/download?from=details"
-                    html2 = requests.get(app_url).text
-                    parse2 = BeautifulSoup(html2, features="lxml")
-                    links = []
-                    for link in parse2.find_all('a', {'id': 'download_link'}):
-                        links.append(link.get('href'))
-                        downloadlink = link.get('href')
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
-                        #bot.deleteMessage(chat_id, sent)
-                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
-                        start = datetime.now()
-                        chunk_size = 5120
-                        chatb = Message(api_key=Config.CHAT_BASE_TOKEN,
-              platform="Telegram",
-              version="1.3",
-              user_id=chat_id,
-              message=message_text,
-              intent=intent)
-                        resp = chatb.send()
-                        r = requests.get(downloadlink, allow_redirects=True, stream=True) 
-                        with open(required_file_name,"wb") as apk:
-                            for chunk in r.iter_content(chunk_size=chunk_size):
-                                total_length = r.headers.get('content-length')
-                                dl = 0
-                                total_length = int(total_length)
-                                if chunk:
-                                    dl += len(chunk)
-                                    done = int(100 * dl / total_length)
-                                    apk.write(chunk)
-                                    apk.flush()
-                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
-                            time.sleep(5)
-                            starts = datetime.now()
-                            bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
-                            examine(tr, amanobot.namedtuple.Message)
-                            time.sleep(0.5)
-                            ends = datetime.now()
-                            mss = (ends - starts).seconds
-                            os.remove(required_file_name)
-                            bot.deleteMessage((msg['chat']['id'],sent))
-                            return True
-def humanbytes(size):
+                    for img in image_tags.find_all('img'):
+                        a_url = i["href"]
+                        img = img["src"]
+                        app_url = site + a_url + "/download?from=details"
+                        html2 = requests.get(app_url).text
+                        parse2 = BeautifulSoup(html2, "lxml")
+                        links = []
+                        for link in parse2.find_all('a', {'id': 'download_link'}):
+                            links.append(link.get('href'))
+                            downloadlink = link.get('href')
+                            retu = json.dumps({"app_name": app_name, "download_link": downloadlink, "img": img})
+                            res = """[\u2063]({})App Name: [{}]({})
+Download Link: {}""".format(img, app_name, downloadlink)
+                            bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
+                            bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [⬇️ apkpure.com]({}) in progress...".format(downloadlink), 'Markdown', disable_web_page_preview=True)
+                            #bot.deleteMessage(chat_id, sent)
+                            required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
+                            start = datetime.now()
+                            chunk_size = 5120
+                            r = requests.get(downloadlink, allow_redirects=True, stream=True) 
+                            with open(required_file_name,"wb") as apk:
+                                for chunk in r.iter_content(chunk_size=chunk_size):
+                                    total_length = r.headers.get('content-length')
+                                    dl = 0
+                                    total_length = int(total_length)
+                                    if chunk:
+                                        dl += len(chunk)
+                                        done = int(100 * dl / total_length)
+                                        apk.write(chunk)
+                                        apk.flush()
+                                        upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
+                                bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
+                                time.sleep(5)
+                                starts = datetime.now()
+                                bot.sendChatAction(chat_id, 'upload_document')
+                                tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                                examine(tr, amanobot.namedtuple.Message)
+                                time.sleep(0.5)
+                                ends = datetime.now()
+                                mss = (ends - starts).seconds
+                                os.remove(required_file_name)
+                                bot.deleteMessage((msg['chat']['id'],sent))
+                                return True
+
     def main(args):
         if len(args) != 2:
             sys.exit("use: %s com.blah.blah" %(args[0]))
