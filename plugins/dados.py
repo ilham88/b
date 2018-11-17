@@ -104,7 +104,7 @@ def dados(msg):
                 for i in parse.find("p"):
                     for img in image_tags.find_all('img'):
                         a_url = i["href"]
-                        img = image_tag.get('src')
+                        img = image_tags.get('src')
                         app_url = site + a_url + "/download?from=details"
                         html2 = requests.get(app_url).text
                         parse2 = BeautifulSoup(html2, "lxml")
