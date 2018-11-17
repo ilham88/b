@@ -175,10 +175,10 @@ def dados(msg):
                             bot.deleteMessage((msg['chat']['id'],sent))
                             return True
 def humanbytes(size):
-def main(args):
-    if len(args) != 2:
-        sys.exit("use: %s com.blah.blah" %(args[0]))
-    get_apk(args[1])
+    def main(args):
+        if len(args) != 2:
+            sys.exit("use: %s com.blah.blah" %(args[0]))
+        get_apk(args[1])
 
 if __name__ == "__main__":
     main(args=sys.argv)
