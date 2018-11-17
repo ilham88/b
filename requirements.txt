@@ -48,3 +48,4 @@ iso-639==0.4.5
 ffmpeg
 progressbar2
 tqdm
+logger
