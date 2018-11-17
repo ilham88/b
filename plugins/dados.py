@@ -55,7 +55,13 @@ def make_progress_bar():
             progressbar.ETA(),
             ') ',
         ])
-
+def pretty_size(size):
+    units = ['B', 'KB', 'MB', 'GB']
+    unit = 0
+    while size >= 1024:
+        size /= 1024
+        unit += 1
+    return '%0.2f %s' % (size, units[unit])
 def equivalent(data, nt):
     if type(data) is dict:
         keys = list(data.keys())
@@ -132,19 +138,23 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(total_length))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
-                            time.sleep(5)
-                            starts = datetime.now()
-                            bot.sendChatAction(chat_id, 'upload_document')
-                            tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
-                            examine(tr, amanobot.namedtuple.Message)
-                            time.sleep(0.5)
-                            ends = datetime.now()
-                            mss = (ends - starts).seconds
-                            os.remove(required_file_name)
-                            bot.deleteMessage((msg['chat']['id'],sent))
-                            
-                            return True
+                                    if fsize < 52428800:
+                                        bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
+                                        time.sleep(5)
+                                        starts = datetime.now()
+                                        bot.sendChatAction(chat_id, 'upload_document')
+                                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                                        examine(tr, amanobot.namedtuple.Message)
+                                        time.sleep(0.5)
+                                        ends = datetime.now()
+                                        mss = (ends - starts).seconds
+                                        os.remove(required_file_name)
+                                        bot.deleteMessage((msg['chat']['id'],sent))
+                                    else:
+                                        bot.editMessageText((msg['chat']['id'], sent), "⚠️ The max file upload limit is 50MB and *{}* is more than the limit.".format(app_name), 'Markdown')
+                                        time.sleep(1.5)
+                                        bot.editMessageText((msg['chat']['id'], sent), "Do you wish to try another or cancel the current download job, 'Markdown', reply_markup=restart_dl)
+                                        return True
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
