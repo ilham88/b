@@ -142,8 +142,15 @@ def dados(msg):
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
-                        chunk_size = 1024
-                        r = requests.get(downloadlink, stream = True) 
+                        chunk_size = 5120
+                        chatb = Message(api_key=Config.CHAT_BASE_TOKEN,
+              platform="Telegram",
+              version="1.3",
+              user_id=chat_id,
+              message=message_text,
+              intent=intent)
+                        resp = chatb.send()
+                        r = requests.get(downloadlink, allow_redirects=True, stream=True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
                                 total_length = r.headers.get('content-length')
@@ -166,8 +173,8 @@ def dados(msg):
                             mss = (ends - starts).seconds
                             os.remove(required_file_name)
                             bot.deleteMessage((msg['chat']['id'],sent))
-                            
                             return True
+def humanbytes(size):
 def main(args):
     if len(args) != 2:
         sys.exit("use: %s com.blah.blah" %(args[0]))
