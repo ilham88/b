@@ -28,7 +28,7 @@
     },
     "WEBHOOK": {
       "description": "Setting this to ANYTHING will enable webhooks when in env mode messages",
-      "value": "ANYTHING"
+      "value": "False"
     },
     "URL": {
       "description": "The Heroku App URL similar to https://mydlbot.herokuapp.com/",
