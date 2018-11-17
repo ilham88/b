@@ -27,7 +27,8 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 from tqdm import tqdm
-
+from amanobot.namedtuple import InlineKeyboardMarkup
+from amanobot.exception import TelegramError, NotEnoughRightsError
 try:
     import urllib.request
     python3 = True
@@ -156,12 +157,15 @@ def dados(msg):
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Cancel Job', callback_data='del_msg')]])
+                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Cancel Job', callback_data='del_msgs')]])
                                 bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=rst)
                                 os.remove(required_file_name)
                                 time.sleep(2)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
- 
+    elif msg.get('data'):
+        if msg['data'] == 'del_msgs':
+            bot.deleteMessage((msg['from']['id'], msg['message']['message_id']))
+
         
 
