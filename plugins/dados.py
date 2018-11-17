@@ -123,7 +123,7 @@ def dados(msg):
                         chunk_size = 1024
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
-                            for chunk in r.iter_content(chunk_size=chunk_size):bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.".format(app_name), 'Markdown')
+                            for chunk in r.iter_content(chunk_size=chunk_size):
                                 total_length = r.headers.get('content-length')
                                 dl = 0
                                 total_length = int(total_length)
