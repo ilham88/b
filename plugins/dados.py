@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 import progressbar
 import requests
 import sys
-import config
 import requests
 import re
 import json
@@ -28,14 +27,18 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 from tqdm import tqdm
-import keyboard
+
 try:
     import urllib.request
     python3 = True
 except ImportError:
     import urllib2
     python3 = False
+import config
+import keyboard
+
 bot = config.bot
+version = config.version
 bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
 import warnings
@@ -98,6 +101,7 @@ def pretty_size(size):
 def dados(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
+        teclado = keyboard.restart_dl
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
             if input_str == '':
@@ -152,7 +156,7 @@ def dados(msg):
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=restart_dl)
+                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit.\n\nDo you wish to start a new download job?".format(app_name), 'Markdown', reply_markup=teclado)
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
