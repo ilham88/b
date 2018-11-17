@@ -58,4 +58,3 @@ def DownLoadFile(url, file_name):
 
 
 def humanbytes(size):
-    # http
