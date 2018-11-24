@@ -45,7 +45,7 @@ enabled_plugins = [
     'urban',
     'traduzir',
     'inlines',
-    'admins',,
+    'admins',
     'welcome',
     'google',
     'pypi',
