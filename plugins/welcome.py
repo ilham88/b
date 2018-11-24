@@ -43,7 +43,7 @@ def welcome(msg):
             if welcome[0] != None:
                 welcome = welcome[0].replace('$name', escape(first_name)).replace('$title', escape(chat_title)).replace('$id', str(user_id))
             else:
-                welcome = 'Hey '{}', welcome to *{}*!'.format(first_name, escape(chat_title))
+                welcome = 'Hey {}, welcome to *{}*!'.format(first_name, escape(chat_title))
             if '$rules' in welcome:
                 welcome = welcome.replace('$rules', '')
                 rules_markup = InlineKeyboardMarkup(inline_keyboard=[
