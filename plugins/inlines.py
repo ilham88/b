@@ -58,7 +58,7 @@ def inlines(msg):
             number = 1
             prox = get(proxs, params={
                 "max": count,
-                "key": os.environ["grab_proxy"]
+                "key": config.keys['grab_proxy']
             }).json()["result"]
             if len(prox) > 0:
                 articles = []
@@ -128,7 +128,7 @@ def inlines(msg):
                         thumb_url=result["Tumbnil"],
                         caption=f'{result["Deskripsi"]}'
                     ))
-             bot.answerInlineQuery(msg['id'], results=resp, cache_time=60, is_personal=True)
+            bot.answerInlineQuery(msg['id'], results=resp, cache_time=60, is_personal=True)
         elif msg['query'].startswith('invert'):
             query = msg['query'][7:]
             articles = [InlineQueryResultArticle(id='abcde', title=query[::-1],
