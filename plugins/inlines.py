@@ -76,7 +76,7 @@ def inlines(msg):
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
-
+ 
         elif msg['query'].startswith('duck'):
             count = 50
             number = 1
