@@ -6,6 +6,8 @@ import config
 import html
 from uuid import uuid4
 import duckpy
+import dotenv
+import os
 from .youtube import search_yt
 
 bot_username = config.me['username']
@@ -71,12 +73,12 @@ def inlines(msg):
                         id=str(uuid4()), title=deftxt["country"] + ' - ' + deftxt["ip"] + ':' + deftxt['port'],
                         thumb_url='http://piics.ml/i/003.png', description='Last checked: ' + deftxt["last_checked"],
                         input_message_content=InputTextMessageContent(
-                            message_text=f'<b>Proxy:</b>\Country: {deftxt["country"]}\nIP: <code>{deftxt["ip"]}</code>\nPorta: <code>{deftxt["port"]}</code>\nChecado há: <i>{deftxt["last_checked"]}</i>',
+                            message_text=f'<b>Proxy:</b>\nPaís: {deftxt["country"]}\nIP: <code>{deftxt["ip"]}</code>\nPorta: <code>{deftxt["port"]}</code>\nChecado há: <i>{deftxt["last_checked"]}</i>',
                             parse_mode='HTML')))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
- 
+
         elif msg['query'].startswith('duck'):
             count = 50
             number = 1
@@ -102,9 +104,9 @@ def inlines(msg):
             else:
                 articles.append(InlineQueryResultArticle(
                     id=str(uuid4()),
-                    title="No Results....",
+                    title="Sem resultados.",
                     input_message_content=InputTextMessageContent(
-                        message_text=f"No results found for '{search}'."
+                        message_text=f"Sem resultados para '{search}'."
                     )))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
@@ -167,7 +169,7 @@ def inlines(msg):
                     input_message_content=InputTextMessageContent(message_text=i['url'])))
             if not articles:
                 articles.append(InlineQueryResultArticle(
-                    id=str(uuid4()), title=f'Your search returned *0* results for "{msg["query"][3:]}".',
+                    id=str(uuid4()), title=f'Nenhum resultado encontrado para "{msg["query"][3:]}".',
                     input_message_content=InputTextMessageContent(message_text='.')))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
