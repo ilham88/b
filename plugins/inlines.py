@@ -7,14 +7,14 @@ import html
 from uuid import uuid4
 import duckpy
 from .youtube import search_yt
-import dotenv
-import os
 
 bot_username = config.me['username']
 bot = config.bot
 
 proxs = 'http://api.m45ter.id/proxy_grabber.php'
 geo_ip = 'http://ip-api.com/json/'
+googl_img_api = 'https://apikuu.herokuapp.com/api/v0/sakty/imej'
+HEADERS = {"User-Agent": "Eduu/1.0"}
 
 def escape_definition(prox):
     for key, value in prox.items():
@@ -22,33 +22,36 @@ def escape_definition(prox):
             prox[key] = html.escape(value)
     return prox
 
+
 def inlines(msg):
     if 'query' in msg:
         first_name = msg['from']['first_name']
         user_id = msg['from']['id']
         if 'username' in msg['from']:
-            username = '@'+msg['from']['username']
+            username = '@' + msg['from']['username']
         else:
-            username = 'BlackMoonGod'
-        if msg['query'].startswith('/ip') and len(msg['query']) > 7:
-            r = requests.get(geo_ip + msg['query'][4:])
+            username = 'nenhum'
+        if msg['query'].startswith('ip') and len(msg['query']) > 6:
+            r = requests.get(geo_ip + msg['query'][3:])
             x = ''
             for i in r.json():
                 x += "*{}*: `{}`\n".format(i, r.json()[i])
             articles = [InlineQueryResultArticle(
-                id='a', title='Informações de '+msg['query'][4:], input_message_content=InputTextMessageContent(message_text='*Consulta*: `'+msg['query'][4:]+'`\n\n'+x, parse_mode="Markdown"))]
+                id='a', title='Informações de ' + msg['query'][3:], input_message_content=InputTextMessageContent(
+                    message_text='*Consulta*: `' + msg['query'][3:] + '`\n\n' + x, parse_mode="Markdown"))]
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
 
-        elif msg['query'].startswith('/echo'):
+        elif msg['query'].startswith('echo'):
             articles = [InlineQueryResultArticle(
-                id='a', title=msg['query'][6:], input_message_content=InputTextMessageContent(message_text=msg['query'][6:]))]
+                id='a', title=msg['query'][5:],
+                input_message_content=InputTextMessageContent(message_text=msg['query'][5:]))]
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
-            
-        elif msg['query'].startswith('/proxy'):
+
+        elif msg['query'].startswith('proxy'):
             count = 50
             number = 1
             prox = get(proxs, params={
@@ -65,15 +68,19 @@ def inlines(msg):
                     deftxt = prox[i]
                     deftxt = escape_definition(deftxt)
                     articles.append(InlineQueryResultArticle(
-                        id=str(uuid4()), title=deftxt["country"]+' - '+deftxt["ip"]+':'+deftxt['port'], thumb_url='http://piics.ml/i/003.png', description='Last checked: '+deftxt["last_checked"], input_message_content=InputTextMessageContent(message_text=f'<b>Proxy:</b>\nPaís: {deftxt["country"]}\nIP: <code>{deftxt["ip"]}</code>\nPorta: <code>{deftxt["port"]}</code>\nChecado há: <i>{deftxt["last_checked"]}</i>', parse_mode='HTML')))
+                        id=str(uuid4()), title=deftxt["country"] + ' - ' + deftxt["ip"] + ':' + deftxt['port'],
+                        thumb_url='http://piics.ml/i/003.png', description='Last checked: ' + deftxt["last_checked"],
+                        input_message_content=InputTextMessageContent(
+                            message_text=f'<b>Proxy:</b>\Country: {deftxt["country"]}\nIP: <code>{deftxt["ip"]}</code>\nPorta: <code>{deftxt["port"]}</code>\nChecado há: <i>{deftxt["last_checked"]}</i>',
+                            parse_mode='HTML')))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
 
-        elif msg['query'].startswith('/duck'):
+        elif msg['query'].startswith('duck'):
             count = 50
             number = 1
-            search = msg['query'][6:]
+            search = msg['query'][5:]
             duc = duckpy.search(str(search))['results']
             articles = []
             if duc:
@@ -82,29 +89,46 @@ def inlines(msg):
                 else:
                     maxdef = count + number
                 for i in range(number - 1, maxdef - 1):
-                        deftxt = duc[i]
-                        deftxt = escape_definition(deftxt)
-                        articles.append(InlineQueryResultArticle(
-                                             id=str(uuid4()),
-                                             title=deftxt['title'],
-                                             thumb_url='http://piics.ml/i/003.png',
-                                             description=deftxt['url'],
-                                             input_message_content=InputTextMessageContent(
-                                                 message_text=f"<b>{deftxt['title']}</b>\n{deftxt['url']}",
-                                                 parse_mode='HTML')))
+                    deftxt = duc[i]
+                    deftxt = escape_definition(deftxt)
+                    articles.append(InlineQueryResultArticle(
+                        id=str(uuid4()),
+                        title=deftxt['title'],
+                        thumb_url='http://piics.ml/i/003.png',
+                        description=deftxt['url'],
+                        input_message_content=InputTextMessageContent(
+                            message_text=f"<b>{deftxt['title']}</b>\n{deftxt['url']}",
+                            parse_mode='HTML')))
             else:
                 articles.append(InlineQueryResultArticle(
-                                     id=str(uuid4()),
-                                     title="Sem resultados.",
-                                     input_message_content=InputTextMessageContent(
-                                         message_text=f"No results for '{search}'."
-                                     )))
+                    id=str(uuid4()),
+                    title="No Results....",
+                    input_message_content=InputTextMessageContent(
+                        message_text=f"No results found for '{search}'."
+                    )))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
-
-        elif msg['query'].startswith('/invert'):
-            query = msg['query'][8:]
+        elif msg['query'].startswith('img'):
+            query = msg['query'][4:]
+            img = get(googl_img_api,
+                  params={
+                      "cari": query
+                  },
+                  headers=HEADERS).json()
+            resp = []
+            for k, result in enumerate(img):
+                    if k == 50:
+                        break
+                    resp.append(InlineQueryResultPhoto(
+                        id=str(uuid4()),
+                        photo_url=result["Isi"],
+                        thumb_url=result["Tumbnil"],
+                        caption=f'{result["Deskripsi"]}'
+                    ))
+             bot.answerInlineQuery(msg['id'], results=resp, cache_time=60, is_personal=True)
+        elif msg['query'].startswith('invert'):
+            query = msg['query'][7:]
             articles = [InlineQueryResultArticle(id='abcde', title=query[::-1],
                                                  input_message_content=InputTextMessageContent(
                                                      message_text=query[::-1]))]
@@ -112,41 +136,48 @@ def inlines(msg):
             bot.answerInlineQuery(msg['id'], results=articles)
 
 
-        elif msg['query'].startswith('/markdown'):
+        elif msg['query'].startswith('markdown'):
             articles = [InlineQueryResultArticle(
-                id='a', title=msg['query'][10:], input_message_content=InputTextMessageContent(message_text=kk, parse_mode='Markdown'))]
+                id='a', title=msg['query'][9:],
+                input_message_content=InputTextMessageContent(message_text=kk, parse_mode='Markdown'))]
 
             bot.answerInlineQuery(msg['id'], results=articles)
 
 
-        elif msg['query'].startswith('/html'):
+        elif msg['query'].startswith('html'):
             articles = [InlineQueryResultArticle(
-                id='a', title=msg['query'][6:], input_message_content=InputTextMessageContent(message_text=msg['query'][6:], parse_mode='html'))]
+                id='a', title=msg['query'][5:],
+                input_message_content=InputTextMessageContent(message_text=msg['query'][6:], parse_mode='html'))]
             try:
                 bot.answerInlineQuery(msg['id'], results=articles)
             except TelegramError:
                 articles = [InlineQueryResultArticle(
-                    id='a', title='Texto com erros de formatação.', input_message_content=InputTextMessageContent(message_text='Ocorreu um erro. provavelmente porque você usou uma tag não suportada, ou porque você esqueceu de fechar alguma tag. As tags suportadas são estas: <b>, <i>, <code>, <a> e <pre>.', parse_mode='html'))]
+                    id='a', title='Texto com erros de formatação.', input_message_content=InputTextMessageContent(
+                        message_text='Ocorreu um erro. provavelmente porque você usou uma tag não suportada, ou porque você esqueceu de fechar alguma tag. As tags suportadas são estas: <b>, <i>, <code>, <a> e <pre>.'))]
                 bot.answerInlineQuery(msg['id'], results=articles)
-                
 
-        elif msg['query'].startswith('/yt '):
+
+        elif msg['query'].startswith('yt '):
             articles = []
-            search = search_yt(msg['query'][4:])
+            search = search_yt(msg['query'][3:])
             for i in search:
                 articles.append(InlineQueryResultArticle(
-                    id=str(uuid4()), title=i['title'], thumb_url=f"https://i.ytimg.com/vi/{i['url'].split('v=')[1]}/default.jpg", input_message_content=InputTextMessageContent(message_text=i['url'])))
+                    id=str(uuid4()), title=i['title'],
+                    thumb_url=f"https://i.ytimg.com/vi/{i['url'].split('v=')[1]}/default.jpg",
+                    input_message_content=InputTextMessageContent(message_text=i['url'])))
             if not articles:
                 articles.append(InlineQueryResultArticle(
-                        id=str(uuid4()), title=f'Nenhum resultado encontrado para "{msg["query"][4:]}".', input_message_content=InputTextMessageContent(message_text='.')))
+                    id=str(uuid4()), title=f'Your search returned *0* results for "{msg["query"][3:]}".',
+                    input_message_content=InputTextMessageContent(message_text='.')))
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
 
-        elif msg['query'].startswith('/faces'):
+        elif msg['query'].startswith('faces'):
             articles = [
                 InlineQueryResultArticle(
-                    id='a', title='¯\\_(ツ)_/¯', input_message_content=InputTextMessageContent(message_text='¯\\_(ツ)_/¯')),
+                    id='a', title='¯\\_(ツ)_/¯',
+                    input_message_content=InputTextMessageContent(message_text='¯\\_(ツ)_/¯')),
                 InlineQueryResultArticle(
                     id='b', title='( ͡° ͜ʖ ͡°)', input_message_content=dict(message_text='( ͡° ͜ʖ ͡°)')),
                 InlineQueryResultArticle(
@@ -216,34 +247,55 @@ def inlines(msg):
                 InlineQueryResultArticle(
                     id='ai', title='(◕‿◕✿)', input_message_content=dict(message_text='(◕‿◕✿)')),
                 InlineQueryResultArticle(
-                    id='aj', title='( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)', input_message_content=dict(message_text='( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)'))]
+                    id='aj', title='( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)',
+                    input_message_content=dict(message_text='( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)'))]
 
             bot.answerInlineQuery(msg['id'], results=articles)
 
-        
-        elif msg['query'].startswith('/hidemsg'):
+
+        elif msg['query'].startswith('hidemsg'):
             articles = [InlineQueryResultArticle(
-                id='a', title='Resultado: '+msg['query'][9:], input_message_content=InputTextMessageContent(message_text='\u2060'*3600+msg['query'][9:]))]
+                id='a', title='Resultado: ' + msg['query'][8:],
+                input_message_content=InputTextMessageContent(message_text='\u2060' * 3600 + msg['query'][8:]))]
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
 
         else:
             articles = [
                 InlineQueryResultArticle(
-                    id='a', title='Informações', description='Exibe informações sobre você', input_message_content=dict(message_text='<b>Suas informações:</b>\n\n<b>Nome:</b> <code>'+html.escape(first_name)+'</code>\n<b>ID:</b> <code>'+str(user_id)+'</code>\n<b>Username:</b> <code>'+username+'</code>', parse_mode="HTML")),
+                    id='a', title='Informações', description='Exibe informações sobre você', input_message_content=dict(
+                        message_text='<b>Suas informações:</b>\n\n<b>Nome:</b> <code>' + html.escape(
+                            first_name) + '</code>\n<b>ID:</b> <code>' + str(
+                            user_id) + '</code>\n<b>Username:</b> <code>' + username + '</code>', parse_mode="HTML")),
                 InlineQueryResultArticle(
-                     id='b', title='/duck', description='searching with ddg engine', input_message_content=dict(message_text='Uso: /duck')),
+                    id='b', title='duck', description='searching with ddg engine',
+                    input_message_content=dict(message_text='Uso: duck')),
                 InlineQueryResultArticle(
-                    id='c', title='/faces', description='Mostra uma lista de carinhas ¯\\_(ツ)_/¯', input_message_content=dict(message_text='Uso: @{} /faces - exibe uma lista de carinhas ¯\\_(ツ)_/¯'.format(bot_username))),
+                    id='c', title='faces', description='Mostra uma lista de carinhas ¯\\_(ツ)_/¯',
+                    input_message_content=dict(
+                        message_text='Uso: @{} faces - exibe uma lista de carinhas ¯\\_(ツ)_/¯'.format(bot_username))),
                 InlineQueryResultArticle(
-                    id='d', title='/hidemsg', description='Envia uma mensagem que não aparece nas ações recentes ao ser apagada em até 1 minuto.', input_message_content=dict(message_text='Uso: @{} /hidemsg texto para a mensagem\n\nEnvia uma mensagem que se for apagada em até 1 minuto não aparece nas ações recentes do grupo'.format(bot_username))),
+                    id='d', title='hidemsg',
+                    description='Envia uma mensagem que não aparece nas ações recentes ao ser apagada em até 1 minuto.',
+                    input_message_content=dict(
+                        message_text='Uso: @{} hidemsg texto para a mensagem\n\nEnvia uma mensagem que se for apagada em até 1 minuto não aparece nas ações recentes do grupo'.format(
+                            bot_username))),
                 InlineQueryResultArticle(
-                    id='e', title='/html', description='Formata um texto usando HTML', input_message_content=dict(message_text='Uso: @{} /html <b>texto</b>'.format(bot_username))),
+                    id='e', title='html', description='Formata um texto usando HTML',
+                    input_message_content=dict(message_text='Uso: @{} html <b>texto</b>'.format(bot_username))),
                 InlineQueryResultArticle(
-                    id='f', title='/ip', description='Exibe informações de um IP informado', input_message_content=dict(message_text='Uso: @{} /ip google.com'.format(bot_username))),
+                    id='f', title='ip', description='Exibe informações de um IP informado',
+                    input_message_content=dict(message_text='Uso: @{} ip google.com'.format(bot_username))),
                 InlineQueryResultArticle(
-                    id='g', title='/proxy', description='searching proxy', input_message_content=dict(message_text='Uso: @{} /proxy - Exibe uma lista de proxys de vários países.'.format(bot_username))),
+                    id='g', title='proxy', description='searching proxy', input_message_content=dict(
+                        message_text='Uso: @{} proxy - Exibe uma lista de proxys de vários países.'.format(
+                            bot_username))),
                 InlineQueryResultArticle(
-                    id='h', title='/yt', description='Pesquisar vídeos no YouTube', input_message_content=dict(message_text='Uso: @{} /yt - Pesquisar vídeos no YouTube.'.format(bot_username)))
-                ]
+                    id='h', title='google image', description='searching image using google image', input_message_content=dict(
+                        message_text='Uso: @{} image - Exibe uma image de image de vários países.'.format(
+                            bot_username))),
+                InlineQueryResultArticle(
+                    id='i', title='yt', description='Pesquisar vídeos no YouTube', input_message_content=dict(
+                        message_text='Uso: @{} yt - Pesquisar vídeos no YouTube.'.format(bot_username)))
+            ]
 
             bot.answerInlineQuery(msg['id'], results=articles, cache_time=60, is_personal=True)
