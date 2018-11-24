@@ -31,7 +31,7 @@ start_back = InlineKeyboardMarkup(inline_keyboard=[
 
 cmds_back = InlineKeyboardMarkup(inline_keyboard=[
     [dict(text='« Go Back', callback_data='all_cmds')]
-])
+]) 
 
 del_msg = InlineKeyboardMarkup(inline_keyboard=[
     [dict(text='🗑 Delete All messages', callback_data='del_msg')]
