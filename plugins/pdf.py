@@ -13,10 +13,10 @@ import html
 import time
 import datetime
 from datetime import datetime
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote_plus
 from os.path import splitext
 from urllib.request import urlretrieve
-from urllib.request import urlopen, quote_plus
+from urllib.request import urlopen
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
 import threading
