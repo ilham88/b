@@ -131,9 +131,12 @@ def pdf(msg):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "http://www.allitebooks.com"
                 url = "http://www.allitebooks.com/?s=%s" %(app_name)
-                html = requests.get(url).text
+                html = requests.get(url)
+                soup = bs4.BeautifulSoup(url.content,'lxml', from_encoding='utf-8')
+                print(soup)
+                results = soup.findAll("td","result_text")
                 parse = BeautifulSoup(html, features="lxml")
-                for i in parse.find("article").find('h2'):
+                for i in parse.find("article"):
                     a_url = i["href"]
                     app_url = site + a_url
                     html2 = requests.get(app_url).text
