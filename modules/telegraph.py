@@ -1,7 +1,7 @@
 @bot.on(events.NewMessage(pattern=r".telegraph (media|text)", outgoing=True))
 async def telegraph(event):
     TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
-    short_name = "baalajimaestro"
+    
     PRIVATE_GROUP_BOT_API_ID = "-1001139726492"
 
     telegraph = Telegraph()
