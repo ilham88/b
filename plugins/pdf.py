@@ -136,6 +136,7 @@ def pdf(msg):
                 soup = bs4.BeautifulSoup(response,'lxml')
                 for element in soup.find_all('article'):
                     link = element.find('h2').find('a')
+                    link = element["href"]
                     html2 = urlrequest.Request(link,data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                     parse2 = urlrequest.urlopen(html2)
                     soup  = bs4.BeautifulSoup(parse2,'lxml')
