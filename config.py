@@ -62,5 +62,6 @@ enabled_plugins = [
     'dados',
     'diversos',
     'github',
-    'imdb'
+    'imdb',
+    'pdf'
 ]
