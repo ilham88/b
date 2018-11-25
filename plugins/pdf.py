@@ -127,8 +127,8 @@ def pdf(msg):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "http://www.allitebooks.com"
                 url = "http://www.allitebooks.com/?s=%s" %(book_name)
-                html = requests.get(url)
-                parse = BeautifulSoup(html.text)
+                html = requests.get(url).text
+                parse = BeautifulSoup(html, features="lxml")
                 for i in parse.find("article"):
                     a_url = i["href"]
                     book_url = site + a_url + "/"
