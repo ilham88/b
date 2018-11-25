@@ -131,7 +131,7 @@ def pdf(msg):
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 url = "http://www.allitebooks.com"
-                bookname = quote_plus(' '.join(line[1:]))
+                bookname = quote_plus(' '.join(input_str))
                 query = url+"/?s="+bookname
                 html = requests.get(url)
                 ht = html.text
