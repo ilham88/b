@@ -41,5 +41,5 @@ def imdb(msg):
                 for r in rating:
                   mov_rating = r.strong['title']
 
-                bot.sendMessage(msg['chat']['id'], "**Title : **`{}`\n**Rating : **`{}`\n**Country : **`{}`\n**Language : **`{}`\n**IMDB Url : **`{}`\n**Story Line : **`{}`".format(mov_title, mov_rating, mov_country, mov_language, mov_link, story_line), 'Markdown', reply_to_message_id=msg['message_id'])
+                bot.sendMessage(msg['chat']['id'], "*Title : *`{}`\n*Rating : *`{}`\n*Country : *`{}`\n*Language : *`{}`\n*IMDB Url : *`{}`\n*Story Line : *{}".format(mov_title, mov_rating, mov_country, mov_language, mov_link, story_line), 'Markdown', disable_web_page_preview=True, reply_to_message_id=msg['message_id'])
                 return True
