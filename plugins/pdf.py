@@ -122,7 +122,7 @@ def pdf(msg):
                                 reply_to_message_id=msg['message_id'])
             else:
                 book_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(book_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "http://www.allitebooks.com"
@@ -157,7 +157,7 @@ def pdf(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
+                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(book_name, upload_progress_string), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             if total_length < 52428800:
