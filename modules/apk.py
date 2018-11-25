@@ -66,22 +66,17 @@ def pretty_size(size):
 async def _(event):
     if event.fwd_from:
         return
+    input_st = event.pattern_match.group(1)
+    app_name = input_st.split('/')[-1]
     await event.edit("🔁 getting download link for *{}*".format(app_name))
     input_str = event.pattern_match.group(1)
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    if event.reply_to_msg_id:
-        start = datetime.now()
-        downloaded_file_name = await bot.download_media(
-            await event.get_reply_message(),
-            TEMP_DOWNLOAD_DIRECTORY,
-            progress_callback=progress
-        )
-        end = datetime.now()
-        ms = (end - start).seconds
-        await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
-    elif input_str:
-        app_name = input_str.split('/')[-1]
+    site = "https://apkpure.com"
+    url = "https://apkpure.com/search?q=%s" %(app_name)
+    html = requests.get(url)
+    parse = BeautifulSoup(html.text)
+    for i in parse.find("p"):
         url = input_str.strip()
         # https://stackoverflow.com/a/761825/4723940
         file_name = app_name.strip()
