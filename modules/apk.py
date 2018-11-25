@@ -66,7 +66,7 @@ def pretty_size(size):
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Processing ...")
+    await event.edit("🔁 getting download link for *{}*".format(app_name))
     input_str = event.pattern_match.group(1)
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
@@ -81,10 +81,10 @@ async def _(event):
         ms = (end - start).seconds
         await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
     elif input_str:
-        url, file_name = input_str.split("|")
-        url = url.strip()
+        app_name = input_str.split('/')[-1]
+        url = input_str.strip()
         # https://stackoverflow.com/a/761825/4723940
-        file_name = file_name.strip()
+        file_name = app_name.strip()
         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
         start = datetime.now()
         headers = {'Accept-Language': 'en-US,en;q=0.9,te;q=0.8'}
