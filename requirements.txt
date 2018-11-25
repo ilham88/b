@@ -32,3 +32,6 @@ ffmpeg
 progressbar2
 tqdm
 logger
+rasa_nlu
+spacy
+neuralcoref
