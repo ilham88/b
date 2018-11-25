@@ -145,7 +145,7 @@ def pdf(msg):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "http://www.allitebooks.com"
                 url = "http://www.allitebooks.com/?s=%s" %(book)
-                request = urlrequest.Request(url+'/page/1,data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+                request = urlrequest.Request(url+'/page/1/',data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
 	            response = urlrequest.urlopen(request)
 	            soup = bs4.BeautifulSoup(response,'lxml')
                 page_number=soup.find('span' ,class_ = 'pages')
