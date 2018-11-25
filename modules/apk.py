@@ -1,4 +1,3 @@
-from __future__ import print_function
 from bs4 import BeautifulSoup
 import progressbar
 import subprocess
