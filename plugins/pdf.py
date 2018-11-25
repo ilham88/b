@@ -141,8 +141,9 @@ def pdf(msg):
                     s_ttl = i.find("h1", {"class_": "page-title"}).get_text().strip()
                     div_title = i.find("div", {"class_": "entry-thumbnail"})
                     title = div_title.get_text().strip()
-                    book_link =  div_title.find("a", href=True)["href"].split('/')[4]
-                    linkq = url + book_link
+                    bookm =  div_title.find("a", href=True)["href"].split('/')[4]
+                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading Telegram", 'Markdown')
+                    linkq = url + bookm
                     html2 = requests.get(linkq)
                     ty = html2.text
                     parse2 = BeautifulSoup(ty, features="lxml")
