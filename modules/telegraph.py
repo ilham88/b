@@ -5,7 +5,7 @@ async def telegraph(event):
     PRIVATE_GROUP_BOT_API_ID = "-1001139726492"
 
     telegraph = Telegraph()
-    r = telegraph.create_account(short_name=short_name)
+    r = telegraph.create_account(short_name='1337')
     auth_url = r["auth_url"]
     if event.fwd_from:
         return
