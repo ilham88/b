@@ -39,13 +39,15 @@ async def _(event):
         await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
     elif input_str:
         app_name = input_str.split('/')[-1]
-        url = url.strip()
+        url = input_str.strip()
         # https://stackoverflow.com/a/761825/4723940
         file_name = app_name.strip()
         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
         start = datetime.now()
-        r = requests.get(url, stream=True)
+        headers = {'Accept-Language': 'en-US,en;q=0.9,te;q=0.8'}
+        r = requests.get(url, allow_redirects=True, stream=True, headers=headers)
         with open(required_file_name, "wb") as fd:
+            
             total_length = r.headers.get('content-length')
             # https://stackoverflow.com/a/15645088/4723940
             if total_length is None: # no content length header
@@ -53,7 +55,7 @@ async def _(event):
             else:
                 dl = 0
                 total_length = int(total_length)
-                for chunk in r.iter_content(chunk_size=128):
+                for chunk in r.iter_content(chunk_size=1024):
                     dl += len(chunk)
                     fd.write(chunk)
                     done = int(100 * dl / total_length)
