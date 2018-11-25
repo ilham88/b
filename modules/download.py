@@ -39,10 +39,9 @@ async def _(event):
         await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
     elif input_str:
         app_name = input_str.split('/')[-1]
-        url, file_name = input_str.split('/')[-1]
         url = url.strip()
         # https://stackoverflow.com/a/761825/4723940
-        file_name = file_name.strip()
+        file_name = app_name.strip()
         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
         start = datetime.now()
         r = requests.get(url, stream=True)
