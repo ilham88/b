@@ -139,7 +139,7 @@ def pdf(msg):
                     parse2 = BeautifulSoup(html2, "lxml")
                     book_link = soup.find('span',class_= 'download-links')
                     if book_link is not None:
-                        links.append(book_link.get('href'))
+                    	links.append(book_link.get('href'))
 			downloadlink = book_link.find('a')['href']
                         book_name = book_link.split('/')[-1]
 			downloadlink = downloadlink.replace(' ','%20')
