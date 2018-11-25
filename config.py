@@ -61,5 +61,6 @@ enabled_plugins = [
     'jsondump',
     'dados',
     'diversos',
-    'github'
+    'github',
+    'imdb'
 ]
