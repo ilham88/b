@@ -8,7 +8,7 @@ import re
 
 
 bot = config.bot
-def github(msg):
+def imdb(msg):
     if msg.get('text'):
         if msg['text'].startswith('!imdb'):
             movie_name = msg['text'][6:]
