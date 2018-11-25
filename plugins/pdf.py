@@ -150,7 +150,8 @@ def pdf(msg):
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".pdf"
                         start = datetime.now()
                         chunk_size = 1024
-			with open(required_file_name,"wb") as apk:
+                        r = requests.get(downloadlink, stream = True) 
+                        with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
                                 total_length = r.headers.get('content-length')
                                 dl = 0
