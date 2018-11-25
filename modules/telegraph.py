@@ -5,7 +5,7 @@ from telegraph import Telegraph, upload_file, exceptions
 
 
 TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
-
+short_name = "baalajimaestro"
 
 telegraph = Telegraph()
 r = telegraph.create_account(short_name=short_name)
