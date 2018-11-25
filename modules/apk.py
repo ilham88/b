@@ -76,7 +76,7 @@ async def _(event):
         total_length = r.headers.get('content-length')
         if total_length is None:
             fd.write(r.content)
-         else:
+        else:
             dl = 0
             total_length = int(total_length)
             for chunk in r.iter_content(chunk_size=1024):
