@@ -152,10 +152,20 @@ def pdf(msg):
                         chunk_size = 1024
                         r = urlrequest.Request(book_link, data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                         book_link = book_link.replace(' ','%20')
-                        try:
-                            response = urlrequest.urlopen(book_link)
-				            out_file = open(required_file_name, 'wb')
-				            shutil.copyfileobj(response,out_file)
+                        dl = urlrequest.urlopen(book_link)
+			out_file = open(required_file_name, 'wb')
+			shutil.copyfileobj(dl,out_file)
+                        with open(required_file_name,"wb") as apk:
+                            for chunk in r.iter_content(chunk_size=chunk_size):
+                                total_length = r.headers.get('content-length')
+                                dl = 0
+                                total_length = int(total_length)
+                                if chunk:
+                                    dl += len(chunk)
+                                    done = int(100 * dl / total_length)
+                                    apk.write(chunk)
+                                    apk.flush()
+                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
                             bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(book_name), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
