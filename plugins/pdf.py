@@ -137,12 +137,12 @@ def pdf(msg):
                     app_url = site + a_url + "/"
                     html2 = requests.get(app_url).text
                     parse2 = BeautifulSoup(html2, "lxml")
-                    links = []
-                    for book_link in parse2.find('span',class_= 'download-links')
+                    book_link = soup.find('span',class_= 'download-links')
+                    if book_link is not None:
                         links.append(book_link.get('href'))
-						downloadlink = book_link.find('a')['href']
+			downloadlink = book_link.find('a')['href']
                         book_name = book_link.split('/')[-1]
-						downloadlink = downloadlink.replace(' ','%20')
+			downloadlink = downloadlink.replace(' ','%20')
                         word = "123456789abcdefgh-_"
                         servers = shuffle(word)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
