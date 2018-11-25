@@ -28,3 +28,10 @@ speedtest-cli>=2.0.2
 logger
 telegraph
 py_translator
+bs4
+colorama
+duckpy
+python-dotenv
+ffmpeg
+progressbar2
+tqdm
