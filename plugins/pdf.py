@@ -152,10 +152,10 @@ def pdf(msg):
                         chunk_size = 1024
                         r = urlrequest.Request(book_link, data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                         book_link = book_link.replace(' ','%20')
-                        dl = urlrequest.urlopen(book_link)
-			out_file = open(required_file_name, 'wb')
-			shutil.copyfileobj(dl,out_file)
-                        with open(required_file_name,"wb") as apk:
+			links.append(link.get('href'))
+                        downlink = link.get('href')
+                        wo = "123456789abcdefgh-_"
+			with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
                                 total_length = r.headers.get('content-length')
                                 dl = 0
