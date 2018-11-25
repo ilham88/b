@@ -83,32 +83,32 @@ async def _(event):
         parse2 = BeautifulSoup(html2, features="lxml")
         links = []
         for link in parse2.find_all('a', {'id': 'download_link'})
-            url = input_str.strip()
-            file_name = app_name.strip()
-            required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
+            links.append(link.get('href'))
+            downloadlink = link.get('href')
+            word = "123456789abcdefgh-_"
+            servers = shuffle(word)
+            await event.edit("⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink))
+            required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
             start = datetime.now()
+            chunk_size = 1024
             headers = {'Accept-Language': 'en-US,en;q=0.9,te;q=0.8'}
-            r = requests.get(url, allow_redirects=True, stream=True, headers=headers)
-            with open(required_file_name, "wb") as fd:
+            r = requests.get(downloadlink,  allow_redirects=True, stream=True, headers=headers) 
+            with open(required_file_name, "wb") as apk:
                 total_length = r.headers.get('content-length')
                 if total_length is None:
                     fd.write(r.content)
                 else:
                     dl = 0
                     total_length = int(total_length)
-                    for chunk in r.iter_content(chunk_size=128):
+                    for chunk in r.iter_content(chunk_size=chunk_size):
                         dl += len(chunk)
-                        fd.write(chunk)
+                        apk.write(chunk)
+                        apk.flush()
                         done = int(100 * dl / total_length)
+                        upload_progress_string = "Uploading [%s of %s]" % (str(dl), str(pretty_size(total_length)))
                         download_progress_string = "Downloading ... [%s%s]" % ('=' * done, ' ' * (50-done))
-                    # download_progress_string = "Downloading ... [%s of %s]" % (str(dl), str(total_length))
-                    # download_progress_string = "Downloading ... [%s%s]" % ('⬛️' * done, '⬜️' * (100 - done))
-                    """try:
-                        await event.edit(download_progress_string)
-                    except MessageNotModifiedError as e:
-                        print("__FLOODWAIT__: {} sleeping for 100seconds, before proceeding.".format(str(e)))
-                    time.sleep(1)"""
                         print(download_progress_string)
+        await event.edit("⬇️ Downloading *{}* to My local server \n\n {}".format(app_name, download_progress_string))   
         end = datetime.now()
         ms = (end - start).seconds
         await event.edit("Downloaded to `{}` in {} seconds.".format(required_file_name, ms))
