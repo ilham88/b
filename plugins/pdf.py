@@ -136,7 +136,7 @@ def pdf(msg):
                 html = requests.get(url)
                 ht = html.text
                 parse = BeautifulSoup(ht, features="lxml")
-                items = soup.find_all("main", {"id": "main-content"})[1:]
+                items = parse.find_all("main", {"id": "main-content"})[1:]
                 for i in items:
                     s_ttl = i.find("h1", {"class_": "page-title"}).get_text().strip()
                     div_title = i.find("div", {"class_": "entry-thumbnail"})
