@@ -32,6 +32,4 @@ ffmpeg
 progressbar2
 tqdm
 logger
-spacy
-numpy
-neuralcoref
+
