@@ -34,6 +34,7 @@ import bs4
 import lxml
 import shutil
 from urllib import request as urlrequest
+from urllib import quote_plus
 try:
     import urllib.request
     python3 = True
@@ -129,19 +130,22 @@ def pdf(msg):
                 sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                site = "http://www.allitebooks.com"
-                url = "http://www.allitebooks.com/?s=%s" %(app_name)
+                url = "http://www.allitebooks.com"
+                bookname = quote_plus(' '.join(line[1:]))
+                query = url+"/?s="+bookname
                 html = requests.get(url)
-                json_url = urlopen(url)
-                data = json.loads(json_url.read())
-                print (data)
-                results = soup.findAll("td","result_text")
-                parse = BeautifulSoup(html, features="lxml")
-                for i in parse.find("article"):
-                    a_url = i["href"]
-                    app_url = site + a_url
-                    html2 = requests.get(app_url).text
-                    parse2 = BeautifulSoup(html2, features="lxml")
+                ht = html.text
+                parse = BeautifulSoup(ht, features="lxml")
+                items = soup.find_all("main", {"id": "main-content"})[1:]
+                for i in items:
+                    s_ttl = i.find("h1", {"class_": "page-title"}).get_text().strip()
+                    div_title = i.find("div", {"class_": "entry-thumbnail"})
+                    title = div_title.get_text().strip()
+                    book_link =  div_title.find("a", href=True)["href"].split('/')[4]
+                    linkq = url + book_link
+                    html2 = requests.get(linkq)
+                    ty = html2.text
+                    parse2 = BeautifulSoup(ty, features="lxml")
                     links = []
                     for link in parse2.find_all('span', {'class_': 'download-links'}):
                         links.append(link.get('href'))
