@@ -129,21 +129,21 @@ def pdf(msg):
                 sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                url = "http://www.allitebooks.com/?s=%s" %(app_name)
                 site = "http://www.allitebooks.com"
-                request = urlrequest.Request(url,data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
-                response = urlrequest.urlopen(request)
-                soup = bs4.BeautifulSoup(response,'lxml')
-                for element in soup.find_all('article'):
-                    link = element.find('h2').find('a')['href']
-                    html2 = urlrequest.Request(site + link,data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
-                    parse2 = urlrequest.urlopen(html2)
-                    soup  = bs4.BeautifulSoup(parse2,'lxml')
-                    book_link = soup.find('span', class_= 'download-links')
-                    if book_link is not None:
+                url = "http://www.allitebooks.com/?s=%s" %(app_name)
+                html = requests.get(url).text
+                parse = BeautifulSoup(html, features="lxml")
+                for i in parse.find("article").find('h2'):
+                    a_url = i["href"]
+                    app_url = site + a_url
+                    html2 = requests.get(app_url).text
+                    parse2 = BeautifulSoup(html2, features="lxml")
+                    links = []
+                    for link in parse2.find_all('span', {'class_': 'download-links'}):
+                        links.append(link.get('href'))
+                        downloadlink = link.get('href') 
                         book_link = book_link.find('a')['href']
                         book_name = book_link.split('/')[-1]
-                        downloadlink = book_link.get('href')
                         word = "123456789abcdefgh-_"
                         servers = shuffle(word)
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
