@@ -6,9 +6,8 @@ import bs4
 import re
 
 
-
 bot = config.bot
-def imdb(msg):
+def github(msg):
     if msg.get('text'):
         if msg['text'].startswith('!imdb'):
             movie_name = msg['text'][6:]
@@ -29,18 +28,18 @@ def imdb(msg):
                 story_line = story_line.findAll("p")[0].text
                 info = soup.findAll('div', "txt-block")
                 for node in info:
-                a = node.findAll('a')
-                for i in a:
-                if "country_of_origin" in i['href']:
-                    mov_country = i.string
-                    for node in info:
-                        a = node.findAll('a')
-                        for i in a:
-                        if "primary_language" in i['href']:
-                            mov_language = i.string
-                            rating = soup.findAll('div',"ratingValue")
-                            for r in rating:
-                                mov_rating = r.strong['title']
+                  a = node.findAll('a')
+                  for i in a:
+                    if "country_of_origin" in i['href']:
+                      mov_country = i.string
+                for node in info:
+                  a = node.findAll('a')
+                  for i in a:
+                    if "primary_language" in i['href']:
+                      mov_language = i.string
+                rating = soup.findAll('div',"ratingValue")
+                  for r in rating:
+                    mov_rating = r.strong['title']
 
-                    bot.sendMessage(msg['chat']['id'], "**Title : **`{}`\n**Rating : **`{}`\n**Country : **`{}`\n**Language : **`{}`\n**IMDB Url : **`{}`\n**Story Line : **`{}`".format(mov_title, mov_rating, mov_country, mov_language, mov_link, story_line), 'Markdown', reply_to_message_id=msg['message_id'])
+                bot.sendMessage(msg['chat']['id'], "**Title : **`{}`\n**Rating : **`{}`\n**Country : **`{}`\n**Language : **`{}`\n**IMDB Url : **`{}`\n**Story Line : **`{}`".format(mov_title, mov_rating, mov_country, mov_language, mov_link, story_line), 'Markdown', reply_to_message_id=msg['message_id'])
                     return True
