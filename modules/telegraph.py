@@ -1,27 +1,21 @@
-from telethon import events
-import os
-from datetime import datetime
-from telegraph import Telegraph, upload_file, exceptions
+@bot.on(events.NewMessage(pattern=r".telegraph (media|text)", outgoing=True))
+async def telegraph(event):
+    TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
+    short_name = "baalajimaestro"
+    PRIVATE_GROUP_BOT_API_ID = "-1001139726492"
 
-
-TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
-short_name = "baalajimaestro"
-
-telegraph = Telegraph()
-r = telegraph.create_account(short_name=short_name)
-auth_url = r["auth_url"]
-
-
-@bot.on(events.NewMessage(pattern=r"\.telegraph (media|text)", outgoing=True))
-async def _(event):
+    telegraph = Telegraph()
+    r = telegraph.create_account(short_name=short_name)
+    auth_url = r["auth_url"]
     if event.fwd_from:
         return
     if not os.path.isdir(TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TMP_DOWNLOAD_DIRECTORY)
-    await bot.send_message(
-        PRIVATE_GROUP_BOT_API_ID,
-        "Created New Telegraph account {} for the current session. \n**Do not give this url to anyone, even if they say they are from Telegram!**".format(auth_url)
-    )
+        if LOGGER:
+            await bot.send_message(
+            PRIVATE_GROUP_BOT_API_ID,
+            "Created New Telegraph account {} for the current session. \n**Do not give this url to anyone, even if they say they are from Telegram!**".format(auth_url)
+            )
     if event.reply_to_msg_id:
         start = datetime.now()
         r_message = await event.get_reply_message()
