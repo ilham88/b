@@ -114,7 +114,7 @@ def pdf(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
         teclado = keyboard.restart_dl
-        msg['text'].startswith('!pdf'):
+        if msg['text'].startswith('!pdf'):
             input_str = msg['text'][4:]
             if input_str == '':
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
