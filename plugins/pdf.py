@@ -132,8 +132,9 @@ def pdf(msg):
                 site = "http://www.allitebooks.com"
                 url = "http://www.allitebooks.com/?s=%s" %(app_name)
                 html = requests.get(url)
-                soup = bs4.BeautifulSoup(url.content,'lxml', from_encoding='utf-8')
-                print(soup)
+                soup = bs4.BeautifulSoup(html.content,'lxml', from_encoding='utf-8')
+                j = html.json()
+                print(j)
                 results = soup.findAll("td","result_text")
                 parse = BeautifulSoup(html, features="lxml")
                 for i in parse.find("article"):
