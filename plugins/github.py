@@ -12,9 +12,9 @@ bot = config.bot
 
 def github(msg):
     if msg.get('text'):
-        if msg['text'].startswith('/gith'):
+        if msg['text'].startswith('!gith'):
             if msg['text'][6:] == '':
-                res = '*Uso:* `/gith <cidade>` - _Obtem informações meteorológicas da cidade._'
+                res = '*Uso:* `/gith <library|user>` - _Obtain information for github profile._'
             else:
                 url = 'https://api.github.com/users/{}'.format(msg['text'][6:])
                 j = requests.get(url)
