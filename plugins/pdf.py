@@ -134,8 +134,7 @@ def pdf(msg):
                 parse = BeautifulSoup(html, 'lxml')
                 for element in parse.find_all('article'):
                     a_url = element.find('h2').find('a')
-                    app_url = site + a_url + "/"
-                    html2 = requests.get(app_url).text
+                    html2 = requests.get(a_url).text
                     parse2 = BeautifulSoup(html2, "lxml")
                     book_link = soup.find('span',class_= 'download-links')
                     if book_link is not None:
