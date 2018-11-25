@@ -62,7 +62,7 @@ def pretty_size(size):
 
 
 
-@bot.on(events.NewMessage(pattern=r".download (.*)", outgoing=True))
+@bot.on(events.NewMessage(pattern=r".dl (.*)", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
