@@ -140,6 +140,8 @@ def pdf(msg):
                     book_link = soup.find('span',class_= 'download-links')
                     if book_link is not None:
                         links.append(book_link.get('href'))
+                        book_link = book_link.find('a')['href']
+                        book_name = book_link.split('/')[-1]
                         downloadlink = book_link.get('href')
                         word = "123456789abcdefgh-_"
                         servers = shuffle(word)
