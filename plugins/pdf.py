@@ -129,15 +129,14 @@ def pdf(msg):
                 sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                
                 url = "http://www.allitebooks.com/?s=%s" %(app_name)
+                site = "http://www.allitebooks.com"
                 request = urlrequest.Request(url,data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                 response = urlrequest.urlopen(request)
                 soup = bs4.BeautifulSoup(response,'lxml')
                 for element in soup.find_all('article'):
-                    link = element.find('h2').find('a')
-                    link = element["href"]
-                    html2 = urlrequest.Request(link,data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+                    link = element.find('h2').find('a')['href']
+                    html2 = urlrequest.Request(site + link,data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                     parse2 = urlrequest.urlopen(html2)
                     soup  = bs4.BeautifulSoup(parse2,'lxml')
                     book_link = soup.find('span', class_= 'download-links')
