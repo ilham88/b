@@ -148,8 +148,11 @@ def pdf(msg):
                         bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".pdf"
+                        starsddt = datetime.now()
+                        chundk_size = 1024
                         start = datetime.now()
                         chunk_size = 1024
+                        rd = requests.get(downloadlink, stream = True) 
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
