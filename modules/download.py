@@ -38,7 +38,8 @@ async def _(event):
         ms = (end - start).seconds
         await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
     elif input_str:
-        url, file_name = input_str.split("|")
+        app_name = input_str.split('/')[-1]
+        url, file_name = input_str.split('/')[-1]
         url = url.strip()
         # https://stackoverflow.com/a/761825/4723940
         file_name = file_name.strip()
