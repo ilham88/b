@@ -16,7 +16,7 @@ from datetime import datetime
 from urllib.parse import urlparse
 from os.path import splitext
 from urllib.request import urlretrieve
-from urllib.request import urlopen
+from urllib.request import urlopen, quote_plus
 from shutil import copyfileobj
 from tempfile import NamedTemporaryFile
 import threading
@@ -34,7 +34,7 @@ import bs4
 import lxml
 import shutil
 from urllib import request as urlrequest
-from urllib import quote_plus
+
 try:
     import urllib.request
     python3 = True
