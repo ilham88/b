@@ -3,6 +3,8 @@
 # coding: utf-8
 from __future__ import print_function
 from bs4 import BeautifulSoup
+import lxml
+import shutil
 import progressbar
 import requests
 import sys
@@ -30,6 +32,7 @@ from tqdm import tqdm
 from amanobot.namedtuple import InlineKeyboardMarkup
 from amanobot.exception import TelegramError, NotEnoughRightsError
 from random import randint
+import threading
 try:
     import urllib.request
     python3 = True
@@ -110,6 +113,21 @@ def pretty_size(size):
         size /= 1024
         unit += 1
     return '%0.2f %s' % (size, units[unit])
+directory = os.path.dirname(__file__)
+
+if not os.path.exists('Books'):
+	os.makedirs('Books')
+
+if not os.path.exists('Book Packets'):
+	os.makedirs('Book Packets')
+
+book_path    = os.path.join(directory,'Books')
+packet_path  = os.path.join(directory,'Book Packets')
+
+
+
+
+	
 def pdf(msg):
     content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
@@ -121,31 +139,39 @@ def pdf(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
-                book_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(book_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                book = input_str.split('/')[-1]
+                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(book), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "http://www.allitebooks.com"
-                url = "http://www.allitebooks.com/?s=%s" %(book_name)
-                html = requests.get(url).text
-                parse = BeautifulSoup(html, features="lxml")
-                for i in parse.find("article"):
-                    a_url = i["href"]
-                    book_url = site + a_url + "/"
-                    html2 = requests.get(app_url).text
-                    parse2 = BeautifulSoup(html2, features="lxml")
+                url = "http://www.allitebooks.com/?s=%s" %(book)
+                request = urlrequest.Request(url+'/page/'+page_number+',data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+	            response = urlrequest.urlopen(request)
+	            soup = bs4.BeautifulSoup(response,'lxml')
+                page_number=soup.find('span' ,class_ = 'pages')
+	            return page_number.text.split()[2]
+                for element in soup.find_all('article'):
                     links = []
-                    for link in parse2.find_all('span', {'class': 'download-links'}):
-                        yu = links.append(link.get('href'))
-                        downloadlink = link.get('href')
+                    link = element.find('h2').find('a')
+                    links.append(link.get('href'))
+                    html2 = urlrequest.Request(url,data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+                    resp = urlrequest.urlopen(html2)
+		            soup  = bs4.BeautifulSoup(resp,'lxml')
+		            book_link = soup.find('span',class_= 'download-links')
+                    if book_link is not None:
+			            book_link = book_link.find('a')['href']
+			            book_name = book_link.split('/')[-1]
+                        request = urlrequest.Request(book_link, data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+			            complete_name = os.path.join(book_path,book_name)
+                        book_link = book_link.replace(' ','%20')
                         word = "123456789abcdefgh-_"
                         servers = shuffle(word)
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...\n\n {}".format(servers, downloadlink, yu), 'Markdown', disable_web_page_preview=True)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...\n\n {}".format(servers, book_link), 'Markdown', disable_web_page_preview=True)
                         time.sleep(125)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".apk"
                         start = datetime.now()
                         chunk_size = 1024
-                        r = requests.get(downloadlink, stream = True) 
+                        r = requests.get(book_link, stream = True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
                                 total_length = r.headers.get('content-length')
