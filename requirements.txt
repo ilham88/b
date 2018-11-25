@@ -27,11 +27,11 @@ pyfiglet
 pybase64
 google_images_download
 rivescript
-iso-639==0.4.5
+iso-639>=0.4.5
 ffmpeg
 progressbar2
 tqdm
 logger
-rasa_nlu==0.11.4
-spacy==2.0.5
-neuralcoref==0.1
+rasa_nlu>=0.11.4
+spacy>=2.0.5
+neuralcoref>=0.1
