@@ -34,4 +34,5 @@ tqdm
 logger
 rasa_nlu>=0.11.4
 spacy>=2.0.5
+numpy
 neuralcoref>=0.1
