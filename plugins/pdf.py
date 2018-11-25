@@ -33,6 +33,7 @@ import threading
 import bs4
 import lxml
 import shutil
+from urllib import request as urlrequest
 try:
     import urllib.request
     python3 = True
