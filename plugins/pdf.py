@@ -134,17 +134,10 @@ def pdf(msg):
                 surl = "http://www.allitebooks.com"
                 booknam = quote_plus(' '.join(input_str))
                 quer = surl+"/?s="+booknam
-                bookname = quote_plus(' '.join(input_str))
-                query = url+"/search?q="+bookname
                 print (quer)
-                
-                rf = requests.get(query)
-                html = rf.text
-                soup = BeautifulSoup(html, "lxml")
-                rfs = requests.get(query)
+                rfs = requests.get(quer)
                 htmls = rfs.text
                 soups = BeautifulSoup(htmls, "lxml")
-                items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
                 itemss = soups.find_all('article')
                 for i in itemss:
                     div_title = i.find('h2').find('a')  
