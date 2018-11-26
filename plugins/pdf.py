@@ -130,70 +130,55 @@ def pdf(msg):
                 sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                url = "http://www.allitebooks.com"
+                url = "https://libgen.pw"
                 bookname = quote_plus(' '.join(input_str))
                 query = url+"/?s="+bookname
                 html = requests.get(url)
-                ht = html.text
-                parse = BeautifulSoup(ht, features="lxml")
-                items = parse.find_all("main", {"id": "main-content"})[1:]
+                items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
+                msg = ""
                 for i in items:
-                    s_ttl = i.find("h1", {"class_": "page-title"}).get_text().strip()
-                    div_title = i.find("div", {"class_": "entry-thumbnail"})
-                    title = div_title.get_text().strip()
-                    bookm =  div_title.find("a", href=True)["href"].split('/')[4]
-                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading Telegram", 'Markdown')
-                    linkq = url + bookm
-                    html2 = requests.get(linkq)
-                    ty = html2.text
-                    parse2 = BeautifulSoup(ty, features="lxml")
-                    links = []
-                    for link in parse2.find_all('span', {'class_': 'download-links'}):
-                        links.append(link.get('href'))
-                        downloadlink = link.get('href') 
-                        book_link = book_link.find('a')['href']
-                        book_name = book_link.split('/')[-1]
-                        word = "123456789abcdefgh-_"
-                        servers = shuffle(word)
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
-                        #bot.deleteMessage(chat_id, sent)
-                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".pdf"
-                        starsddt = datetime.now()
-                        chundk_size = 1024
-                        start = datetime.now()
-                        chunk_size = 1024
-                        rd = requests.get(downloadlink, stream = True) 
-                        r = requests.get(downloadlink, stream = True) 
-                        with open(required_file_name,"wb") as apk:
-                            for chunk in r.iter_content(chunk_size=chunk_size):
-                                total_length = r.headers.get('content-length')
-                                dl = 0
-                                total_length = int(total_length)
-                                if chunk:
-                                    dl += len(chunk)
-                                    done = int(100 * dl / total_length)
-                                    apk.write(chunk)
-                                    apk.flush()
-                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(book_name), 'Markdown')
-                            time.sleep(5)
-                            starts = datetime.now()
-                            if total_length < 52428800:
-                                bot.sendChatAction(chat_id, 'upload_document')
-                                tr = bot.sendDocument(chat_id, open(out_file, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
-                                examine(tr, amanobot.namedtuple.Message)
-                                time.sleep(0.5)
-                                ends = datetime.now()
-                                mss = (ends - starts).seconds
-                                os.remove(required_file_name)
-                                bot.deleteMessage((msg['chat']['id'],sent))
-                            else:
-                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Recycle this message', callback_data='del_msgs')]])
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown', reply_markup=rst)
-                                os.remove(required_file_name)
-                                time.sleep(5)
-                                bot.deleteMessage((msg['chat']['id'],sent))
-                                return True
+                    book_link = book_link.find('a')['href']
+                    book_name = book_link.split('/')[-1]
+                    word = "123456789abcdefgh-_"
+                    servers = shuffle(word)
+                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
+                    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".pdf"
+                    starsddt = datetime.now()
+                    chundk_size = 1024
+                    start = datetime.now()
+                    chunk_size = 1024
+                    rd = requests.get(downloadlink, stream = True)
+                    r = requests.get(downloadlink, stream = True)
+                    with open(required_file_name,"wb") as apk:
+                        for chunk in r.iter_content(chunk_size=chunk_size):
+                            total_length = r.headers.get('content-length')
+                            dl = 0
+                            total_length = int(total_length)
+                            if chunk:
+                                dl += len(chunk)
+                                done = int(100 * dl / total_length)
+                                apk.write(chunk)
+                                apk.flush()
+                                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
+                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(book_name), 'Markdown')
+                    time.sleep(5)
+                    starts = datetime.now()
+                    if total_length < 52428800:
+                        bot.sendChatAction(chat_id, 'upload_document')
+                        tr = bot.sendDocument(chat_id, open(out_file, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                        examine(tr, amanobot.namedtuple.Message)
+                        time.sleep(0.5)
+                        ends = datetime.now()
+                        mss = (ends - starts).seconds
+                        os.remove(required_file_name)
+                        bot.deleteMessage((msg['chat']['id'],sent))
+                    else:
+                        rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Recycle this message', callback_data='del_msgs')]])
+                        bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown', reply_markup=rst)
+                        os.remove(required_file_name)
+                        time.sleep(5)
+                        bot.deleteMessage((msg['chat']['id'],sent))
+                        return True
     elif msg.get('data'):
         if msg['data'] == 'del_msgs':
             os.remove(required_file_name)
