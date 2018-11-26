@@ -131,9 +131,13 @@ def pdf(msg):
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 url = "https://libgen.pw"
+                surl = "http://www.allitebooks.com"
+                booknam = quote_plus(' '.join(input_str))
+                quer = surl+"/?s="+booknam
                 bookname = quote_plus(' '.join(input_str))
                 query = url+"/search?q="+bookname
                 print (query)
+                print (quer)
                 rf = requests.get(query)
                 html = rf.text
                 soup = BeautifulSoup(html, "lxml")
@@ -145,7 +149,7 @@ def pdf(msg):
                     title = div_title.get_text().strip()
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
                     lins = url + "/download/book/" + bookid
-                    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + title + ".pdf"
+                    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + bookid + ".pdf"
                     start = datetime.now()
                     chunk_size = 1024
                     r = requests.get(lins, stream = True)
@@ -160,7 +164,7 @@ def pdf(msg):
                                 apk.write(chunk)
                                 apk.flush()
                                 upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(title), 'Markdown')
+                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(required_file_name), 'Markdown')
                     time.sleep(5)
                     starts = datetime.now()
                     if total_length < 52428800:
