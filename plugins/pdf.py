@@ -138,7 +138,7 @@ def pdf(msg):
                 r = urlrequest.Request(query,data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                 html = urlrequest.urlopen(r)
                 soup = bs4.BeautifulSoup(html, "lxml")
-                items = soup.find_all('article'):
+                items = soup.find_all('article')
                 for i in items:
                     div_title = i.find('h2').find('a')
                     title = div_title.get_text().strip()
