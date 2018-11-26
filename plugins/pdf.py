@@ -136,22 +136,28 @@ def pdf(msg):
                 quer = surl+"/?s="+booknam
                 bookname = quote_plus(' '.join(input_str))
                 query = url+"/search?q="+bookname
-                print (query)
                 print (quer)
+                
                 rf = requests.get(query)
                 html = rf.text
                 soup = BeautifulSoup(html, "lxml")
+                rfs = requests.get(query)
+                htmls = rfs.text
+                soups = BeautifulSoup(htmls, "lxml")
                 items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
+                itemss = soups.find_all("div", {"class": "main-content-inner"})[1:]
                 for i in items:
-                    author = i.find("div", {"class": "search-results-list__item-author"}).get_text().strip()
-                    div_title = i.find("div", {"class": "search-results-list__item-title"})
+                    div_title = i.find("div", {"class": "entry-title"})
                     title = div_title.get_text().strip()
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
-                    lins = url + "/download/book/" + bookid
+                    lins = surl + bookid
+                    print (lins)
+                    time.sleep(512)
                     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + bookid + ".pdf"
                     start = datetime.now()
                     chunk_size = 1024
-                    r = requests.get(lins, stream = True)
+                    headers = {'Accept-Language': 'en-US,en;q=0.9,te;q=0.8'}
+                    r = requests.get(lins,  allow_redirects=True, stream=True, headers=headers)
                     with open(required_file_name,"wb") as apk:
                         for chunk in r.iter_content(chunk_size=chunk_size):
                             total_length = r.headers.get('content-length')
