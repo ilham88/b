@@ -147,7 +147,7 @@ def pdf(msg):
                     link = url + "/download/book/" + bookid
                     #print "title %s\tauthor %s\tlink %s" % (title, author, link)
                     msg += "title %s\tauthor %s\tlink %s" % (title, author, link)
-                    book_name = book_link.split('/')[-1]
+                    print (link)
                     word = "123456789abcdefgh-_"
                     servers = shuffle(word)
                     bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...\n\n{}".format(servers, link, msg), 'Markdown', disable_web_page_preview=True)
