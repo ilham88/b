@@ -133,7 +133,7 @@ def pdf(msg):
                 url = "https://libgen.pw"
                 bookname = quote_plus(' '.join(input_str))
                 query = url+"/search?q="+bookname
-                print query
+                print (query)
                 rf = requests.get(query)
                 html = rf.text
                 soup = BeautifulSoup(html, "lxml")
