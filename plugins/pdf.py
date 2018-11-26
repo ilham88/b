@@ -135,9 +135,9 @@ def pdf(msg):
                 booknam = quote_plus(' '.join(input_str))
                 query = surl+"/?s="+booknam
                 print (query)
-                r = requests.get(query)
-                html = r.text
-                soup = BeautifulSoup(html, "lxml")
+                r = urlrequest.Request(query,data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+                html = urlrequest.urlopen(r)
+                soup = bs4.BeautifulSoup(html, "lxml")
                 items = soup.find_all("article", {"class": "status-publish"})[1:]
                 for i in items:
                     div_title = i.find("h2", {"class": "entry-title"})
