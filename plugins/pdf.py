@@ -138,14 +138,14 @@ def pdf(msg):
                 r = urlrequest.Request(query,data=None,headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
                 html = urlrequest.urlopen(r)
                 soup = bs4.BeautifulSoup(html, "lxml")
-                items = soup.find_all("article", {"class": "status-publish"})[1:]
+                items = soup.find_all('article'):
                 for i in items:
-                    div_title = i.find("h2", {"class": "entry-title"})
+                    div_title = i.find('h2').find('a')
                     title = div_title.get_text().strip()
+                    bookid =  print(div_title['href'])
+                    lins = surl + "/download/book/" + bookid
                     print (lins)
-                    bookid =  div_title.find("a", href=True)["href"].split('/')[4]
-                    lins = surl + bookid
-                    print (lins)
+                    print (bookid)
                     time.sleep(512)
                     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + bookid + ".pdf"
                     start = datetime.now()
