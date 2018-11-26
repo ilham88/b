@@ -150,7 +150,7 @@ def pdf(msg):
                     print (link)
                     word = "123456789abcdefgh-_"
                     servers = shuffle(word)
-                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress".format(servers, link), 'Markdown', disable_web_page_preview=True)
+                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from in progress", 'Markdown', disable_web_page_preview=True)
                     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + title + ".pdf"
                     starsddt = datetime.now()
                     chundk_size = 1024
