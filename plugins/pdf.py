@@ -147,9 +147,9 @@ def pdf(msg):
                 items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
                 itemss = soups.find_all("div", {"class": "main-content-inner"})[1:]
                 for i in items:
-                    div_title = i.find("div", {"class": "entry-title"})
-                    title = div_title.get_text().strip()
+                    div_title = i.find("div", {"class": "entry-title"})                    
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
+                    title = bookid.split('/')[-1]
                     lins = surl + bookid
                     print (lins)
                     time.sleep(512)
