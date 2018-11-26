@@ -133,21 +133,28 @@ def pdf(msg):
                 url = "https://libgen.pw"
                 bookname = quote_plus(' '.join(input_str))
                 query = url+"/?s="+bookname
-                html = requests.get(url)
+                html = requests.get(url).text
+                soup = BeautifulSoup(html, "lxml")
                 items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
                 msg = ""
                 for i in items:
-                    book_link = book_link.find('a')['href']
+                    author = i.find("div", {"class": "search-results-list__item-author"}).get_text().strip()
+                    div_title = i.find("div", {"class": "search-results-list__item-title"})
+                    title = div_title.get_text().strip()
+                    bookid =  div_title.find("a", href=True)["href"].split('/')[4]
+                    link = url + "/download/book/" + bookid
+                    #print "title %s\tauthor %s\tlink %s" % (title, author, link)
+                    msg += "title %s\tauthor %s\tlink %s" % (title, author, link)
                     book_name = book_link.split('/')[-1]
                     word = "123456789abcdefgh-_"
                     servers = shuffle(word)
-                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
+                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...\n\n{}".format(servers, link, msg), 'Markdown', disable_web_page_preview=True)
                     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".pdf"
                     starsddt = datetime.now()
                     chundk_size = 1024
                     start = datetime.now()
                     chunk_size = 1024
-                    rd = requests.get(downloadlink, stream = True)
+                    rd = requests.get(link, stream = True)
                     r = requests.get(downloadlink, stream = True)
                     with open(required_file_name,"wb") as apk:
                         for chunk in r.iter_content(chunk_size=chunk_size):
