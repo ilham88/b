@@ -160,7 +160,7 @@ def pdf(msg):
                                 apk.write(chunk)
                                 apk.flush()
                                 upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(book_name), 'Markdown')
+                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram".format(title), 'Markdown')
                     time.sleep(5)
                     starts = datetime.now()
                     if total_length < 52428800:
