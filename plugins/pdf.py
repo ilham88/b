@@ -145,9 +145,10 @@ def pdf(msg):
                 htmls = rfs.text
                 soups = BeautifulSoup(htmls, "lxml")
                 items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
-                itemss = soups.find_all("div", {"class": "main-content-inner"})[1:]
+                itemss = soups.find_all('article')
                 for i in itemss:
-                    div_title = i.find("div", {"class": "entry-title"})                    
+                    div_title = i.find('h2').find('a')  
+                    print(link['href'])
                     title = div_title.get_text().strip()
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
                     title = bookid.split('/')[-1]
