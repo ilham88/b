@@ -150,14 +150,14 @@ def pdf(msg):
                     print (link)
                     word = "123456789abcdefgh-_"
                     servers = shuffle(word)
-                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...\n\n{}".format(servers, link, msg), 'Markdown', disable_web_page_preview=True)
-                    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + book_name + ".pdf"
+                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...\n\n{}".format(servers, link), 'Markdown', disable_web_page_preview=True)
+                    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + title + ".pdf"
                     starsddt = datetime.now()
                     chundk_size = 1024
                     start = datetime.now()
                     chunk_size = 1024
                     rd = requests.get(link, stream = True)
-                    r = requests.get(downloadlink, stream = True)
+                    r = requests.get(link, stream = True)
                     with open(required_file_name,"wb") as apk:
                         for chunk in r.iter_content(chunk_size=chunk_size):
                             total_length = r.headers.get('content-length')
@@ -174,7 +174,7 @@ def pdf(msg):
                     starts = datetime.now()
                     if total_length < 52428800:
                         bot.sendChatAction(chat_id, 'upload_document')
-                        tr = bot.sendDocument(chat_id, open(out_file, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                        tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
                         examine(tr, amanobot.namedtuple.Message)
                         time.sleep(0.5)
                         ends = datetime.now()
