@@ -140,10 +140,11 @@ def pdf(msg):
                 soup = BeautifulSoup(html, "lxml")
                 items = soup.find_all("article", {"class": "status-publish"})[1:]
                 for i in items:
-                    div_title = i.find("h2", {"class": "entry-title"}) 
+                    div_title = i.find("h2", {"class": "entry-title"})
+                    bot.editMessageText((msg['chat']['id'], sent), "⬆️ 123456789", 'Markdown')
+                    time.sleep(5)
                     title = div_title.get_text().strip()
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
-                    title = bookid.split('/')[-1]
                     lins = surl + bookid
                     print (lins)
                     time.sleep(512)
