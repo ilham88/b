@@ -142,7 +142,6 @@ def pdf(msg):
                 html = rf.text
                 soup = BeautifulSoup(html, "lxml")
                 items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
-                msg = ""
                 for i in items:
                     author = i.find("div", {"class": "search-results-list__item-author"}).get_text().strip()
                     div_title = i.find("div", {"class": "search-results-list__item-title"})
