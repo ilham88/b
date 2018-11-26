@@ -135,11 +135,9 @@ def pdf(msg):
                 booknam = quote_plus(' '.join(input_str))
                 query = surl+"/?s="+booknam
                 print (query)
-    		print query
-    		r = requests.get(query)
-    		html = r.text
-    		soup = BeautifulSoup(html, "lxml")
-    		
+                r = requests.get(query)
+                html = r.text
+                soup = BeautifulSoup(html, "lxml")
                 items = soup.find_all("article", {"class": "status-publish"})[1:]
                 for i in items:
                     div_title = i.find("h2", {"class": "entry-title"})
