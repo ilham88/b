@@ -133,15 +133,14 @@ def pdf(msg):
                 url = "https://libgen.pw"
                 surl = "http://www.allitebooks.com"
                 booknam = quote_plus(' '.join(input_str))
-                quer = surl+"/?s="+booknam
-                print (quer)
-                rfs = requests.get(quer)
-                htmls = rfs.text
-                soups = BeautifulSoup(htmls, "lxml")
-                itemss = soups.find_all('article')
-                for i in itemss:
-                    div_title = i.find('h2').find('a')  
-                    print(link['href'])
+                query = surl+"/?s="+booknam
+                print (query)
+                r = requests.get(query)
+                html = r.text
+                soup = BeautifulSoup(html, "lxml")
+                items = soup.find_all("article", {"class": "status-publish"})[1:]
+                for i in items:
+                    div_title = i.find("h2", {"class": "entry-title"}) 
                     title = div_title.get_text().strip()
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
                     title = bookid.split('/')[-1]
