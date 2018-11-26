@@ -132,8 +132,10 @@ def pdf(msg):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 url = "https://libgen.pw"
                 bookname = quote_plus(' '.join(input_str))
-                query = url+"/?s="+bookname
-                html = requests.get(url).text
+                query = url+"/search?q="+bookname
+                print query
+                rf = requests.get(query)
+                html = rf.text
                 soup = BeautifulSoup(html, "lxml")
                 items = soup.find_all("div", {"class": "search-results-list__item"})[1:]
                 msg = ""
