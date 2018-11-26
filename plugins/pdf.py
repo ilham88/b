@@ -144,20 +144,11 @@ def pdf(msg):
                     div_title = i.find("div", {"class": "search-results-list__item-title"})
                     title = div_title.get_text().strip()
                     bookid =  div_title.find("a", href=True)["href"].split('/')[4]
-                    link = url + "/download/book/" + bookid
-                    #print "title %s\tauthor %s\tlink %s" % (title, author, link)
-                    msg += "title %s\tauthor %s\tlink %s" % (title, author, link)
-                    print (link)
-                    word = "123456789abcdefgh-_"
-                    servers = shuffle(word)
-                    bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from in progress", 'Markdown', disable_web_page_preview=True)
+                    lins = url + "/download/book/" + bookid
                     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + title + ".pdf"
-                    starsddt = datetime.now()
-                    chundk_size = 1024
                     start = datetime.now()
                     chunk_size = 1024
-                    rd = requests.get(link, stream = True)
-                    r = requests.get(link, stream = True)
+                    r = requests.get(lins, stream = True)
                     with open(required_file_name,"wb") as apk:
                         for chunk in r.iter_content(chunk_size=chunk_size):
                             total_length = r.headers.get('content-length')
