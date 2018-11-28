@@ -12,5 +12,5 @@ def shorten(msg):
             else:
                 some_url = 'http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(msg['text'][5:])
                 filehandle = urllib.request.urlopen(some_url)
-                print (filehandle.read())
-                #bot.sendMessage(msg['chat']['id'], '*Resultado:* {}'.format(r.json()['Link']), 'Markdown', reply_to_message_id=msg['message_id'])
+                print(filehandle.read())
+                bot.sendMessage(msg['chat']['id'], '*Resultado:* {}'.format(filehandle.read()['Link']), 'Markdown', reply_to_message_id=msg['message_id'])
