@@ -19,8 +19,10 @@ def shorten(msg):
                     host = parsed.netloc
                     if host.startswith('www.'):
                         host = host[4:]
+                netloc = urlparse('//' + ''.join(urlparse(url)[1:])).netloc
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(host))
-                print(parsed)
+                print(url)
+                print(netloc)
                 if r.status_code != 404:
                     b = r.json()
                     print(b)
