@@ -16,7 +16,7 @@ def shorten(msg):
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(msg['text'][5:]))
                 ur = r.url
                 ur = urlparse(ur)
-                conn = httplib.HTTPConnection(ur.netloc)  
+                conn = http.client.HTTPConnection(ur.netloc)  
                 conn.request("HEAD", ur.path)
                 if conn.getresponse():
                     return True
