@@ -18,10 +18,12 @@ def shorten(msg):
                     ID = b["ID"]
                     Error = b["Error"]
                     Status = b["Status"]
-                    res = """*Original Link:* [Click Here ℹ️]({})
-*Trimmed Link:* {}
+                    res = """*Trimmed Link:* {}
+
 *🆔:* `{}`
+
 *❌ Error:* {}
-*✅ Link Status:* {}""".format(text, Link, ID, Error, Status)
+
+*✅ Link Status:* {}""".format(Link, ID, Error, Status)
                     bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
                     return true
