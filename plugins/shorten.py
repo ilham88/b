@@ -14,27 +14,16 @@ def shorten(msg):
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(msg['text'][5:]))
-                r.url
-                url = r
-                url = urlparse(url)
-                conn = httplib.HTTPConnection(url.netloc)  
-                conn.request("HEAD", url.path)
+                ur = r.url
+                ur = urlparse(ur)
+                conn = httplib.HTTPConnection(ur.netloc)  
+                conn.request("HEAD", ur.path)
                 if conn.getresponse():
                     return True
                 return False
-            url_https = "https://" + url.split("//")[1]
-            if check_url(url_https):
-                print ("Nice, you can load it with https")
-            else:
-                if check_url(url):
-                    print ("https didn't load, but you can use http")
-                    if check_url(url):
-                        print "Nice, it does load with http too"
-                        return true
-                
-                if r.status_code != 404:
-                    b = r.json()
-                    print(r.json())
+                if ur.status_code != 404:
+                    b = ur.json()
+                    print(b)
                     Link = b["Link"]
                     ID = b["ID"]
                     Error = b["Error"]
