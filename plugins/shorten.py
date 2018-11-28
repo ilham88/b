@@ -16,10 +16,10 @@ def shorten(msg):
                 remove_space = text.split(' ')
                 final_name = ''.join(remove_space)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(remove_space))
-                ur = r.url
-                print(ur)
+                r.url
+                print(r)
                 if r.status_code != 404:
-                    b = ur.json()
+                    b = r.json()
                     print(b)
                     Link = b["Link"]
                     ID = b["ID"]
