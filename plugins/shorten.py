@@ -20,8 +20,8 @@ def shorten(msg):
                     if host.startswith('www.'):
                         host = host[4:]
                 netloc = urlparse('//' + ''.join(urlparse(url)[1:])).netloc
-                remove_space = movie_name.split(' ')
-                final_name = ''.join(netloc)
+                remove_space = netloc.split(' ')
+                final_name = ''.join(remove_space)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(host))
                 print(url)
                 print(final_name)
