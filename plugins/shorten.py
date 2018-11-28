@@ -24,4 +24,3 @@ def shorten(msg):
 *❌ Error:* {}
 *✅ Link Status:* {}""".format(text, Link, Error, Status)
                     bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
-                    retrun true
