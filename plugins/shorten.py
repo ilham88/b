@@ -13,10 +13,12 @@ def shorten(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
-                r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(msg['text'][5:]))
+                remove_space = text.split(' ')
+                final_name = ''.join(remove_space)
+                r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(remove_space))
                 ur = r.url
                 print(ur)
-                if ur.status_code != 404:
+                if r.status_code != 404:
                     b = ur.json()
                     print(b)
                     Link = b["Link"]
