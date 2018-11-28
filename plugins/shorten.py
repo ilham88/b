@@ -20,7 +20,7 @@ def shorten(msg):
                     if host.startswith('www.'):
                         host = host[4:]
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(host))
-                print(host)
+                print(parsed)
                 if r.status_code != 404:
                     b = r.json()
                     print(b)
