@@ -17,12 +17,17 @@ def shorten(msg):
                     Link = b["Link"]
                     ID = b["ID"]
                     Error = b["Error"]
-                    Status = b["Status"]
                     u = requests.get('http://trimit.gq/api?stats&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&id={}'.format(ID))
                     c = u.json()
                     print(c)
                     Clicks = c["Clicks"]
-                    res = """That was a good trim. Details Below
+                    if Status != True:
+                        Status = b["Error"]
+                        icon = "❌"
+                    else:
+                        Status = b["Status"]
+                        icon = "✅"
+                        res = """That was a good trim. Details Below
 
 *Trimmed Link:* {}
 
@@ -30,6 +35,6 @@ def shorten(msg):
 
 *👀 Clicks:* {}
 
-*✅ Link Status:* {}""".format(Link, ID, Clicks, Status)
+*{} Link Status:* {}""".format(Link, ID, Clicks, icon, Status)
                     bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
                     
