@@ -33,7 +33,7 @@ def shorten(msg):
                     Clicks = c["Clicks"]
                     if b["Status"] != True:
                         req = "😭 Your Link encountered a Glitch"
-                        inf = ""
+                        inf = "" 
                         Status = b["Error"]
                         icon = "❌"
                     else:
