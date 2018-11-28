@@ -4,6 +4,24 @@ import dotenv
 import os
 import bs4 
 import re
+from datetime import datetime
+from urllib.parse import urlparse
+from os.path import splitext
+from urllib.request import urlretrieve
+from urllib.request import urlopen
+from shutil import copyfileobj
+from tempfile import NamedTemporaryFile
+import threading
+import pprint
+import traceback
+import urllib.request
+from urllib import request as urlrequest
+try:
+    import urllib.request
+    python3 = True
+except ImportError:
+    import urllib2
+    python3 = False
 
 
 bot = config.bot
@@ -16,7 +34,7 @@ def pdf(msg):
             else:
                 remove_space = movie_name.split(' ')
                 final_name = '+'.join(remove_space)
-                page = requests.get("https://www.imdb.com/find?ref_=nv_sr_fn&q={}&s={}".format(final_name, remove_space))
+                page = requests.get("https://www.imdb.com/find?ref_=nv_sr_fn&q={}&s=all".format(final_name))
                 lnk = str(page.status_code)
                 soup = bs4.BeautifulSoup(page.content,'lxml', from_encoding='utf-8')
                 results = soup.findAll("td","result_text")
