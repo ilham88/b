@@ -22,7 +22,9 @@ def shorten(msg):
                     c = u.json()
                     print(c)
                     Clicks = c["Clicks"]
-                    res = """*Trimmed Link:* {}
+                    res = """That was a good trim. Details Below
+
+*Trimmed Link:* {}
 
 *🆔:* `{}`
 
@@ -30,4 +32,4 @@ def shorten(msg):
 
 *✅ Link Status:* {}""".format(Link, ID, Clicks, Status)
                     bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
-                    return true
+                    
