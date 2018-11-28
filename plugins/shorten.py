@@ -1,6 +1,6 @@
 import config
 import requests
-
+import urllib.request
 bot = config.bot
 
 def shorten(msg):
@@ -10,10 +10,6 @@ def shorten(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `/shorten google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
-                url = 'http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(msg['text'][3:])
-                j = requests.get(url)
-                if j.status_code != 404:
-                    b = j.json()
-                    print(b)
-                else:
-                    bot.sendMessage(msg['chat']['id'], '*Resultado:* {}'.format(r.json()['Link']), 'Markdown', reply_to_message_id=msg['message_id'])
+                url = urllib.request.urlopen("http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}").format(msg['text'][3:])
+                print(url.read())
+                #bot.sendMessage(msg['chat']['id'], '*Resultado:* {}'.format(r.json()['Link']), 'Markdown', reply_to_message_id=msg['message_id'])
