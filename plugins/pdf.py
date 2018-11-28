@@ -1,50 +1,49 @@
-#!/usr/bin/env python
-# coding: utf-8
-from __future__ import print_function
-from bs4 import BeautifulSoup
-import progressbar
-import requests
-import sys
-import requests
-import re
-import json
-import os
-import html
-import time
-import datetime
-from datetime import datetime
-from urllib.parse import urlparse, quote_plus
-from os.path import splitext
-from urllib.request import urlretrieve
-from urllib.request import urlopen
-from shutil import copyfileobj
-from tempfile import NamedTemporaryFile
-import threading
-import pprint
-import traceback
-import urllib.request
-import amanobot
-import amanobot.namedtuple
-from tqdm import tqdm
-from amanobot.namedtuple import InlineKeyboardMarkup
-from amanobot.exception import TelegramError, NotEnoughRightsError
-from random import randint
-import threading
-import bs4
-import lxml
-import shutil
-from urllib import request as urlrequest
-
-try:
-    import urllib.request
-    python3 = True
-except ImportError:
-    import urllib2
-    python3 = False
 import config
-import keyboard
+import requests
+import dotenv
+import os
+import bs4 
+import re
+
 
 bot = config.bot
+def pdf(msg):
+    if msg.get('text'):
+        if msg['text'].startswith('!imdc'):
+            movie_name = msg['text'][6:]
+            if msg['text'][6:] == '':
+                res = '*Uso:* `!imdc <film title>` - _Otain film information from imdb db._'
+            else:
+                remove_space = movie_name.split(' ')
+                final_name = '+'.join(remove_space)
+                page = requests.get("https://www.imdb.com/find?ref_=nv_sr_fn&q={}&s={}".format(final_name, remove_space))
+                lnk = str(page.status_code)
+                soup = bs4.BeautifulSoup(page.content,'lxml', from_encoding='utf-8')
+                results = soup.findAll("td","result_text")
+                mov_title = results[0].text
+                mov_link = "http://www.imdb.com/"+results[0].a['href'] 
+                page1 = requests.get(mov_link)
+                soup = bs4.BeautifulSoup(page1.content,'lxml')
+                story_line = soup.find('div', "inline canwrap")
+                story_line = story_line.findAll("p")[0].text
+                info = soup.findAll('div', "txt-block")
+                for node in info:
+                  a = node.findAll('a')
+                  for i in a:
+                    if "country_of_origin" in i['href']:
+                      mov_country = i.string
+                for node in info:
+                  a = node.findAll('a')
+                  for i in a:
+                    if "primary_language" in i['href']:
+                      mov_language = i.string
+                rating = soup.findAll('div',"ratingValue")
+                for r in rating:
+                  mov_rating = r.strong['title']
+
+                bot.sendMessage(msg['chat']['id'], "*Title : *`{}`\n*Rating : *`{}`\n*Country : *`{}`\n*Language : *`{}`\n*IMDB Url : *[Click HERE!]({})\n*Story Line : *_{}_".format(mov_title, mov_rating, mov_country, mov_language, mov_link, story_line), 'Markdown', disable_web_page_preview=True, reply_to_message_id=msg['message_id'])
+                return True
+
 version = config.version
 bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
