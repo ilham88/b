@@ -1,8 +1,8 @@
 import config
 import requests
 import urllib.request
-from urllib.parse import urlparse
-import http.client, sys
+from urllib.parse import urlparse, urlsplit
+import http.client, sys, re
 from os.path import splitext
 bot = config.bot
 
@@ -13,10 +13,13 @@ def shorten(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
-                remove_space = text.split(' ')
-                final_name = ''.join(remove_space)
-                r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(remove_space))
-                r.url
+                if not re.match(r'http(s?)\:', text):
+                    url = 'http://' + text
+                    parsed = urlsplit(url)
+                    host = parsed.netloc
+                    if host.startswith('www.'):
+                        host = host[4:]
+                r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(host))
                 print(r)
                 if r.status_code != 404:
                     b = r.json()
