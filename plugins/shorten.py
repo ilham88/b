@@ -20,7 +20,7 @@ def shorten(msg):
                     Status = b["Status"]
                     u = requests.get('http://trimit.gq/api?stats&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&id={}'.format(ID))
                     c = u.json()
-                    print(c.json())
+                    print(c)
                     Clicks = c["Clicks"]
                     res = """*Trimmed Link:* {}
 
