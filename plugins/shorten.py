@@ -21,11 +21,11 @@ def shorten(msg):
                     c = u.json()
                     print(c)
                     Clicks = c["Clicks"]
-                    if Status != True:
-                        ok = b["Error"]
+                    if b["Status"] != True:
+                        Status = b["Error"]
                         icon = "❌"
                     else:
-                        ok = b["Status"]
+                        Status = b["Status"]
                         icon = "✅"
                         res = """That was a good trim. Details Below
 
@@ -35,6 +35,6 @@ def shorten(msg):
 
 *👀 Clicks:* {}
 
-*{} Link Status:* {}""".format(Link, ID, Clicks, icon, ok)
+*{} Link Status:* {}""".format(Link, ID, Clicks, icon, Status)
                     bot.sendMessage(msg['chat']['id'], res, 'Markdown', reply_to_message_id=msg['message_id'])
                     
