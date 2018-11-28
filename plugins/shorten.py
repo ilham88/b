@@ -2,7 +2,7 @@ import config
 import requests
 import urllib.request
 from urllib.parse import urlparse
-import , http.client, sys
+import http.client, sys
 from os.path import splitext
 bot = config.bot
 
