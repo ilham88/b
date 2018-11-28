@@ -22,12 +22,16 @@ def shorten(msg):
                     print(c)
                     Clicks = c["Clicks"]
                     if b["Status"] != True:
+                        req = "😭 Your Link encountered a a Glitch"
+                        inf = ""
                         Status = b["Error"]
                         icon = "❌"
                     else:
+                        req = "ℹ️ Link Details Below"
+                        inf = "(📶 Used for stats)"
                         Status = b["Status"]
                         icon = "✅"
                         
-                    bot.sendMessage(msg['chat']['id'], "That was a good trim. Details Below\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
+                    bot.sendMessage(msg['chat']['id'], "\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`  _{}_\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, inf, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
                 else:
                     bot.sendMessage(msg['chat']['id'], "There was an error", 'Markdown', reply_to_message_id=msg['message_id'])
