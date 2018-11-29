@@ -22,13 +22,7 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                parsedc = urlparse(text)
-                domain = parsedc.netloc.split(".")[1:]
-                hostc = ".".join(domain)
-                token=text.split('//')[1].split('/')[0]
-                top_level=token.split('.')[-2]+'.'+token.split('.')[-1]
-                print(hostc)
-                print(top_level)
+                print urlparse('https://app.netlify.com/sites/bfas237/settings/domain#domains')
                 try:
                     if r.status_code != 404:
                         b = r.json()
