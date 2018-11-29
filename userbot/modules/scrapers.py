@@ -55,7 +55,7 @@ async def wiki(e):
 @bot.on(events.MessageEdited(outgoing=True, pattern='^.ud (.*)'))
 async def ud(e):
   if not e.text[0].isalpha():
-   await e.edit("Processing...")
+   await e.edit("Processing...") 
    str = e.pattern_match.group(1)
    mean = urbandict.define(str)
    if len(mean) >= 0:
