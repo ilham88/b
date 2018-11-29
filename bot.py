@@ -9,7 +9,6 @@ from pyrogram import Client, Emoji, Filters
 MENTION = "[{}](tg://user?id={})"
 MESSAGE = "{} Welcome to [Pyrogram](https://docs.pyrogram.ml/)'s group chat {}!"
 
-app = Client("671045549:AAEN2iA-4VXECyuHhyC1TPrRLDVXLRKGS1o")
 
     
 @app.on_message(Filters.text & Filters.chat("Bfas237group"))
