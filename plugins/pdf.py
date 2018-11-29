@@ -10,7 +10,7 @@ from amanobot.namedtuple import InlineKeyboardMarkup
 from amanobot.exception import TelegramError, NotEnoughRightsError
 import keyboard
 from tldextract import extract
-def shorten(msg):
+def pdf(msg):
     if msg.get('text'):
         if msg['text'].startswith('.quote'):
             text = msg['text'][6:]
