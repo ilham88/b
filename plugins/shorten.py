@@ -14,25 +14,30 @@ def shorten(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
-                if not re.match(r'http(s?)\:', text):
-                    url = 'http://' + text
-                    parsed = urlsplit(url)
-                    host = parsed.netloc
-                    if host.startswith('www.'):
+                o = urlparse(text)
+                domain = o.hostname
+                temp = domain.rsplit('.')
+                if(len(temp) == 3):
+                    domain = temp[1] + '.' + temp[2]
+                    if not re.match(r'http(s?)\:', text):
+                        url = 'http://' + text
+                        parsed = urlsplit(url)
+                        host = parsed.netloc
+                        if host.startswith('www.'):
                         host = host[4:]
-                remove_spacec = url.split(' ')
-                final_namec = ''.join(remove_spacec)
-                r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
+                    remove_spacec = url.split(' ')
+                    final_namec = ''.join(remove_spacec)
+                    r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
                 
-                extractedDomain = tldextract.extract(final_namec)
-                domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
+                    extractedDomain = tldextract.extract(final_namec)
+                    domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
                 
-                extractedDomains = tldextract.extract(text)
-                domainSuffixs = extractedDomains.domain + '.' + extractedDomains.suffix
-                print(extractedDomains)
-                print(extractedDomain)
-                
-                try:
+                    extractedDomains = tldextract.extract(text)
+                    domainSuffixs = extractedDomains.domain + '.' + extractedDomains.suffix
+                    print(extractedDomains)
+                    print(extractedDomain)
+                    print(domain)
+               
                     if r.status_code != 404:
                         b = r.json()
                         print(b)
@@ -55,7 +60,4 @@ def shorten(msg):
                             icon = "✅"
                          
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
-                    else:
-                        bot.sendMessage(msg['chat']['id'], "❌ There was an error with your link. Please check and try again", 'Markdown', reply_to_message_id=msg['message_id'])
-                except Exception:
-                    bot.sendMessage(msg['chat']['id'], "❌ There Please check and try again", 'Markdown', reply_to_message_id=msg['message_id'])
+                  
