@@ -21,7 +21,7 @@ def shorten(msg):
                         host = host[4:]
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
-                rk = requests.head(remove_spacec)
+                rk = requests.head(text)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
                 print(final_namec)
                 if rk.status_code != 404:
