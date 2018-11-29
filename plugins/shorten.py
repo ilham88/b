@@ -22,8 +22,8 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                base_url = final_namec.split(“//”)[-1]
-                print(base_url)
+                app_name = text.split('/')[-1]
+                print(app_name)
                 try:
                     if r.status_code != 404:
                         b = r.json()
