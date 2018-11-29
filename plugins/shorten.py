@@ -55,6 +55,6 @@ def shorten(msg):
                             inf = "(Used for stats)"
                             Status = b["Status"]
                             icon = "✅"
-                         
-                        bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
+                        rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Recycle this message', callback_data='del_msgs')]])
+                        bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'],  reply_markup=rst)
                   
