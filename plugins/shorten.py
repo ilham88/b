@@ -22,8 +22,10 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                t = urlparse(final_namec).netloc
+                t = urlparse(text).netloc
+                dt = urlparse('http://abc.hostname.com/somethings/anything/').netloc
                 print ('.'.join(t.split('.')[1:]))
+                print ('.'.join(dt.split('.')[1:]))
                 try:
                     if r.status_code != 404:
                         b = r.json()
