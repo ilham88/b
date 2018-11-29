@@ -31,8 +31,8 @@ def shorten(msg):
                 
                     extractedDomains = tldextract.extract(text)
                     domainSuffixs = extractedDomains.domain + '.' + extractedDomains.suffix
-                    print(extractedDomains)
-                    print(extractedDomain)
+                    print(domainSuffix)
+                    print(domainSuffixs)
                     
                
                     if r.status_code != 404:
