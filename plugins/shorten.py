@@ -14,24 +14,18 @@ def shorten(msg):
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
                 if not re.match(r'http(s?)\:', text):
-                    try:
-                        url_parts = urlparse(text)
-                        request = requests.head("://".join([url_parts.scheme, url_parts.netloc]))
-                        return request.status_code == HTTPStatus.OK
-                        print(request)
-                     except:
-                        return False;
-                        url = 'http://' + text
-                        parsed = urlsplit(url)
-                        host = parsed.netloc
-                        if host.startswith('www.'):
-                            host = host[4:]
+                    url = 'http://' + text
+                    parsed = urlsplit(url)
+                    host = parsed.netloc
+                    if host.startswith('www.'):
+                        host = host[4:]
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
-                rk = requests.head(text)
+                headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36' }
+                ty = requests.get(final_namec, headers=headers).status_code
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
                 print(final_namec)
-                if rk.status_code != 404:
+                if ty != 404:
                     b = r.json()
                     print(b)
                     Link = b["Link"]
