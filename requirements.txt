@@ -32,3 +32,4 @@ ffmpeg
 progressbar2
 tqdm
 logger
+tldextract
