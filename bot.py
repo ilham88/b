@@ -1,82 +1,38 @@
-print(r'''
- _____    _             ____       _           _   
-| ____|__| |_   _ _   _|  _ \ ___ | |__   ___ | |_ 
-|  _| / _` | | | | | | | |_) / _ \| '_ \ / _ \| __|
-| |__| (_| | |_| | |_| |  _ < (_) | |_) | (_) | |_ 
-|_____\__,_|\__,_|\__,_|_| \_\___/|_.__/ \___/ \__|
+"""This is the Welcome Bot in @PyrogramChat.
 
-Iniciando...
-''')
+It uses the Emoji module to easily add emojis in your text messages and Filters
+to make it only work for specific messages in a specific chat.
+"""
 
-import sys, io
-import traceback
-from amanobot.loop import MessageLoop
-from contextlib import redirect_stdout
-from colorama import Fore
-import config
-import time
-import threading
-from amanobot.exception import TooManyRequestsError, NotEnoughRightsError
-from urllib3.exceptions import ReadTimeoutError
-import db_handler as db
+from pyrogram import Client, Emoji, Filters
+
+MENTION = "[{}](tg://user?id={})"
+MESSAGE = "{} Welcome to [Pyrogram](https://docs.pyrogram.ml/)'s group chat {}!"
+
+app = Client("671045549:AAEN2iA-4VXECyuHhyC1TPrRLDVXLRKGS1o")
+
+    
 
 
-bot = config.bot
+@app.on_message(Filters.text & Filters.chat("Bfas237group"))
+async def move(client, message):
+    if "Oft" in message.text:
+        await client.send_message("bfas237off", "`{}` wrote:\n{}\n\n**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**".format(message.reply_to_message.from_user.first_name, message.reply_to_message.text))
+        await client.send_message("Bfas237group", "I moved this discussion to the [Offtopic Group ↗️](https://t.me/bfas237off/{})".format(message.reply_to_message.message_id, message.reply_to_message.text), reply_to_message_id=message.reply_to_message.message_id)
+        await client.delete_messages(
+    "Bfas237group",
+    message_ids=message.message_id
+)
 
-ep = []
-n_ep = []
-
-
-for num, i in enumerate(config.enabled_plugins):
-    try:
-        print(Fore.RESET + 'Loading plugins... [{}/{}]'.format(num+1, len(config.enabled_plugins)), end='\r')
-        exec('from plugins.{0} import {0}'.format(i))
-        ep.append(i)
-    except Exception as erro:
-        n_ep.append(i)
-        print('\n'+Fore.RED+'Error loading the plugin {}:{}'.format(i, Fore.RESET), erro)
-
-
-def handle_thread(*args):
-    t = threading.Thread(target=handle, args=args)
-    t.start()
-
-
-def handle(msg):
-    try:
-        for plugin in ep:
-            p = globals()[plugin](msg)
-            if p:
-                break
-    except (TooManyRequestsError, NotEnoughRightsError, ReadTimeoutError):
-        pass
-    except Exception as e:
-        with io.StringIO() as buf, redirect_stdout(buf):
-            traceback.print_exc(file=sys.stdout)
-            res = buf.getvalue()
-        bot.sendMessage(config.logs, '''There was an error in the plugin {}:
-
-{}'''.format(plugin, res))
+@app.on_message(Filters.text & Filters.chat("bfas237off"))
+async def move(client, message):
+    if "Ont" in message.text:
+        await client.send_message("Bfas237group", "`{}` wrote:\n{}\n\n**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**".format(message.reply_to_message.from_user.first_name, message.reply_to_message.text))
+        await client.send_message("bfas237off", "This happens to be an [OnTopic Discussion ↗️](https://t.me/Bfas237group/{})".format(message.reply_to_message.message_id, message.reply_to_message.text), reply_to_message_id=message.reply_to_message.message_id)
+        await client.delete_messages(
+    "bfas237off",
+    message_ids=message.message_id
+)
 
 
-print('\n\nBot started! {}\n'.format(config.version))
-
-MessageLoop(bot, handle_thread).run_as_thread()
-
-wr = db.get_restarted()
-
-if wr: 
-    try:
-        bot.editMessageText(wr, 'Restart successfully')
-    except:
-        pass
-    db.del_restarted()
-else:
-    bot.sendMessage(config.logs, '''Bot Details
-
-Verion: {}
-Plugins Loaded: {}
-An error occured in {} plugin(s){}'''.format(config.version, len(ep), len(n_ep), ': '+(', '.join(n_ep)) if n_ep else ''))
-
-while True:
-    time.sleep(10)
+app.run()  # Automatically start() and idle()
