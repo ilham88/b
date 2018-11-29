@@ -19,7 +19,7 @@ def pdf(msg):
             if r.status_code != 404:
                 b = r.json()
                 print(b)
-                qoute = b[0]["quote"]
+                quote = b[0]["quote"]
                 author = b[0]["author"]
                 category = b[0]["category"]
                 req = "ℹ️ Popular Quote"
