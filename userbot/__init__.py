@@ -14,11 +14,13 @@ LOGS = logging.getLogger(__name__)
 if sys.version_info[0] < 3 or sys.version_info[1] < 6:
     LOGGER.error("You MUST have a python version of at least 3.6! Multiple features depend on this. Bot quitting.")
     quit(1)
+    
+    
 ENV = bool(os.environ.get('ENV', False))
+LOGGER_GROUP=-1001139726492
 if ENV:
     API_KEY = os.environ.get('API_KEY', None)
     API_HASH = os.environ.get('API_HASH',None)
-    LOGGER_GROUP=os.environ.get('LOGGER_GROUP')
     LOGGER=os.environ.get('LOGGER')    #Incase you want to turn off logging, put this to false
     TRT_ENABLE=os.environ.get('TRT_ENABLE',None)
     PM_AUTO_BAN=os.environ.get('PM_AUTO_BAN',None)
