@@ -24,8 +24,8 @@ def shorten(msg):
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
                 code = extract(text).domain
                 tsd = extract(final_namec).domain
-                tr = code.suffix
-                ft = tsd.suffix
+                tr = '.'.join(code[:2])
+                ft = '.'.join(tsd[:2])
                 print(tr)
                 print(ft)
                 
