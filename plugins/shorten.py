@@ -22,8 +22,7 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                
-                print(host)
+                print(final_namec)
                 try:
                     if r.status_code != 404:
                         b = r.json()
@@ -45,9 +44,8 @@ def shorten(msg):
                             inf = "(Used for stats)"
                             Status = b["Status"]
                             icon = "✅"
-                        rst = = InlineKeyboardMarkup(inline_keyboard=[dict(text='↗️ Visit', url='{}'.format(Link))]
                         
-                        bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_markup=rst, reply_to_message_id=msg['message_id'])
+                        bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
                     else:
                         bot.sendMessage(msg['chat']['id'], "❌ There was an error with your link. Please check and try again", 'Markdown', reply_to_message_id=msg['message_id'])
                 except Exception:
