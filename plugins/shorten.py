@@ -56,8 +56,6 @@ def shorten(msg):
                             Status = b["Status"]
                             icon = "✅"
                             
-                        teclado = keyboard.start
-                        rstx = [dict(text='⭐ ↗️ Visit Now', url='#')]
-
+                        teclado = keyboard.dl
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
-                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=rstx)
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=teclado)
