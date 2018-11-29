@@ -57,7 +57,7 @@ def shorten(msg):
                             icon = "✅"
                             
                         teclado = keyboard.start
-                        rst = [dict(text='⭐ ↗️ Visit Now', url='https://t.me/storebot?start=' + config.bot_username)]
+                        rstx = [dict(text='⭐ ↗️ Visit Now', url='#')]
 
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
-                            reply_to_message_id=msg['message_id'], reply_markup=teclado)
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=rstx)
