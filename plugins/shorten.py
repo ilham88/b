@@ -6,6 +6,8 @@ import http.client, sys, re
 from os.path import splitext
 bot = config.bot
 import tldextract
+from amanobot.namedtuple import InlineKeyboardMarkup
+from amanobot.exception import TelegramError, NotEnoughRightsError
 import keyboard
 from tldextract import extract
 def shorten(msg):
@@ -30,10 +32,7 @@ def shorten(msg):
                     extractedDomain = tldextract.extract(final_namec)
                     domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
                 
-                    extractedDomains = tldextract.extract(text)
-                    domainSuffixs = extractedDomains.domain + '.' + extractedDomains.suffix
                     print(domainSuffix)
-                    print(domainSuffixs)
                     
                
                     if r.status_code != 404:
