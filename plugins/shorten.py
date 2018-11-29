@@ -6,6 +6,7 @@ import http.client, sys, re
 from os.path import splitext
 bot = config.bot
 import tldextract
+import keyboard
 from tldextract import extract
 def shorten(msg):
     if msg.get('text'):
