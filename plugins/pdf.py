@@ -28,8 +28,8 @@ bot = config.bot
 def pdf(msg):
     if msg.get('text'):
         if msg['text'].startswith('.q'):
-            movie_name = msg['text'][1:]
-            if msg['text'][1:] == '':
+            movie_name = msg['text'][2:]
+            if msg['text'][2:] == '':
                 res = '*Uso:* `.q <film title>` - _Otain film information from imdb db._'
             else:
                 remove_space = movie_name.split(' ')
@@ -40,8 +40,9 @@ def pdf(msg):
     "Content-Type": "application/x-www-form-urlencoded",
     "Accept": "application/json"
   })
-                print (response.body)
-                t=response.body
-                bot.sendMessage(msg['chat']['id'],t['quote'])
+                print (r.body)
+                t=r.body
+                bot.sendMessage(msg['chat']['id'], t['quote'], 'Markdown', reply_to_message_id=msg['message_id'])
+               
                 return
                 
