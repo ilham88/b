@@ -21,32 +21,29 @@ def shorten(msg):
                         host = host[4:]
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
-                response = requests.head(remove_spacec)
-                if response.status_code == 404:
-                    bot.sendMessage(msg['chat']['id'], "❌ There was an error with your link. Please check and try again", 'Markdown', reply_to_message_id=msg['message_id'])
+                r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
+                print(final_namec)
+                if final_namec.status_code != 404:
+                    b = r.json()
+                    print(b)
+                    Link = b["Link"]
+                    ID = b["ID"]
+                    Error = b["Error"]
+                    u = requests.get('http://trimit.gq/api?stats&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&id={}'.format(ID))
+                    c = u.json()
+                    print(c)
+                    Clicks = c["Clicks"]
+                    if b["Status"] != True:
+                        req = "😭 Your Link encountered a Glitch"
+                        inf = "" 
+                        Status = b["Error"]
+                        icon = "❌"
+                    else:
+                        req = "ℹ️ Link Details Below"
+                        inf = "(Used for stats)"
+                        Status = b["Status"]
+                        icon = "✅"
+                        
+                    bot.sendMessage(msg['chat']['id'], "\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
                 else:
-                    r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                    print(final_namec)
-                    if r.status_code != 404:
-                        b = r.json()
-                        print(b)
-                        Link = b["Link"]
-                        ID = b["ID"]
-                        Error = b["Error"]
-                        u = requests.get('http://trimit.gq/api?stats&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&id={}'.format(ID))
-                        c = u.json()
-                        print(c)
-                        Clicks = c["Clicks"]
-                        if b["Status"] != True:
-                            req = "😭 Your Link encountered a Glitch"
-                            inf = "" 
-                            Status = b["Error"]
-                            icon = "❌"
-                        else:
-                            req = "ℹ️ Link Details Below"
-                            inf = "(Used for stats)"
-                            Status = b["Status"]
-                            icon = "✅"
-                        
-                        bot.sendMessage(msg['chat']['id'], "\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
-                        
+                    bot.sendMessage(msg['chat']['id'], "❌ There was an error with your link. Please check and try again", 'Markdown', reply_to_message_id=msg['message_id'])
