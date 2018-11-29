@@ -25,7 +25,7 @@ def shorten(msg):
                 t = urlparse(final_namec).netloc
                 dt = urlparse('http://abc.hostname.com/somethings/anything/').netloc
                 print(final_namec)
-                print(t)
+                print('.'.join(t.split('.')[1:]))
                 print('.'.join(dt.split('.')[1:]))
                 try:
                     if r.status_code != 404:
