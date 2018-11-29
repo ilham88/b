@@ -34,7 +34,7 @@ def shorten(msg):
                 
                     print(domainSuffix)
                     
-               
+                    smsg = 'Hello there! to know more about me, start me in private and understand how i work.'
                     if r.status_code != 404:
                         b = r.json()
                         print(b)
