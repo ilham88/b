@@ -14,16 +14,11 @@ def shorten(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
-                o = urlparse(text)
-                domain = o.hostname
-                temp = domain.rsplit('.')
-                if(len(temp) == 3):
-                    domain = temp[1] + '.' + temp[2]
-                    if not re.match(r'http(s?)\:', text):
-                        url = 'http://' + text
-                        parsed = urlsplit(url)
-                        host = parsed.netloc
-                        if host.startswith('www.'):
+                if not re.match(r'http(s?)\:', text):
+                    url = 'http://' + text
+                    parsed = urlsplit(url)
+                    host = parsed.netloc
+                    if host.startswith('www.'):
                         host = host[4:]
                     remove_spacec = url.split(' ')
                     final_namec = ''.join(remove_spacec)
