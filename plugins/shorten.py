@@ -5,7 +5,7 @@ from urllib.parse import urlparse, urlsplit
 import http.client, sys, re
 from os.path import splitext
 bot = config.bot
-
+from tldextract import extract
 def shorten(msg):
     if msg.get('text'):
         if msg['text'].startswith('.trim'):
@@ -22,9 +22,14 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                t = urlparse(final_namec).netloc
-                dt = urlparse('http://abc.hostname.com/somethings/anything/').netloc
-                print(final_namec)
+                t = urlparse(text).netloc
+                dt = urlparse('abc.hostname.com/somethings/anything/').netloc
+                tsd, td, tsu = extract(text)
+                tsdd, tdd, tsud = extract(final_namec)
+                tr = td + '.' + tsu
+                ft = tdd + '.' + tsud
+                print(ft)
+                print(tr)
                 print('.'.join(t.split('.')[1:]))
                 print('.'.join(dt.split('.')[1:]))
                 try:
