@@ -21,7 +21,7 @@ TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./../DOWNLOAD
 
 def google(msg):
     if msg.get('text'):
-        if msg['text'].startswith('/s') or msg['text'].startswith('!s'):
+        if msg['text'].startswith('!s'):
             input_str = msg['text'][3:]
             if input_str == '':
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/s or !g <search query>`',
