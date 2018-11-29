@@ -25,7 +25,7 @@ def shorten(msg):
                 alinks = urlparse(text)
                 print(alinks.hostname)
                 print(alinks.path)
-                print(app_name)
+                
                 try:
                     if r.status_code != 404:
                         b = r.json()
