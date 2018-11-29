@@ -25,7 +25,7 @@ def shorten(msg):
                 parsedc = urlparse(text)
                 domain = parsedc.netloc.split(".")[1:]
                 hostc = ".".join(domain)
-                token=text.split('http://')[1].split('/')[0]
+                token=text.split('//')[1].split('/')[0]
                 top_level=token.split('.')[-2]+'.'+token.split('.')[-1]
                 print(hostc)
                 print(top_level)
