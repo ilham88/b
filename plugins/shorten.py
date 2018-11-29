@@ -45,7 +45,7 @@ def shorten(msg):
                             inf = "(Used for stats)"
                             Status = b["Status"]
                             icon = "✅"
-                        
+                         
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 'Markdown', reply_to_message_id=msg['message_id'])
                     else:
                         bot.sendMessage(msg['chat']['id'], "❌ There was an error with your link. Please check and try again", 'Markdown', reply_to_message_id=msg['message_id'])
