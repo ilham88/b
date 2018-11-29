@@ -22,12 +22,12 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-             
+                code = extract('http://forums.news.cnn.com/').domain
                 tsd, td, tsu = extract(text)
                 tsdd, tdd, tsud = extract(final_namec)
                 tr = td + '.' + tsu
                 ft = tdd + '.' + tsud
-                print(ft)
+                print(code)
                 print(tr)
                 
                 try:
