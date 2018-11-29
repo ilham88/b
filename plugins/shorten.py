@@ -51,6 +51,6 @@ def shorten(msg):
                         extractedDomain = tldextract.extract(final_namec)
                         domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
                         print(domainSuffix)    
-                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit {}', url='{}'.format(Status, Link))]])
+                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit {}'.format(domainSuffix), url='{}'.format(Link))]])
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
                             parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
