@@ -22,12 +22,14 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                code = extract(text).domain
-                tsd = extract(final_namec).domain
-                tr = '.'.join(code[:2])
-                ft = '.'.join(tsd[:2])
-                print(tr)
-                print(ft)
+                
+                extractedDomain = tldextract.extract(final_namec)
+                domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
+                
+                extractedDomains = tldextract.extract(text)
+                domainSuffixs = extractedDomains.domain + '.' + extractedDomains.suffix
+                print(extractedDomains)
+                print(extractedDomain)
                 
                 try:
                     if r.status_code != 404:
