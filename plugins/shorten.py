@@ -56,6 +56,8 @@ def shorten(msg):
                             Status = b["Status"]
                             icon = "✅"
                             
-                        teclado = keyboard.dl
+                        dlb = InlineKeyboardMarkup(inline_keyboard=[
+    [dict(text='➕ Add to your group', url='{}'.format(Link))]
+])
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
-                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=teclado)
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
