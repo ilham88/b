@@ -14,6 +14,8 @@ def shorten(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
+                text = text.replace("http://","")
+                text = text.replace("https://","")
                 if not re.match(r'http(s?)\:', text):
                     url = 'http://' + text
                     parsed = urlsplit(url)
@@ -31,7 +33,7 @@ def shorten(msg):
                     domainSuffixs = extractedDomains.domain + '.' + extractedDomains.suffix
                     print(extractedDomains)
                     print(extractedDomain)
-                    print(domain)
+                    
                
                     if r.status_code != 404:
                         b = r.json()
