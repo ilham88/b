@@ -15,7 +15,7 @@ def shorten(msg):
         if msg['text'].startswith('.trim'):
             text = msg['text'][5:]
             if text == '':
-                bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim https://bfas237blog.com` - _Trim Your long links for free_ Powered by Trimit.gq', 'Markdown', reply_to_message_id=msg['message_id'])
+                bot.sendMessage(msg['chat']['id'], '*Usage:* `.trim https://bfas237blog.com` - _Trim Your long links for free_ Powered by Trimit.gq', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
                 text = text.replace("http://","")
                 text = text.replace("https://","")
