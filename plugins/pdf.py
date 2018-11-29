@@ -20,8 +20,8 @@ def pdf(msg):
                 b = r.json()
                 print(b)
                 qoute = b[0]["quote"]
-                author = b[1]["author"]
-                category = b[2]["category"]
+                author = b[0]["author"]
+                category = b[0]["category"]
                 req = " Popular Quote"
                 icon = "💬"
             bot.sendMessage(msg['chat']['id'], "\n\n{} *{}*\n\n*Author:* `{}`\n\n*Category:* `{}`\n\n*{} Content:* {}".format(icon, req, author, category, q), 
