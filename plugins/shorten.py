@@ -22,7 +22,7 @@ def shorten(msg):
                 remove_spacec = url.split(' ')
                 final_namec = ''.join(remove_spacec)
                 r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                parsedc = urlparse(final_namec)
+                parsedc = urlparse(text)
                 domain = parsedc.netloc.split(".")[1:]
                 hostc = ".".join(domain)
                 print(hostc)
