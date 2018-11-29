@@ -28,13 +28,6 @@ def shorten(msg):
                     remove_spacec = url.split(' ')
                     final_namec = ''.join(remove_spacec)
                     r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                
-                    extractedDomain = tldextract.extract(final_namec)
-                    domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
-                
-                    print(domainSuffix)
-                    
-                    smsg = 'Hello there! to know more about me, start me in private and understand how i work.'
                     if r.status_code != 404:
                         b = r.json()
                         print(b)
@@ -55,7 +48,9 @@ def shorten(msg):
                             inf = "(Used for stats)"
                             Status = b["Status"]
                             icon = "✅"
-                            
-                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit {}', url='{}'.format(domainSuffix, Link))]])
+                        extractedDomain = tldextract.extract(final_namec)
+                        domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
+                        print(domainSuffix)    
+                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit {}', url='{}'.format(Status, Link))]])
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
                             parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
