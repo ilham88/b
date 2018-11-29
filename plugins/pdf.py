@@ -17,18 +17,19 @@ def pdf(msg):
             if text == '':
                 bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
             else:
-                text = text.replace("http://","")
-                text = text.replace("https://","")
-                if not re.match(r'http(s?)\:', text):
-                    url = 'http://' + text
-                    parsed = urlsplit(url)
-                    host = parsed.netloc
-                    if host.startswith('www.'):
-                        host = host[4:]
-                    remove_spacec = url.split(' ')
-                    final_namec = ''.join(remove_spacec)
-                    r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
-                    query = "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous"
-                    rs = urlrequest.Request(query,data=None,headers={"X-Mashape-Key": "kAvkvpaPUJmshT7QBh0JDUC35d5Jp137h8djsn7GvDlBT3Gj8K", "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"})
-                    print(rs)
-                 
+                url = "http://trimit.gq/api"
+                remove_spacec = url.split(' ')
+                final_namec = ''.join(remove_spacec)
+                query = "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous"
+                headers={"X-Mashape-Key": "kAvkvpaPUJmshT7QBh0JDUC35d5Jp137h8djsn7GvDlBT3Gj8K", "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
+                r = requests.get(query, headers=headers)
+                if r.status_code != 404:
+                        b = r.json()
+                        print(b)
+                        extractedDomain = tldextract.extract(final_namec)
+                        domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
+                        print(domainSuffix)    
+                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit', url='https://ddhdhd.deddd')]])
+                        bot.sendMessage(msg['chat']['id'], ""This is just a test, 
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
+
