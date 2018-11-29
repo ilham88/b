@@ -18,8 +18,8 @@ ENV = bool(os.environ.get('ENV', False))
 if ENV:
     API_KEY = os.environ.get('API_KEY', None)
     API_HASH = os.environ.get('API_HASH',None)
-    LOGGER_GROUP=os.environ.get('LOGGER_GROUP',None)
-    LOGGER=os.environ.get('LOGGER',None)    #Incase you want to turn off logging, put this to false
+    LOGGER_GROUP=os.environ.get('LOGGER_GROUP')
+    LOGGER=os.environ.get('LOGGER')    #Incase you want to turn off logging, put this to false
     TRT_ENABLE=os.environ.get('TRT_ENABLE',None)
     PM_AUTO_BAN=os.environ.get('PM_AUTO_BAN',None)
     CONSOLE_LOGGER_VERBOSE=os.environ.get('CONSOLE_LOGGER_VERBOSE',None)
