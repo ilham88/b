@@ -19,11 +19,11 @@ def pdf(msg):
             if r.status_code != 404:
                 b = r.json()
                 print(b)
-                quote = b["quote"]
+                q = b["quote"]
                 author = b["author"]
                 category = b["category"]
                 req = " Popular Quote"
                 icon = "💬"
-            bot.sendMessage(msg['chat']['id'], "\n\n{} *{}*\n\n*Author:* `{}`\n\n*Category:* `{}`\n\n*{} Content:* {}".format(icon, req, author, category, quote), 
+            bot.sendMessage(msg['chat']['id'], "\n\n{} *{}*\n\n*Author:* `{}`\n\n*Category:* `{}`\n\n*{} Content:* {}".format(icon, req, author, category, q), 
                             parse_mode='Markdown', reply_to_message_id=msg['message_id'])
 
