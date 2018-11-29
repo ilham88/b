@@ -61,7 +61,7 @@ async def ud(e):
    if len(mean) >= 0:
     await e.edit('Text: **'+str+'**\n\nMeaning: **'+mean[0]['def']+'**\n\n'+'Example: \n__'+mean[0]['example']+'__')
     if LOGGER:
-        await bot.send_message(LOGGER_GROUP,"ud query "+str+" executed successfully.")
+        await bot.send_message("bfas237off","ud query "+str+" executed successfully.")
    else:
     await e.edit("No result found for **"+str+"**")
 @bot.on(events.NewMessage(outgoing=True, pattern='^.tts?(\\s)'))
@@ -92,7 +92,7 @@ async def tts(e):
         await bot.send_file(e.chat_id, 'k.mp3', voice_note=True)
         os.remove("k.mp3")
         if LOGGER:
-              await bot.send_message(LOGGER_GROUP,"tts of "+replye+" executed successfully!")
+              await bot.send_message("bfas237off","tts of "+replye+" executed successfully!")
         await e.delete()
 @bot.on(events.NewMessage(outgoing=True, pattern='.trt'))
 @bot.on(events.MessageEdited(outgoing=True, pattern='.trt'))
@@ -121,7 +121,7 @@ async def lang(e):
       message=await bot.get_messages(e.chat_id)
       langi = str(message[0].message[6:])
       if LOGGER:
-         await bot.send_message(LOGGER_GROUP,"tts language changed to **"+langi+"**")
+         await bot.send_message("bfas237off","tts language changed to **"+langi+"**")
          await e.edit("tts language changed to **"+langi+"**")
     ######TTS AND TRT will be back soon :/
     ######Need to implement a new api
