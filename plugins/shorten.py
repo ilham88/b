@@ -5,6 +5,7 @@ from urllib.parse import urlparse, urlsplit
 import http.client, sys, re
 from os.path import splitext
 bot = config.bot
+import tldextract
 from tldextract import extract
 def shorten(msg):
     if msg.get('text'):
