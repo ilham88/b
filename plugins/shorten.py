@@ -25,7 +25,10 @@ def shorten(msg):
                 parsedc = urlparse(text)
                 domain = parsedc.netloc.split(".")[1:]
                 hostc = ".".join(domain)
+                token=my_string.split('http://')[1].split('/')[0]
+                top_level=token.split('.')[-2]+'.'+token.split('.')[-1]
                 print(hostc)
+                print(top_level)
                 try:
                     if r.status_code != 404:
                         b = r.json()
