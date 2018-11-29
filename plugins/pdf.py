@@ -30,6 +30,6 @@ def pdf(msg):
                         domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
                         print(domainSuffix)    
                         dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit', url='https://ddhdhd.deddd')]])
-                        bot.sendMessage(msg['chat']['id'], ""This is just a test, 
+                        bot.sendMessage(msg['chat']['id'], "This is just a test", 
                             parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
 
