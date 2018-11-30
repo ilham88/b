@@ -33,3 +33,4 @@ progressbar2
 tqdm
 logger
 tldextract
+virustotal-api
