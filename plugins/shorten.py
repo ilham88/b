@@ -13,6 +13,7 @@ from tldextract import extract
 def shorten(msg):
     if msg.get('text'):
          if msg['text'].split()[0] == '!trim':
+                text = msg['text'].split()[5]
                 text = text.replace("http://","")
                 text = text.replace("https://","")
                 if not re.match(r'http(s?)\:', text):
