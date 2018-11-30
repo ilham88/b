@@ -1,4 +1,3 @@
-from __future__ import print_function
 import sys, io
 import traceback
 from amanobot.loop import MessageLoop
