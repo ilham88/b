@@ -135,7 +135,7 @@ def dados(msg):
                 while option == "":
                     
                     markup = ForceReply()
-                    bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)['message_id']
+                    bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)
                     option = input(msg['text'][2:])
                     try:
                         if 0 <= int(msg['text'][2:]) < len(APPS):
