@@ -128,21 +128,12 @@ def dados(msg):
             if len(APPS) > 0:
                 for idx, app in enumerate(APPS):
                     bot.sendMessage(msg['chat']['id'], '[{:02d}] {}\n     Developer: {}\n/{}\n========================================='.format(idx, app[0], app[1], idx), 'Markdown')
-                    
+                inpu = msg['text'][2:]
+                bot.sendMessage(msg['chat']['id'], 'Downloading {}.apk ...'.format(APPS[inpu][2].split('/')[-1]), 'Markdown')
+                        
+                
 
-                if msg['text'].startswith('/'):
-                    if len(msg['text']) > 1:
-                        num = " ".join(msg['text'][1:])
-                        option = num
-                    else:
-                        print('That was not a valid option')
-                        option = ""
-                except ValueError:
-                    option = ""
-
-                print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
-
-                download(APPS[option][2])
+                download(APPS[inpu][2])
 
                 print('Download completed!')
             else:
