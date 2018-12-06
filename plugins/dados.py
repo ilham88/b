@@ -147,6 +147,6 @@ def dados(msg):
                     print('Download completed!')
                 else:
                     print('No results')
-            else:
+            except ValueError:
                 print('Missing input! Try:')
                 print('apkdl [app name]')
