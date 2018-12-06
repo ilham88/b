@@ -125,12 +125,8 @@ def dados(msg):
                 os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
             #bot.deleteMessage((msg['chat']['id'],sent))
-            if len(APPS) > 0:
+            if len(APPS) >= 10:
                 x = ""
-                APPS = range(10)
-                limit = 5
-                for i in range(min(limit, len(APPS))):
-                    print (APPS[i])
                 for idx, app in enumerate(APPS):
                     x += """[{:02d}] *{}*\n *Developer*: _{}_\n========================================= \n""".format(idx, app[0], app[1])
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
