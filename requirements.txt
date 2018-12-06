@@ -35,3 +35,4 @@ logger
 tldextract
 virustotal-api
 pyaxmlparser
+telepot
