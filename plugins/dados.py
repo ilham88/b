@@ -72,37 +72,6 @@ def shuffle(word):
     word = "".join(word)
     return word
 
-def equivalent(data, nt):
-    if type(data) is dict:
-        keys = list(data.keys())
-
-        # number of dictionary keys == number of non-None values in namedtuple?
-        if len(keys) != len([f for f in nt._fields if getattr(nt, f) is not None]):
-            return False
-
-        # map `from` to `from_`
-        fields = list([k+'_' if k in ['from'] else k for k in keys])
-
-        return all(map(equivalent, [data[k] for k in keys], [getattr(nt, f) for f in fields]))
-    elif type(data) is list:
-        return all(map(equivalent, data, nt))
-    else:
-        return data==nt
-def examine(result, type):
-    try:
-        print('Examining %s ......' % type)
-
-        nt = type(**result)
-        assert equivalent(result, nt), 'Not equivalent:::::::::::::::\n%s\n::::::::::::::::\n%s' % (result, nt)
-
-        pprint.pprint(result)
-        pprint.pprint(nt)
-        print()
-    except AssertionError:
-        traceback.print_exc()
-        answer = input('Do you want to continue? [y] ')
-        if answer != 'y':
-            exit(1)
 def pretty_size(size):
     units = ['B', 'KB', 'MB', 'GB']
     unit = 0
@@ -111,7 +80,6 @@ def pretty_size(size):
         unit += 1
     return '%0.2f %s' % (size, units[unit])
 def dados(msg):
-    content_type, chat_type, chat_id, msg_date, msg_id = amanobot.glance(msg, long=True)
     if msg.get('text'):
         teclado = keyboard.restart_dl
         if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
@@ -161,9 +129,8 @@ def dados(msg):
                             time.sleep(5)
                             starts = datetime.now()
                             if total_length < 52428800:
-                                bot.sendChatAction(chat_id, 'upload_document')
-                                tr = bot.sendDocument(chat_id, open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
-                                examine(tr, amanobot.namedtuple.Message)
+                                bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                                tr = bot.sendDocument(msg['chat']['id'], open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
                                 time.sleep(0.5)
                                 ends = datetime.now()
                                 mss = (ends - starts).seconds
