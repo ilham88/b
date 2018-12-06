@@ -110,8 +110,7 @@ def search(query):
 from apkdl.dl import download, search, APPS
 import sys
 
-def main():
-    dados(msg):
+def dados(msg):
     if msg.get('text'):
 
         if msg['text'].startswith('!dl'):
