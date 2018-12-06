@@ -128,10 +128,10 @@ def dados(msg):
             if len(APPS) > 5:
                 x = ""
                 for idx, app in enumerate(APPS):
-                    x += """[{:02d}] *{}*\n *Developer*: _{}_\n========================================= \n""".format(idx, app[0], app[1])
+                    x += """[{:02d}] *{}*\n *Developer*: _{}_\n    ================== \n""".format(idx, app[0], app[1])
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
                 markup = ForceReply()
-                bot.sendMessage(chat_id, 'Which app do you want to download', reply_to_message_id=msg['message_id'], reply_markup=markup)
+                bot.sendMessage(msg['chat']['id'], 'Which app do you want to download', reply_to_message_id=msg['message_id'], reply_markup=markup)
                 inpu = msg['text'][2:]
                 bot.sendMessage(msg['chat']['id'], 'Downloading {}.apk ...'.format(APPS[inpu][2].split('/')[-1]), 'Markdown')
                         
