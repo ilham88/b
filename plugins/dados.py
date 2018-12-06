@@ -137,8 +137,8 @@ def dados(msg):
                     markup = ForceReply()
                     option = bot.sendMessage(msg['chat']['id'], 'Which app would you like to download?\n', reply_markup=markup)
                     try:
-                        if 0 <= int(option) < len(APPS):
-                            option = int(option)
+                        if 0 <= option < len(APPS):
+                            option = option
                         else:
                             print('That was not a valid option')
                             option = ""
