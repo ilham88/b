@@ -113,8 +113,8 @@ def dados(msg):
 
         if msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
-        if len(sys.argv) > 1:
-            query = " ".join(sys.argv[1:])
+        if len(sys.argv) > 3:
+            query = " ".join(sys.argv[3:])
 
             print('Searching for: {}'.format(query))
 
