@@ -34,3 +34,4 @@ tqdm
 logger
 tldextract
 virustotal-api
+pyaxmlparser
