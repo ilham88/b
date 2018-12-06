@@ -107,8 +107,6 @@ def search(query):
         APPS.append((app.text,
                     i.findAll('p')[1].find('a').text,
                     'https://apkpure.com' + app['href']))
-from apkdl.dl import download, search, APPS
-import sys
 
 def dados(msg):
     if msg.get('text'):
