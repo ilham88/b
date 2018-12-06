@@ -133,8 +133,8 @@ def dados(msg):
                 option = ""
                 while option == "":
 
-                    markup = ForceReply()
-                    option = bot.sendMessage(msg['chat']['id'], 'Which app would you like to download?\n')
+                    
+                    bot.sendMessage(msg['chat']['id'], 'Which app would you like to download?\n')
                     try:
                         if msg['text'].startswith('/'):
                             if len(msg['text']) > 1:
