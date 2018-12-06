@@ -111,7 +111,7 @@ def search(query):
 def dados(msg):
     if msg.get('text'):
 
-        if msg['text'].startswith('dl'):
+        if msg['text'].startswith('!dl'):
             inpufff = msg['text'][3:]
         if len(msg['text']) > 3:
             query = " ".join(msg['text'][3:])
