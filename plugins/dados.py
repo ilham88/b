@@ -130,18 +130,20 @@ def dados(msg):
                     apps = "_".join(app[0].split())
                     x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps)
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
+                
+                
                 option = ""
                 while option == "":
                     markup = ForceReply()
-                bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)
-                option = input(msg['text'])
-                try:
-                    if 0 <= int(msg['text']) < len(APPS):
-                        option = int(msg['text'])
-                    else:
-                        bot.sendMessage(msg['chat']['id'], "That was not a valid option", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)
-                        option = ""
-                except ValueError:
+                bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)['message_id']
+                    option = input(msg['text'][2:])
+                    try:
+                        if 0 <= int(msg['text'][2:]) < len(APPS):
+                            option = int(msg['text'][2:])
+                        else:
+                            print('That was not a valid option')
+                            option = ""
+                    except ValueError:
                         option = ""
 
                 print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
