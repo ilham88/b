@@ -124,7 +124,7 @@ def dados(msg):
             if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                 os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
-            bot.deleteMessage((msg['chat']['id'],sent))
+            #bot.deleteMessage((msg['chat']['id'],sent))
             if len(APPS) > 0:
                 for idx, app in enumerate(APPS):
                     vvx += """[{:02d}] {}\n     Developer: {}\n========================================= \n\n""".format(idx, app[0], app[1])
