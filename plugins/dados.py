@@ -112,9 +112,9 @@ def dados(msg):
     if msg.get('text'):
 
         if msg['text'].startswith('dl'):
-            input_str = msg['text'][3:]
+            inpufff = msg['text'][3:]
         if len(msg['text']) > 3:
-            query = " ".join(input_str)
+            query = " ".join(msg['text'][3:])
 
             print('Searching for: {}'.format(query))
 
