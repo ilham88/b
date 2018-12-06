@@ -127,18 +127,19 @@ def dados(msg):
             bot.deleteMessage((msg['chat']['id'],sent))
             if len(APPS) > 0:
                 for idx, app in enumerate(APPS):
-
-                    print("""[{:02d}] {}\n     Developer: {}""".format(idx, app[0], app[1]))
-                    print('=========================================')
+                    bot.sendMessage(msg['chat']['id'], '[{:02d}] {}\n     Developer: {}\n/{}\n========================================='.format(idx, app[0], app[1], idx), 'Markdown')
+                    
 
                 option = ""
                 while option == "":
 
                     markup = ForceReply()
-                    option = bot.sendMessage(msg['chat']['id'], 'Which app would you like to download?\n', reply_markup=markup)
+                    option = bot.sendMessage(msg['chat']['id'], 'Which app would you like to download?\n')
                     try:
-                        if 0 <= option < len(APPS):
-                            option = option
+                        if msg['text'].startswith('/'):
+                            if len(msg['text']) > 1:
+                                num = " ".join(msg['text'][1:])
+                            option = num
                         else:
                             print('That was not a valid option')
                             option = ""
