@@ -128,8 +128,8 @@ def dados(msg):
             if len(APPS) > 0:
                 x = ""
                 lim = 10
-                for idx, app in enumerate(APPS[lim]):
-                    x += """[{:02d}] *{}*\n *Developer*: _{}_\n========================================= \n""".format(idx, app[0], app[1])
+                for idx, app in enumerate(APPS):
+                    x += """[{:02d}] *{}*\n *Developer*: _{}_\n========================================= \n""".format(idx[lim], app[0], app[1])
                 bot.editMessageText((msg['chat']['id'], sent), x, 'Markdown', disable_web_page_preview=True)
                 markup = ForceReply()
                 bot.sendMessage(chat_id, 'Which app do you want to download', reply_to_message_id=msg['message_id'], reply_markup=markup)
