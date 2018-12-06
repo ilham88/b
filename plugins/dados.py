@@ -127,21 +127,21 @@ def dados(msg):
             if len(APPS) > 5:
                 x = ""
                 for idx, app in enumerate(APPS):
-                    apps = app[0].replace(" ","_")
-                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps[0])
+                    apps = "_".join(app[0].split())
+                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps)
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
-                markup = ForceReply()
-                bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)['message_id']
+                
                 
                 option = ""
                 while option == "":
-
-                    option = input(msg['text'][2:])
+                    markup = ForceReply()
+                bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)
+                    option = input(msg['text'])
                     try:
-                        if 0 <= int(msg['text'][2:]) < len(APPS):
-                            option = int(msg['text'][2:])
+                        if 0 <= int(msg['text']) < len(APPS):
+                            option = int(msg['text'])
                         else:
-                            print('That was not a valid option')
+                            bot.sendMessage(msg['chat']['id'], "That was not a valid option", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)
                             option = ""
                     except ValueError:
                         option = ""
