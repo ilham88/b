@@ -127,8 +127,8 @@ def dados(msg):
             bot.deleteMessage((msg['chat']['id'],sent))
             if len(APPS) > 0:
                 for idx, app in enumerate(APPS):
-                    x += """[{:02d}] {}\n     Developer: {}\n========================================= \n\n""".format(idx, app[0], app[1])
-                bot.editMessageText((msg['chat']['id'], sent), "Your search for *{}* found this: \n\n{}".format(query, x), 'Markdown', disable_web_page_preview=True)
+                    vvx += """[{:02d}] {}\n     Developer: {}\n========================================= \n\n""".format(idx, app[0], app[1])
+                bot.editMessageText((msg['chat']['id'], sent), "Your search for *{}* found this: \n\n{}".format(query, vvx), 'Markdown', disable_web_page_preview=True)
                 markup = ForceReply()
                 bot.sendMessage(chat_id, 'Which app do you want to download', reply_to_message_id=msg['message_id'], reply_markup=markup)
                 inpu = msg['text'][2:]
