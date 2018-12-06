@@ -116,28 +116,29 @@ def dados(msg):
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-            search(" ".join(input_str))
-            if len(APPS) > 0:
-            print('Downloading {}.apk ...'.format(APPS[00][2].split('/')[-1]))
-            download(APPS[00][2])
-            print('Download completed!')
-            apk_file = format(APPS[00][2].split('/')[-1]) + '.apk'
+            else:
+                search(" ".join(input_str))
+                if len(APPS) > 0:
+                    print('Downloading {}.apk ...'.format(APPS[00][2].split('/')[-1]))
+                    download(APPS[00][2])
+                    print('Download completed!')
+                    apk_file = format(APPS[00][2].split('/')[-1]) + '.apk'
 
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                apk = APK(apk_file)
-                # print(apk.package)
-                # print(apk.version_name)
-                apk_version_name = apk.version_name
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        apk = APK(apk_file)
+                    # print(apk.package)
+                    # print(apk.version_name)
+                        apk_version_name = apk.version_name
                 # print(apk.version_code)
-                apk_version_code = apk.version_code
+                        apk_version_code = apk.version_code
                 # print(apk.icon_info)
                 # print(apk.icon_data)
-                apk_name = apk.application
+                        apk_name = apk.application
                 # print('Apk Name : '+apk_name)
-                print(apk_name + ' ' + apk_version_name + '_' + apk_version_code + '.apk')
+                        print(apk_name + ' ' + apk_version_name + '_' + apk_version_code + '.apk')
                 # os.rename(apk_file, apk_name+' '+apk_version_name+'_'+apk_version_code+'.apk')
-                copyfile(apk_file, apk_name + ' ' + apk_version_name + '_' + apk_version_code + '.apk')
+                        copyfile(apk_file, apk_name + ' ' + apk_version_name + '_' + apk_version_code + '.apk')
                 # os.remove(apk_file)
                 # shutil.move(apk_file, apk_name+' '+apk_version_name+'_'+apk_version_code+'.apk')
         else:
