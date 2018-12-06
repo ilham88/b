@@ -116,8 +116,8 @@ def dados(msg):
         if len(msg['text']) > 3:
             query = " ".join(msg['text'][3:])
             sent = bot.sendMessage(msg['chat']['id'], "🔍 Searching for: *{}*".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-                    os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+            if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+                os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
 
             if len(APPS) > 0:
