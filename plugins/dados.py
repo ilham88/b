@@ -116,10 +116,13 @@ def dados(msg):
         if len(msg['text']) > 3:
             query = " ".join(msg['text'][3:])
             sent = bot.sendMessage(msg['chat']['id'], "🔍 Searching for: *{}*".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+            
             if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                 os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
-
+            force_reply = {'force_reply': True}
+            nt_force_reply = amanobot.namedtuple.ForceReply(force_reply)
+            bot.deleteMessage((msg['chat']['id'],sent))
             if len(APPS) > 0:
                 for idx, app in enumerate(APPS):
                     print("""[{:02d}] {}\n     Developer: {}""".format(idx, app[0], app[1]))
@@ -127,7 +130,8 @@ def dados(msg):
 
                 option = ""
                 while option == "":
-                    option = input('Which app would you like to download?\n> ')
+
+                    option = bot.sendMessage(msg['chat']['id'], 'Which app would you like to download?\n', reply_markup=nt_force_reply)
                     try:
                         if 0 <= int(option) < len(APPS):
                             option = int(option)
