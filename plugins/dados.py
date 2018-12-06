@@ -14,7 +14,7 @@ import html
 import time
 import datetime
 from datetime import datetime
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote_plus
 from os.path import splitext
 from urllib.request import urlretrieve
 from urllib.request import urlopen
@@ -28,7 +28,7 @@ import amanobot
 import amanobot.namedtuple
 from tqdm import tqdm
 from amanobot.namedtuple import InlineKeyboardMarkup
-from amanobot.exception import TelegramError, NotEnoughRightsError
+import warnings
 from random import randint
 try:
     import urllib.request
