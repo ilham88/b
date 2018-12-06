@@ -43,7 +43,7 @@ except ImportError:
     python3 = False
 import config
 import keyboard
-
+import itertools
 bot = config.bot
 version = config.version
 bot_username = config.bot_username
@@ -125,10 +125,14 @@ def dados(msg):
                 os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
             #bot.deleteMessage((msg['chat']['id'],sent))
-            if len(APPS) >= 10:
+            if len(APPS) > 10:
                 x = ""
                 for idx, app in enumerate(APPS):
-                    x += """[{:02d}] *{}*\n *Developer*: _{}_\n========================================= \n""".format(idx, app[0], app[1])
+                    if idx = 10:
+                        break
+                        x += """[{:02d}] *{}*\n *Developer*: _{}_\n========================================= \n""".format(idx, app[0], app[1])
+                    else:
+                        x += """Search result is too long please try again"""
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
                 markup = ForceReply()
                 bot.sendMessage(chat_id, 'Which app do you want to download', reply_to_message_id=msg['message_id'], reply_markup=markup)
