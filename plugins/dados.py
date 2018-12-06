@@ -84,69 +84,69 @@ def pretty_size(size):
 APPS = []
 
 def download(link):
-	res = requests.get(link + '/download?from=details', headers={
-			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-		}).text
-	soup = BeautifulSoup(res, "html.parser").find('a', {'id':'download_link'})
-	if soup['href']:
-		r = requests.get(soup['href'], stream=True, headers={
-			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-		})
-		with open(link.split('/')[-1] + '.apk', 'wb') as file:
-			for chunk in r.iter_content(chunk_size=1024):
-				if chunk:
-					file.write(chunk)
+    res = requests.get(link + '/download?from=details', headers={
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+        }).text
+    soup = BeautifulSoup(res, "html.parser").find('a', {'id':'download_link'})
+    if soup['href']:
+        r = requests.get(soup['href'], stream=True, headers={
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+        })
+        with open(link.split('/')[-1] + '.apk', 'wb') as file:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk:
+                    file.write(chunk)
 
 def search(query):
-	res = requests.get('https://apkpure.com/search?q={}&region='.format(quote_plus(query)), headers={
-			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-		}).text
-	soup = BeautifulSoup(res, "html.parser")
-	for i in soup.find('div', {'id':'search-res'}).findAll('dl', {'class':'search-dl'}):
-		app = i.find('p', {'class':'search-title'}).find('a')
-		APPS.append((app.text,
-					i.findAll('p')[1].find('a').text,
-					'https://apkpure.com' + app['href']))
-def dados(msg):
+    res = requests.get('https://apkpure.com/search?q={}&region='.format(quote_plus(query)), headers={
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+        }).text
+    soup = BeautifulSoup(res, "html.parser")
+    for i in soup.find('div', {'id':'search-res'}).findAll('dl', {'class':'search-dl'}):
+        app = i.find('p', {'class':'search-title'}).find('a')
+        APPS.append((app.text,
+                    i.findAll('p')[1].find('a').text,
+                    'https://apkpure.com' + app['href']))
+from apkdl.dl import download, search, APPS
+import sys
+
+def main():
+    dados(msg):
     if msg.get('text'):
+
         if msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
-            if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
-                                parse_mode='Markdown',
-                                reply_to_message_id=msg['message_id'])
-            else:
-                query = " ".join(msg['text'][3:])
-                app_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "🔁 Searching for: {}".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-                    os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-                print('Searching for: {}'.format(query))
-                search(query)
+        if len(sys.argv) > 1:
+            query = " ".join(sys.argv[1:])
 
-                if len(APPS) > 0:
-                    for idx, app in enumerate(APPS):
-                        bot.editMessageText((msg['chat']['id'], sent), "[{:02d}] {}\n     Developer: {}\n=========================================\n".format(idx, app[0], app[1]), 'Markdown', disable_web_page_preview=True)
-                    bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])
-                    option = ""
-                    while option == "":
-                        option = input('Which app would you like to download?\n> ')
-                        try:
-                            if 0 <= int(option) < len(APPS):
-                                option = int(option)
-                            else:
-                                print('That was not a valid option')
-                                option = ""
-                        except ValueError:
+            print('Searching for: {}'.format(query))
+
+            search(query)
+
+            if len(APPS) > 0:
+                for idx, app in enumerate(APPS):
+                    print("""[{:02d}] {}\n     Developer: {}""".format(idx, app[0], app[1]))
+                    print('=========================================')
+
+                option = ""
+                while option == "":
+                    option = input('Which app would you like to download?\n> ')
+                    try:
+                        if 0 <= int(option) < len(APPS):
+                            option = int(option)
+                        else:
+                            print('That was not a valid option')
                             option = ""
+                    except ValueError:
+                        option = ""
 
-                    print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
+                print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
 
-                    download(APPS[option][2])
+                download(APPS[option][2])
 
-                    print('Download completed!')
-                else:
-                    print('No results')
-            except ValueError:
-                print('Missing input! Try:')
-                print('apkdl [app name]')
+                print('Download completed!')
+            else:
+                print('No results')
+        else:
+            print('Missing input! Try:')
+            print('apkdl [app name]')
