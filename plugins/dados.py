@@ -111,9 +111,9 @@ def search(query):
 def dados(msg):
     if msg.get('text'):
 
-        if msg['text'].startswith('apkdl'):
-            input_str = msg['text'][5:]
-        if len(msg['text']) > 5:
+        if msg['text'].startswith('dl'):
+            input_str = msg['text'][3:]
+        if len(msg['text']) > 3:
             query = " ".join(input_str)
 
             print('Searching for: {}'.format(query))
