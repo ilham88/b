@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -128,16 +127,28 @@ def dados(msg):
             if len(APPS) > 5:
                 x = ""
                 for idx, app in enumerate(APPS):
-                    x += """[{:02d}] {}""".format(idx, app[0])
+                    apps = app[0].replace(" ","_")
+                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps[0])
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
                 markup = ForceReply()
-                bot.sendMessage(msg['chat']['id'], "🔁 getting download link, reply_to_message_id=msg['message_id'], reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text=x)]]))['message_id']
+                bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)['message_id']
                 
-                bot.sendMessage(msg['chat']['id'], 'Downloading {}.apk ...'.format(APPS[inpu][2].split('/')[-1]), 'Markdown')
-                        
-                
+                option = ""
+                while option == "":
 
-                download(APPS[inpu][2])
+                    option = input(msg['text'][2:])
+                    try:
+                        if 0 <= int(msg['text'][2:]) < len(APPS):
+                            option = int(msg['text'][2:])
+                        else:
+                            print('That was not a valid option')
+                            option = ""
+                    except ValueError:
+                        option = ""
+
+                print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
+
+                download(APPS[option][2])
 
                 print('Download completed!')
             else:
