@@ -83,7 +83,7 @@ def pretty_size(size):
 def dados(msg):
     if msg.get('text'):
         teclado = keyboard.restart_dl
-        if msg['text'].startswith('/dl') or msg['text'].startswith('!dl'):
+        if msg['text'].startswith('!dl'):
             input_str = msg['text'][3:]
             if input_str == '':
                 bot.sendMessage(msg['chat']['id'], '*Use:* `/dl or !dl <url/link>`',
@@ -126,24 +126,30 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
-                            time.sleep(5)
-                            starts = datetime.now()
-                            if total_length < 52428800:
-                                bot.sendChatAction(msg['chat']['id'], 'upload_document')
-                                tr = bot.sendDocument(msg['chat']['id'], open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
-                                time.sleep(0.5)
-                                ends = datetime.now()
-                                mss = (ends - starts).seconds
-                                os.remove(required_file_name)
-                                bot.deleteMessage((msg['chat']['id'],sent))
-                            else:
-                                rst = InlineKeyboardMarkup(inline_keyboard=[[dict(text='❌ Recycle this message', callback_data='del_msgs')]])
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown', reply_markup=rst)
-                                os.remove(required_file_name)
+                            with warnings.catch_warnings():
+                                warnings.simplefilter("ignore")
+                                bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, upload_progress_string), 'Markdown')
                                 time.sleep(5)
-                                bot.deleteMessage((msg['chat']['id'],sent))
-                                return True
+                                starts = datetime.now()
+                                if total_length < 52428800:
+                                    bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                                    tr = bot.sendDocument(msg['chat']['id'], open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                                    time.sleep(0.5)
+                                    ends = datetime.now()
+                                    mss = (ends - starts).seconds
+                                    os.remove(required_file_name)
+                                    bot.deleteMessage((msg['chat']['id'],sent))
+                                else:
+                                    bot.editMessageText((msg['chat']['id'], sent), "⚠️ *{}* is more than the 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown')
+                                    os.remove(required_file_name)
+                                    time.sleep(5)
+                                    bot.deleteMessage((msg['chat']['id'],sent))
+                        else:
+                            print('No results')
+                    else:
+                        print('Missing apk package name')
+                        print('apkdl_downloader apk_package_name')
+                                    return True
     elif msg.get('data'):
         if msg['data'] == 'del_msgs':
             os.remove(required_file_name)
