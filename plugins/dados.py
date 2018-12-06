@@ -111,13 +111,13 @@ def search(query):
 def dados(msg):
     if msg.get('text'):
 
-        if msg['text'].startswith('!dl'):
+        if msg['text'].startswith('dl'):
             inpufff = msg['text'][3:]
         if len(msg['text']) > 3:
             query = " ".join(msg['text'][3:])
-
-            print('Searching for: {}'.format(query))
-
+            sent = bot.sendMessage(msg['chat']['id'], "🔍 Searching for: *{}*".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+                    os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
 
             if len(APPS) > 0:
@@ -143,7 +143,9 @@ def dados(msg):
 
                 print('Download completed!')
             else:
-                print('No results')
+                bot.sendMessage(msg['chat']['id'], 'Your Search Returned no results. Try again',
+                                parse_mode='Markdown',
+                                reply_to_message_id=msg['message_id'])
         else:
             print('Missing input! Try:')
             print('apkdl [app name]')
