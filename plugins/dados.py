@@ -127,7 +127,9 @@ def dados(msg):
             bot.deleteMessage((msg['chat']['id'],sent))
             if len(APPS) > 0:
                 for idx, app in enumerate(APPS):
-                    bot.sendMessage(msg['chat']['id'], '[{:02d}] {}\n     Developer: {}\n/{}\n========================================='.format(idx, app[0], app[1], idx), 'Markdown')
+                    bot.editMessageText((msg['chat']['id'], '[{:02d}] {}\n     Developer: {}\n/{}\n========================================='.format(idx, app[0], app[1], idx), 'Markdown'))
+                markup = ForceReply()
+                bot.sendMessage(chat_id, 'Which app do you want to download', reply_to_message_id=msg['message_id'], reply_markup=markup)
                 inpu = msg['text'][2:]
                 bot.sendMessage(msg['chat']['id'], 'Downloading {}.apk ...'.format(APPS[inpu][2].split('/')[-1]), 'Markdown')
                         
