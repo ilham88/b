@@ -132,15 +132,15 @@ def dados(msg):
                         apk_version_name = apk.version_name
                 # print(apk.version_code)
                         apk_version_code = apk.version_code
-                # print(apk.icon_info)
-                # print(apk.icon_data)
+                        print(apk.icon_info)
+                        print(apk.icon_data)
                         apk_name = apk.application
-                # print('Apk Name : '+apk_name)
+                        print('Apk Name : '+apk_name)
                         print(apk_name + ' ' + apk_version_name + '_' + apk_version_code + '.apk')
-                # os.rename(apk_file, apk_name+' '+apk_version_name+'_'+apk_version_code+'.apk')
+                        os.rename(apk_file, apk_name+' '+apk_version_name+'_'+apk_version_code+'.apk')
                         copyfile(apk_file, apk_name + ' ' + apk_version_name + '_' + apk_version_code + '.apk')
-                # os.remove(apk_file)
-                # shutil.move(apk_file, apk_name+' '+apk_version_name+'_'+apk_version_code+'.apk')
+                        os.remove(apk_file)
+                        shutil.move(apk_file, apk_name+' '+apk_version_name+'_'+apk_version_code+'.apk')
         else:
             print('No results')
     else:
