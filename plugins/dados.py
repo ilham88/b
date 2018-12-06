@@ -124,25 +124,24 @@ def dados(msg):
                 os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
             #bot.deleteMessage((msg['chat']['id'],sent))
-            if len(APPS) > 5:
+            if len(APPS) > 10:
                 x = ""
                 for idx, app in enumerate(APPS):
                     apps = "_".join(app[0].split())
-                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps)
+                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], idx)
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
                 
                 option = ""
                 while option == "":
                     
-                    markup = ForceReply()
-                    bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)
-                    option = input(msg['text'][2:])
+                   option = bot.sendMessage(msg['chat']['id'], "Input a number to download", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                     try:
-                        if 0 <= int(msg['text'][2:]) < len(APPS):
-                            option = int(msg['text'][2:])
-                        else:
-                            print('That was not a valid option')
-                            option = ""
+                        if msg['text'].startswith('/'):
+                            if 0 <= int(msg['text'][2:]) < len(APPS):
+                                option = int(msg['text'][2:])
+                            else:
+                                bot.editMessageText((msg['chat']['id'], sent), "That was not a valid option", 'Markdown')
+                                option = ""
                     except ValueError:
                         option = ""
 
