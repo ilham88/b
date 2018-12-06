@@ -131,7 +131,7 @@ def dados(msg):
                     x += """[{:02d}] {}""".format(idx, app[0])
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
                 markup = ForceReply()
-                bot.sendMessage(msg['chat']['id'], "🔁 getting download link, reply_to_message_id=msg['message_id'], reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="""[{:02d}] {}""".format(idx, app[0]))]]))['message_id']
+                bot.sendMessage(msg['chat']['id'], "🔁 getting download link, reply_to_message_id=msg['message_id'], reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text=x)]]))['message_id']
                 
                 bot.sendMessage(msg['chat']['id'], 'Downloading {}.apk ...'.format(APPS[inpu][2].split('/')[-1]), 'Markdown')
                         
