@@ -127,7 +127,7 @@ def dados(msg):
             if len(APPS) > 5:
                 x = ""
                 for idx, app in enumerate(APPS):
-                    apps = = "_".join(app[0].split())
+                    apps = "_".join(app[0].split())
                     x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps)
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
                 
