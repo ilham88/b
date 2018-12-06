@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 import progressbar
 import requests
 import sys
-import requests
 import re
 import json
 import os
@@ -19,6 +18,8 @@ from os.path import splitext
 from urllib.request import urlretrieve
 from urllib.request import urlopen
 from shutil import copyfileobj
+from pyaxmlparser import APK
+from shutil import copyfile
 from tempfile import NamedTemporaryFile
 import threading
 import pprint
