@@ -47,21 +47,7 @@ bot_username = config.bot_username
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads/")
-def progress(current, total):
-    print("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
-def make_progress_bar():
-    return progressbar.ProgressBar(
-        redirect_stdout=True,
-        redirect_stderr=True,
-        widgets=[
-            progressbar.Percentage(),
-            progressbar.Bar(),
-            ' (',
-            progressbar.AdaptiveTransferSpeed(),
-            ' ',
-            progressbar.ETA(),
-            ') ',
-        ])
+
 dlk = keyboard.restart_dl
 
 def shuffle(word):
@@ -73,13 +59,13 @@ def shuffle(word):
     word = "".join(word)
     return word
 
-def pretty_size(size):
+def pretty_size(sizes):
     units = ['B', 'KB', 'MB', 'GB']
     unit = 0
-    while size >= 1024:
-        size /= 1024
+    while sizes >= 1024:
+        sizes /= 1024
         unit += 1
-    return '%0.2f %s' % (size, units[unit])
+    return '%0.2f %s' % (sizes, units[unit])
 
 APPS = []
  
@@ -140,7 +126,7 @@ def dados(msg):
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
-                        chunk_size = 1024
+                        chunk_size = 128
                         r = requests.get(downloadlink, stream = True) 
                         with open(required_file_name,"wb") as apk:
                             for chunk in r.iter_content(chunk_size=chunk_size):
@@ -169,7 +155,7 @@ def dados(msg):
                                 os.remove(required_file_name)
                                 bot.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ There was an error\n\n *{}* is more than 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown')
+                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ There was an error\n\n *{}* is more than 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n\n Try downloading something smaller than this".format(app_name), 'Markdown')
                                 os.remove(required_file_name)
                                 time.sleep(60)
                                 bot.deleteMessage((msg['chat']['id'],sent))
