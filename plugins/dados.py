@@ -134,11 +134,12 @@ def dados(msg):
                 option = ""
                 while option == "":
                     bot.sendMessage(msg['chat']['id'], "Enter an app number to download", 'Markdown', reply_to_message_id=msg['message_id'])
-                    time.sleep(5)
-                    option = input(msg['text'][2:])
+                    return
+                    
                     try:
-                        if 0 <= int(msg['text'][2:]) < len(APPS):
-                            option = int(msg['text'][2:])
+                        option = input(msg['text'])
+                        if 0 <= int(msg['text']) < len(APPS):
+                            option = int(msg['text'])
                         else:
                             print('That was not a valid option')
                             option = ""
