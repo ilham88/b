@@ -139,14 +139,14 @@ def dados(msg):
                                     done = int(100 * dl / total_length)
                                     apk.write(chunk)
                                     apk.flush()
-                                    apkf = APK(required_file_name)
+                                    
 					
                                     output_file_size = os.stat(required_file_name).st_size
                                     human_readable_progress = size(output_file_size, system=alternative) + " / " + \
 					size(int(r.headers["Content-Length"]), system=alternative)
 					
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* {} to Telegram \n\n {}".format(app_name, apkf.package, human_readable_progress), 'Markdown')
+                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, human_readable_progress), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             if total_length < 52428800:
