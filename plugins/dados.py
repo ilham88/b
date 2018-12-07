@@ -134,6 +134,7 @@ def dados(msg):
                 option = ""
                 while option == "":
                     bot.sendMessage(msg['chat']['id'], "Enter an app number to download", 'Markdown', reply_to_message_id=msg['message_id'])
+                    time.sleep(5)
                     option = input(msg['text'][2:])
                     try:
                         if 0 <= int(msg['text'][2:]) < len(APPS):
