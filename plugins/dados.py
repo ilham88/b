@@ -43,7 +43,7 @@ except ImportError:
 import config
 import keyboard
 import itertools
-bot = config.bot
+bot = config.bot 
 version = config.version
 bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
