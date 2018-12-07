@@ -154,12 +154,9 @@ def dados(msg):
 
                 
             else:
-                bot.sendMessage(msg['chat']['id'], 'Your Search Returned no results. Try again',
+                bot.sendMessage(msg['chat']['id'], '*Missing input* `try again with correct one`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-        else:
+        
             
-            bot.sendMessage(msg['chat']['id'], '*Missing input* `try again with correct one`',
-                                parse_mode='Markdown',
-                                reply_to_message_id=msg['message_id'])
             
