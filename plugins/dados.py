@@ -133,17 +133,16 @@ def dados(msg):
 def get(msg):
     if msg.get('text'):                
         option = ""
-        while option == "":
-            sents = bot.sendMessage(msg['chat']['id'], "Enter a Number to dowwnload, 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-            option = input(msg['text'][2:])
-            try:
-                if 0 <= int(option) < len(APPS):
-                    option = int(option)
-                else:
-                    print('That was not a valid option')
-                    option = ""
-            except ValueError:
+        sents = bot.sendMessage(msg['chat']['id'], "Enter a Number to dowwnload, 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+        option = input(msg['text'][2:])
+        try:
+            if 0 <= int(option) < len(APPS):
+                option = int(option)
+            else:
+                print('That was not a valid option')
                 option = ""
+        except ValueError:
+            option = ""
 
         print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
 
@@ -154,3 +153,4 @@ def get(msg):
         bot.sendMessage(msg['chat']['id'], 'Your Search Returned no results. Try again',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
+    
