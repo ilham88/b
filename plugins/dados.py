@@ -133,7 +133,7 @@ def dados(msg):
                 
                 option = ""
                 while option == "":
-                    bot.sendMessage(msg['chat']['id'], "Enter an app number to download", 'Markdown', reply_to_message_id=msg['message_id'])
+                    goy = bot.sendMessage(msg['chat']['id'], "Enter an app number to download", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                     return
                     
                     try:
@@ -141,20 +141,21 @@ def dados(msg):
                         if 0 <= int(msg['text']) < len(APPS):
                             option = int(msg['text'])
                         else:
-                            print('That was not a valid option')
+                            bot.editMessageText((msg['chat']['id'], goy), 'That was not a valid option', 'Markdown')
                             option = ""
                     except ValueError:
                         option = ""
 
-                print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
+                bot.editMessageText((msg['chat']['id'], goy), 'Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]), 'Markdown')
 
                 download(APPS[option][2])
+                bot.editMessageText((msg['chat']['id'], goy), 'Download completed!', 'Markdown')
 
-                print('Download completed!')
+                
             else:
                 bot.sendMessage(msg['chat']['id'], 'Your Search Returned no results. Try again',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
         else:
-            print('Missing input! Try:')
-            print('apkdl [app name]')
+            bot.editMessageText((msg['chat']['id'], goy), 'Missing input! Try:\n\n apkdl [app name]', 'Markdown')
+            
