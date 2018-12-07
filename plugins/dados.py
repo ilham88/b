@@ -153,7 +153,8 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     output_file_size = os.stat(required_file_name).st_size
-                                    human_readable_progress = size(output_file_size, system=alternative) + " / " + \ size(int(r.headers["Content-Length"]), system=alternative)
+                                    human_readable_progress = size(output_file_size, system=alternative) + " / " + \
+					size(int(r.headers["Content-Length"]), system=alternative)
 					
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
                             bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, human_readable_progress), 'Markdown')
