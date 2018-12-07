@@ -9,6 +9,9 @@ import threading
 from amanobot.exception import TooManyRequestsError, NotEnoughRightsError
 from urllib3.exceptions import ReadTimeoutError
 import db_handler as db
+from flask import Flask
+from datetime import datetime
+app = Flask(__name__)
 
 
 bot = config.bot
@@ -48,6 +51,16 @@ def handle(msg):
 
 {}'''.format(plugin, res))
 
+@app.route('/')
+def homepage():
+    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
+
+    return """
+    <h1>Hello heroku</h1>
+    <p>It is currently {time}.</p>
+    <img src="http://loremflickr.com/600/400" />
+    """.format(time=the_time)
+
 
 print('\n\nBot started! {}\n'.format(config.version))
 
@@ -67,6 +80,9 @@ else:
 Verion: {}
 Plugins Loaded: {}
 An error occured in {} plugin(s){}'''.format(config.version, len(ep), len(n_ep), ': '+(', '.join(n_ep)) if n_ep else ''))
+    
+if __name__ == '__main__':
+app.run(debug=True, use_reloader=True)
 
 while True:
     time.sleep(10)
