@@ -159,7 +159,7 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
         else:
-            bot.deleteMessage((msg['chat']['id'],goy))
+            
             bot.sendMessage(msg['chat']['id'], '*Missing input* `try again with correct one`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
