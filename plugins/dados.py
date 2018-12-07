@@ -82,7 +82,7 @@ def pretty_size(size):
     return '%0.2f %s' % (size, units[unit])
 
 APPS = []
-
+ 
 def download(link):
 	res = requests.get(link + '/download?from=details', headers={
 			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
