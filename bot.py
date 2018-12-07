@@ -9,9 +9,7 @@ import threading
 from amanobot.exception import TooManyRequestsError, NotEnoughRightsError
 from urllib3.exceptions import ReadTimeoutError
 import db_handler as db
-from flask import Flask
-from datetime import datetime
-app = Flask(__name__)
+
 
 
 bot = config.bot
