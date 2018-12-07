@@ -152,7 +152,7 @@ def dados(msg):
                                     done = int(100 * dl / total_length)
                                     apk.write(chunk)
                                     apk.flush()
-                                    output_file_size = os.stat(downloadlink).st_size
+                                    output_file_size = os.stat(required_file_name).st_size
                                     human_readable_progress = size(output_file_size, system=alternative) + " / " + \
                                   size(int(r.headers["Content-Length"]), system=alternative)
                                     
