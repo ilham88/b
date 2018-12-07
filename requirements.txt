@@ -36,4 +36,4 @@ tldextract
 virustotal-api
 pyaxmlparser
 telepot
-flask 
+hurry.filesize 
