@@ -39,7 +39,7 @@ except ImportError:
     python3 = False
 import config
 import keyboard
-
+from hurry.filesize import size, alternative
 bot = config.bot
 version = config.version
 bot_username = config.bot_username
