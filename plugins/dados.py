@@ -134,10 +134,12 @@ def dados(msg):
                 option = ""
                 while option == "":
                     goy = bot.sendMessage(msg['chat']['id'], "Enter an app number to download", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                    return
-                    
+                    return True
+                    if content_type != 'text':
+                        bot.editMessageText((msg['chat']['id'], goy), 'Give me a number, please.', 'Markdown')
+                        return
                     try:
-                        option = input(msg['text'])
+                        option = int(msg['text'])
                         if 0 <= int(msg['text']) < len(APPS):
                             option = int(msg['text'])
                         else:
@@ -157,5 +159,6 @@ def dados(msg):
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
         else:
-            bot.editMessageText((msg['chat']['id'], goy), 'Missing input! Try:\n\n apkdl [app name]', 'Markdown')
+            bot.deleteMessage(msg['chat']['id'], goy)
+            bot.sendMessage(msg['chat']['id'], , 'Missing input! Try:\n\n apkdl [app name]', parse_mode='Markdown', reply_to_message_id=msg['message_id'])
             
