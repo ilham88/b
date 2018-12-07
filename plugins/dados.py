@@ -1,12 +1,3 @@
- True}
-            nt_force_reply = amanobot.namedtuple.ForceReply(force_reply)
-
-            if len(APPS) > 0:
-                for idx, app in enumerate(APPS):
-                    print("""[{:02d}] {}\n     Developer: {}""".format(idx, app[0], app[1]))
-                    print('====================')
-
-
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
