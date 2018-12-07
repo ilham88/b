@@ -1,3 +1,12 @@
+ True}
+            nt_force_reply = amanobot.namedtuple.ForceReply(force_reply)
+
+            if len(APPS) > 0:
+                for idx, app in enumerate(APPS):
+                    print("""[{:02d}] {}\n     Developer: {}""".format(idx, app[0], app[1]))
+                    print('====================')
+
+
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -115,33 +124,34 @@ def dados(msg):
     if msg.get('text'):
 
         if msg['text'].startswith('!dl'):
-            inpufff = msg['text'][4:]
-        if len(msg['text']) > 4:
-            query = " ".join(msg['text'][4:])
+            inpufff = msg['text'][3:]
+        if len(msg['text']) > 3:
+            query = " ".join(msg['text'][3:])
             sent = bot.sendMessage(msg['chat']['id'], "🔍 Searching for: *{}*".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
 
             if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                 os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             search(query)
             #bot.deleteMessage((msg['chat']['id'],sent))
-            if len(APPS) > 10:
+            if len(APPS) > 5:
                 x = ""
                 for idx, app in enumerate(APPS):
-                    apps = "_".join(app[0].split())
-                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], idx)
+                    apps = app[0].replace(" ","_")
+                    x += """`[{:02d}]` *{}*\n /{}\n\n""".format(idx, app[0], apps)
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
+                
                 
                 option = ""
                 while option == "":
-                    
-                   option = bot.sendMessage(msg['chat']['id'], "Input a number to download", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                    markup = ForceReply()
+                    bot.sendMessage(msg['chat']['id'], "Which app would you like to download?", 'Markdown', reply_to_message_id=msg['message_id'], reply_markup=markup)['message_id']
+                    option = input(msg['text'][2:])
                     try:
-                        if msg['text'].startswith('/'):
-                            if 0 <= int(msg['text'][2:]) < len(APPS):
-                                option = int(msg['text'][2:])
-                            else:
-                                bot.editMessageText((msg['chat']['id'], sent), "That was not a valid option", 'Markdown')
-                                option = ""
+                        if 0 <= int(msg['text'][2:]) < len(APPS):
+                            option = int(msg['text'][2:])
+                        else:
+                            print('That was not a valid option')
+                            option = ""
                     except ValueError:
                         option = ""
 
