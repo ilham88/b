@@ -31,7 +31,7 @@ from tqdm import tqdm
 from amanobot.namedtuple import InlineKeyboardMarkup
 import warnings
 from random import randint
-import apk_parse_ph4
+
 try:
     import urllib.request
     python3 = True
@@ -140,8 +140,6 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     apkf = APK(required_file_name)
-					
-                                    apkf = APK(read(required_file_name), raw=True)
 					
                                     output_file_size = os.stat(required_file_name).st_size
                                     human_readable_progress = size(output_file_size, system=alternative) + " / " + \
