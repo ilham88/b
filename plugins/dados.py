@@ -130,27 +130,29 @@ def dados(msg):
                     x += """`[{:02d}]` *{}*\n *Developer*: {}\n=====================\n\n""".format(idx, app[0], app[1])
                 bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
 
-def get(msg):
-    if msg.get('text'):                
-        option = ""
-        sents = bot.sendMessage(msg['chat']['id'], "Enter a Number to dowwnload, 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-        option = input(msg['text'][2:])
-        try:
-            if 0 <= int(option) < len(APPS):
-                option = int(option)
-            else:
-                print('That was not a valid option')
+                
                 option = ""
-        except ValueError:
-            option = ""
+                while option == "":
+                    bot.sendMessage(msg['chat']['id'], "Enter an app number to download, 'Markdown', reply_to_message_id=msg['message_id'])
+                    option = input(msg['text'][2:])
+                    try:
+                        if 0 <= int(msg['text'][2:]) < len(APPS):
+                            option = int(msg['text'][2:])
+                        else:
+                            print('That was not a valid option')
+                            option = ""
+                    except ValueError:
+                        option = ""
 
-        print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
+                print('Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]))
 
-        download(APPS[option][2])
+                download(APPS[option][2])
 
-        print('Download completed!')
-    else:
-        bot.sendMessage(msg['chat']['id'], 'Your Search Returned no results. Try again',
+                print('Download completed!')
+            else:
+                bot.sendMessage(msg['chat']['id'], 'Your Search Returned no results. Try again',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
-    
+        else:
+            print('Missing input! Try:')
+            print('apkdl [app name]')
