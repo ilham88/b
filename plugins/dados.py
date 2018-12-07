@@ -31,6 +31,7 @@ from tqdm import tqdm
 from amanobot.namedtuple import InlineKeyboardMarkup
 import warnings
 from random import randint
+import apk_parse_ph4
 try:
     import urllib.request
     python3 = True
