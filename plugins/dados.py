@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import print_function
@@ -11,7 +12,6 @@ import os
 import html
 import time
 import datetime
-import telepot
 from datetime import datetime
 from urllib.parse import urlparse, quote_plus
 from os.path import splitext
@@ -28,10 +28,7 @@ import urllib.request
 import amanobot
 import amanobot.namedtuple
 from tqdm import tqdm
-import telepot
-from amanobot.namedtuple import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, ForceReply
-from amanobot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
-from amanobot.namedtuple import InlineQueryResultArticle, InlineQueryResultPhoto, InputTextMessageContent
+from amanobot.namedtuple import InlineKeyboardMarkup
 import warnings
 from random import randint
 try:
@@ -42,8 +39,8 @@ except ImportError:
     python3 = False
 import config
 import keyboard
-import itertools
-bot = config.bot 
+
+bot = config.bot
 version = config.version
 bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
@@ -86,77 +83,98 @@ def pretty_size(size):
 
 APPS = []
 
-def download(link): 
-    res = requests.get(link + '/download?from=details', headers={
-            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-        }).text
-    soup = BeautifulSoup(res, "html.parser").find('a', {'id':'download_link'})
-    if soup['href']:
-        r = requests.get(soup['href'], stream=True, headers={
-            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-        })
-        with open(link.split('/')[-1] + '.apk', 'wb') as file:
-            for chunk in r.iter_content(chunk_size=1024):
-                if chunk:
-                    file.write(chunk)
+def download(link):
+	res = requests.get(link + '/download?from=details', headers={
+			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+		}).text
+	soup = BeautifulSoup(res, "html.parser").find('a', {'id':'download_link'})
+	if soup['href']:
+		r = requests.get(soup['href'], stream=True, headers={
+			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+		})
+		with open(link.split('/')[-1] + '.apk', 'wb') as file:
+			for chunk in r.iter_content(chunk_size=1024):
+				if chunk:
+					file.write(chunk)
 
 def search(query):
-    res = requests.get('https://apkpure.com/search?q={}&region='.format(quote_plus(query)), headers={
-            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-        }).text
-    soup = BeautifulSoup(res, "html.parser")
-    for i in soup.find('div', {'id':'search-res'}).findAll('dl', {'class':'search-dl'}):
-        app = i.find('p', {'class':'search-title'}).find('a')
-        APPS.append((app.text,
-                    i.findAll('p')[1].find('a').text,
-                    'https://apkpure.com' + app['href']))
-
+	res = requests.get('https://apkpure.com/search?q={}&region='.format(quote_plus(query)), headers={
+			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+		}).text
+	soup = BeautifulSoup(res, "html.parser")
+	for i in soup.find('div', {'id':'search-res'}).findAll('dl', {'class':'search-dl'}):
+		app = i.find('p', {'class':'search-title'}).find('a')
+		APPS.append((app.text,
+					i.findAll('p')[1].find('a').text,
+					'https://apkpure.com' + app['href']))
 def dados(msg):
     if msg.get('text'):
-
-        if msg['text'].startswith('!dl'):
-            inpufff = msg['text'][3:]
-            query = " ".join(inpufff)
-            sent = bot.sendMessage(msg['chat']['id'], "🔍 Searching for: *{}*".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-
-            if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-                os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-            search(query)
-            #bot.deleteMessage((msg['chat']['id'],sent))
-            if len(APPS) > 5:
-                x = ""
-                for idx, app in enumerate(APPS):
-                    x += """`[{:02d}]` *{}*\n *Developer*: {}\n=====================\n\n""".format(idx, app[0], app[1])
-                bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading to Telegram \n\n {}".format(x), 'Markdown')
-
-                
-                option = ""
-                while option == "":
-                    goy = bot.sendMessage(msg['chat']['id'], "Enter an app number to download", 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
-                    return True
-                    if content_type != 'text':
-                        bot.editMessageText((msg['chat']['id'], goy), 'Give me a number, please.', 'Markdown')
-                        return
-                    try:
-                        option = int(msg['text'])
-                        if 0 <= int(msg['text']) < len(APPS):
-                            option = int(msg['text'])
-                        else:
-                            bot.editMessageText((msg['chat']['id'], goy), 'That was not a valid option', 'Markdown')
-                            option = ""
-                    except ValueError:
-                        option = ""
-
-                bot.editMessageText((msg['chat']['id'], goy), 'Downloading {}.apk ...'.format(APPS[option][2].split('/')[-1]), 'Markdown')
-
-                download(APPS[option][2])
-                bot.editMessageText((msg['chat']['id'], goy), 'Download completed!', 'Markdown')
-
-                
-            else:
-                bot.sendMessage(msg['chat']['id'], '*Missing input* `try again with correct one`',
+        teclado = keyboard.restart_dl
+        if msg['text'].startswith('!dl '):
+            input_str = msg['text'][4:]
+            if input_str == '':
+                bot.sendMessage(msg['chat']['id'], '*Use:* `!dl <app name>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
+            else:
+                app_name = input_str.split('/')[-1]
+                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+                    os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+                site = "https://apkpure.com"
+                url = "https://apkpure.com/search?q=%s" %(app_name)
+                html = requests.get(url).text
+                parse = BeautifulSoup(html, features="lxml")
+                for i in parse.find("p"):
+                    a_url = i["href"]
+                    app_url = site + a_url + "/download?from=details"
+                    html2 = requests.get(app_url).text
+                    parse2 = BeautifulSoup(html2, features="lxml")
+                    links = []
+                    for link in parse2.find_all('a', {'id': 'download_link'}):
+                        links.append(link.get('href'))
+                        downloadlink = link.get('href')
+                        word = "123456789abcdefgh-_"
+                        servers = shuffle(word)
+                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
+                        #bot.deleteMessage(chat_id, sent)
+                        required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
+                        start = datetime.now()
+                        chunk_size = 1024
+                        r = requests.get(downloadlink, stream = True) 
+                        with open(required_file_name,"wb") as apk:
+                            for chunk in r.iter_content(chunk_size=chunk_size):
+                                total_length = r.headers.get('content-length')
+                                dl = 0
+                                total_length = int(total_length)
+                                if chunk:
+                                    dl += len(chunk)
+                                    done = int(100 * dl / total_length)
+                                    apk.write(chunk)
+                                    apk.flush()
+                                    output_file_size = os.stat(downloadlink).st_size
+                                    human_readable_progress = size(output_file_size, system=alternative) + " / " + \
+                                  size(int(r.headers["Content-Length"]), system=alternative)
+                                    
+                                    time.sleep(3)
+                                    upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
+                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, human_readable_progress), 'Markdown')
+                            time.sleep(5)
+                            starts = datetime.now()
+                            if total_length < 52428800:
+                                bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                                tr = bot.sendDocument(msg['chat']['id'], open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
+                                time.sleep(0.5)
+                                ends = datetime.now()
+                                mss = (ends - starts).seconds
+                                os.remove(required_file_name)
+                                bot.deleteMessage((msg['chat']['id'],sent))
+                            else:
+                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ There was an error\n\n *{}* is more than 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n Try downloading something smaller than this".format(app_name), 'Markdown')
+                                os.remove(required_file_name)
+                                time.sleep(60)
+                                bot.deleteMessage((msg['chat']['id'],sent))
+                                return True
+
         
-            
-            
+
