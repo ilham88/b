@@ -116,8 +116,7 @@ def dados(msg):
 
         if msg['text'].startswith('!dl'):
             inpufff = msg['text'][3:]
-        if len(msg['text']) > 3:
-            query = " ".join(msg['text'][3:])
+            query = " ".join(inpufff)
             sent = bot.sendMessage(msg['chat']['id'], "🔍 Searching for: *{}*".format(query), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
 
             if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
