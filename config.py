@@ -1,8 +1,18 @@
 import amanobot
 import dotenv
 import os
+from amanobot.loop import MessageLoop
+from amanobot.delegate import per_chat_id, create_open, pave_event_space
+class Player(telepot.helper.ChatHandler):
+    def __init__(self, *args, **kwargs):
+        super(Player, self).__init__(*args, **kwargs)
+self._answer = random.randint(0,99)
+
 bot_key = os.environ["TOKEN"]
-bot = amanobot.Bot(os.environ.get("TOKEN")) #Token do bot
+bot = amanobot.DelegatorBot(os.environ.get("TOKEN"), [
+    pave_event_space()(
+        per_chat_id(), create_open, Player, timeout=10),
+]) #Token do bot
 # ''
 me = bot.getMe()
 bot_username = me['username']
