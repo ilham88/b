@@ -12,11 +12,8 @@ import keyboard
 from tldextract import extract
 def shorten(msg):
     if msg.get('text'):
-        if msg['text'].startswith('.trim'):
-            text = msg['text'][5:]
-            if text == '':
-                bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
-            else:
+         if msg['text'].split()[0] == '!trim':
+                text = msg['text'].split()[5]
                 text = text.replace("http://","")
                 text = text.replace("https://","")
                 if not re.match(r'http(s?)\:', text):
@@ -28,13 +25,6 @@ def shorten(msg):
                     remove_spacec = url.split(' ')
                     final_namec = ''.join(remove_spacec)
                     r = requests.get('http://bsbe.cf/api?create&key=R9YqpUJtLu7djN3rkEFZna182cwIQlzbHxT&link={}'.format(final_namec))
-                
-                    extractedDomain = tldextract.extract(final_namec)
-                    domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
-                
-                    print(domainSuffix)
-                    
-                    smsg = 'Hello there! to know more about me, start me in private and understand how i work.'
                     if r.status_code != 404:
                         b = r.json()
                         print(b)
@@ -55,9 +45,9 @@ def shorten(msg):
                             inf = "(Used for stats)"
                             Status = b["Status"]
                             icon = "✅"
-                            
-                        teclado = keyboard.start
-                        rst = [dict(text='⭐ ↗️ Visit Now', url='https://t.me/storebot?start=' + config.bot_username)]
-
+                        extractedDomain = tldextract.extract(final_namec)
+                        domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
+                        print(domainSuffix)    
+                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit {}'.format(domainSuffix), url='{}'.format(Link))]])
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
-                            reply_to_message_id=msg['message_id'], reply_markup=teclado)
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
