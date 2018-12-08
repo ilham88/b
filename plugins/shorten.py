@@ -27,7 +27,7 @@ def shorten(msg):
                         host = host[4:]
                     remove_spacec = url.split(' ')
                     final_namec = ''.join(remove_spacec)
-                    r = requests.get('http://trimit.gq/api?create&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&link={}'.format(final_namec))
+                    r = requests.get('http://bsbe.cf/api?create&key=R9YqpUJtLu7djN3rkEFZna182cwIQlzbHxT&link={}'.format(final_namec))
                 
                     extractedDomain = tldextract.extract(final_namec)
                     domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
@@ -41,7 +41,7 @@ def shorten(msg):
                         Link = b["Link"]
                         ID = b["ID"]
                         Error = b["Error"]
-                        u = requests.get('http://trimit.gq/api?stats&key=NjwzV39FqhKnumcX5gpBasObWYSZie4Adl7&id={}'.format(ID))
+                        u = requests.get('http://bsbe.cf/api?stats&key=R9YqpUJtLu7djN3rkEFZna182cwIQlzbHxT&id={}'.format(ID))
                         c = u.json()
                         print(c)
                         Clicks = c["Clicks"]
