@@ -12,52 +12,17 @@ import keyboard
 from tldextract import extract
 def shorten(msg):
     if msg.get('text'):
-        if msg['text'].startswith('.trim'):
-            text = msg['text'][5:]
-            if text == '':
-                bot.sendMessage(msg['chat']['id'], '*Uso:* `.trim http://google.com` - _Encurta uma URL. Powered by_ 🇧🇷.ml', 'Markdown', reply_to_message_id=msg['message_id'])
-            else:
-                text = text.replace("http://","")
-                text = text.replace("https://","")
-                if not re.match(r'http(s?)\:', text):
-                    url = 'http://' + text
-                    parsed = urlsplit(url)
-                    host = parsed.netloc
-                    if host.startswith('www.'):
-                        host = host[4:]
-                    remove_spacec = url.split(' ')
-                    final_namec = ''.join(remove_spacec)
-                    r = requests.get('http://bsbe.cf/api?create&key=R9YqpUJtLu7djN3rkEFZna182cwIQlzbHxT&link={}'.format(final_namec))
-                
-                    extractedDomain = tldextract.extract(final_namec)
-                    domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
-                
-                    print(domainSuffix)
-                    
-                    smsg = 'Hello there! to know more about me, start me in private and understand how i work.'
-                    if r.status_code != 404:
-                        b = r.json()
-                        print(b)
-                        Link = b["Link"]
-                        ID = b["ID"]
-                        Error = b["Error"]
-                        u = requests.get('http://bsbe.cf/api?stats&key=R9YqpUJtLu7djN3rkEFZna182cwIQlzbHxT&id={}'.format(ID))
-                        c = u.json()
-                        print(c)
-                        Clicks = c["Clicks"]
-                        if b["Status"] != True:
-                            req = "😭 Your Link encountered a Glitch"
-                            inf = "" 
-                            Status = b["Error"]
-                            icon = "❌"
-                        else:
-                            req = "ℹ️ Link Details Below"
-                            inf = "(Used for stats)"
-                            Status = b["Status"]
-                            icon = "✅"
-                            
-                        teclado = keyboard.start
-                        rst = [dict(text='⭐ ↗️ Visit Now', url='https://t.me/storebot?start=' + config.bot_username)]
-
-                        bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
-                            reply_to_message_id=msg['message_id'], reply_markup=teclado)
+        if msg['text'].split()[0] == '!q':
+            query = "https://andruxnet-random-famous-quotes.p.mashape.com/?cat=famous"
+            headers={"X-Mashape-Key": "kAvkvpaPUJmshT7QBh0JDUC35d5Jp137h8djsn7GvDlBT3Gj8K", "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
+            r = requests.get(query, headers=headers)
+            if r.status_code != 404:
+                b = r.json()
+                print(b)
+                quote = b[0]["quote"]
+                author = b[0]["author"]
+                category = b[0]["category"]
+                req = "ℹ️ Popular Quote"
+                icon = "💬"
+            bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*👤 Author:* `{}`\n\n*🔖 Category:* `{}`\n\n*{} Content:* {}".format(req, author, category, icon, quote), 
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'])
