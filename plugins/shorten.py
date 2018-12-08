@@ -28,10 +28,7 @@ def shorten(msg):
                     final_namec = ''.join(remove_spacec)
                     r = requests.get('http://bsbe.cf/api?create&key=R9YqpUJtLu7djN3rkEFZna182cwIQlzbHxT&link={}'.format(final_namec))
                 
-                    extractedDomain = tldextract.extract(final_namec)
-                    domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
-                
-                    print(domainSuffix)
+                    
                     if r.status_code != 404:
                         b = r.json()
                         print(b)
@@ -52,16 +49,16 @@ def shorten(msg):
                             inf = "(Used for stats)"
                             Status = b["Status"]
                             icon = "✅"
-                            
-                        teclado = keyboard.start
-                        rst = [dict(text='⭐ ↗️ Visit Now', url='https://t.me/storebot?start=' + config.bot_username)]
+                        extractedDomain = tldextract.extract(final_namec)
+                        domainSuffix = extractedDomain.domain + '.' + extractedDomain.suffix
+                        print(domainSuffix)    
+                        dlb = InlineKeyboardMarkup(inline_keyboard=[[dict(text='↗️ Visit {}'.format(domainSuffix), url='{}'.format(Link))]])
                         bot.sendMessage(msg['chat']['id'], "\n\n*{}*\n\n*Trimmed Link:* {}\n\n*🆔:* `{}`\n\n*👀 Clicks:* {}\n\n*{} Link Status:* {}".format(req, Link, ID, Clicks, icon, Status), 
-                            reply_to_message_id=msg['message_id'], reply_markup=teclado)
-
+                            parse_mode='Markdown', reply_to_message_id=msg['message_id'], reply_markup=dlb)
             except IndexError:
-                vids = "There was an error in your link"
+                trim = "There was an error in your link"
                 
-            bot.sendMessage(msg['chat']['id'], vids, 'HTML',
+            bot.sendMessage(msg['chat']['id'], trim, 'HTML',
                             reply_to_message_id=msg['message_id'],
                             disable_web_page_preview=True)
 
