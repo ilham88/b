@@ -37,7 +37,7 @@ def _(c, m):
     r = c.send_message(
         "bfas237off",
         "I'm downloading this ^",
-        reply_to_message_id=r.message_id
+        reply_to_message_id=message_id
     )
     
     c.download_media(
