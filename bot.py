@@ -32,7 +32,7 @@ def dl(client, message):
 last_progress = 0
 
 
-def p(client, cur, tot, message.message_id):
+def p(client, cur, tot, message_id):
     global last_progress
 
     progress = cur * 100 // tot
