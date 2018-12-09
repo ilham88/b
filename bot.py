@@ -112,11 +112,11 @@ def move(client, message):
 def dl(client, message):
     if len(message.command) > 1:
         klk = str(message.text)[3:].lstrip()
+        if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+        	os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
         try:
         	app_name = klk.split('/')[-1]
         	client.send_message(message.chat.id, "🔁 getting download link for {}".format(app_name))
-            if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-            	os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             site = "https://apkpure.com"
             url = "https://apkpure.com/search?q=%s" %(app_name)
             html = requests.get(url).text
@@ -175,6 +175,6 @@ def dl(client, message):
                 	message_ids=message.message_id
                 	)
                 	return True
-                	
+
 app.run() 
     
