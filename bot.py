@@ -34,9 +34,7 @@ def move(client, message):
  # Automatically start() and idle()
 @app.on_message(Filters.private & Filters.document)
 def _(c, m):
-    r = c.reply(
-        "bfas237off",
-        "I'm downloading this ^",
+    r = c.reply("I'm downloading this ^",
         reply_to_message_id=m.reply_to_message.message_id, quote=True
     )
     
