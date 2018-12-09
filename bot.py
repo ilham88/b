@@ -32,7 +32,7 @@ def dl(client, message):
 last_progress = 0
 
 
-def p(c, cur, tot, message_id):
+def p(client, cur, tot, message.message_id):
     global last_progress
 
     progress = cur * 100 // tot
@@ -41,7 +41,7 @@ def p(c, cur, tot, message_id):
         try:
             c.edit_message_text(
                 "bfas237off",
-                message_id,
+                message.message_id,
                 "**Downloading**: `{}%`".format(progress)
             )
             
