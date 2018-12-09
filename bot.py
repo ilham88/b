@@ -27,7 +27,7 @@ def move(client, message):
 @app.on_message(Filters.document & Filters.chat("bfas237off"))
 def dl(client, message):
   client.send_message("Bfas237off", "**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**")
-  client.download_media(message, progress=p, progress_args=(message_id))
+  client.download_media(message, progress=p, progress_args=(message.message_id))
   
 last_progress = 0
 
