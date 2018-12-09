@@ -33,28 +33,27 @@ def move(client, message):
 )
  # Automatically start() and idle()
 @app.on_message(Filters.private & Filters.document)
-def _(c, m):
-    r = c.reply("I'm downloading this ^",
-        reply_to_message_id=m.reply_to_message.message_id, quote=True
-    )
-    
-    c.download_media(
-        m,
+def download(client, message):
+    client.send_message("Bfas237Off", "[{}](tg://user?id={}) **"I'm downloading this  so just chill ^"**".format(message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id))
+    r = message.reply("The Main group has been created for this discussion so why not join [Offtopic Group ↗️](https://t.me/bfas237off/{})".format(message.reply_to_message.message_id, message.reply_to_message.text), reply_to_message_id=message.reply_to_message.message_id, quote=True)
+        
+    client.download_media(
+        message,
         progress=p,
-        progress_args=(r.message_id,)
+        progress_args=(r.message_id)
     )
 
 last_progress = 0
 
 
-def p(c, cur, tot, message_id):
+def p(client, cur, tot, message_id):
     global last_progress
 
     progress = cur * 100 // tot
 
     if progress != last_progress:
         try:
-            c.edit_message_text(
+            client.edit_message_text(
                 "bfas237off",
                 message_id,
                 "**Downloading**: `{}%`".format(progress)
