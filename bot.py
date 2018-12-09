@@ -39,7 +39,7 @@ def download(client, message):
     client.download_media(
         message,
         progress=p,
-        progress_args=(message.reply_to_message.message_id)
+        progress_args=(message.message_id)
     )
 
 last_progress = 0
