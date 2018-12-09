@@ -40,7 +40,7 @@ def download(client, message):
         "I'm downloading this ^"
     )
     
-    await c.download_media(
+    c.download_media(
         m,
         progress=p,
         progress_args=(r.message_id)
@@ -49,14 +49,14 @@ def download(client, message):
 last_progress = 0
 
 
-await def p(c, cur, tot, message_id):
+def p(c, cur, tot, message_id):
     global last_progress
 
     progress = cur * 100 // tot
 
     if progress != last_progress:
         try:
-            await c.edit_message_text(
+            c.edit_message_text(
                 "bfas237off",
                 message_id,
                 "**Downloading**: `{}%`".format(progress)
