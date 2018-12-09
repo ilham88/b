@@ -33,8 +33,7 @@ def move(client, message):
 )
  # Automatically start() and idle()
 @app.on_message(Filters.chat("bfas237off") & Filters.document)
-def download(client, message):
-    def _(c, m):
+def _(c, m):
     r = m.send_message(
         "bfas237off",
         "I'm downloading this ^"
