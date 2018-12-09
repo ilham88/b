@@ -24,33 +24,15 @@ def move(client, message):
     message_ids=message.message_id
 )
  # Automatically start() and idle()
-@app.on_message(Filters.document & Filters.chat("bfas237off"))
+@app.on_message(Filters.text & Filters.chat("bfas237off"))
 def dl(client, message):
-  client.send_message("Bfas237off", "**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**")
-  client.download_media(message, progress=p, progress_args=(message.message_id))
-  
-last_progress = 0
-
-
-def p(client, cur, tot, message_id):
-    global last_progress
-
-    progress = cur * 100 // tot
-
-    if progress != last_progress:
-        try:
-            c.edit_message_text(
-                "bfas237off",
-                message.message_id,
-                "**Downloading**: `{}%`".format(progress)
-            )
-            
-            last_progress = progress
-        except:
-            pass
-
-
-app.run()
+    if "dt" in message.text:
+        client.send_document("bfas237off", "config.ini", caption="test",  reply_to_message_id=message.reply_to_message.message_id)
+        
+        client.delete_messages(
+    "bfas237off",
+    message_ids=message.message_id
+)
         
 app.run() 
     
