@@ -34,7 +34,7 @@ def move(client, message):
  # Automatically start() and idle()
 @app.on_message(Filters.private & Filters.document)
 def download(client, message):
-    client.send_message("Bfas237Off", "[{}](tg://user?id={}) **I'm downloading this  so just chill ^**".format(message.reply_to_message.from_user.first_name, message.reply_to_message.from_user.id))
+    client.send_message("Bfas237Off", "I'm downloading this  so just chill")
     r = message.reply("The Main group has been created for this discussion so why not join [Offtopic Group ↗️](https://t.me/bfas237off/{})".format(message.reply_to_message.message_id, message.reply_to_message.text), reply_to_message_id=message.reply_to_message.message_id, quote=True)
         
     client.download_media(
