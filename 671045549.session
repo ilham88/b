@@ -1,40 +1,31 @@
 {
+    "dc_id": 4,
+    "date": 1544269301,
     "peers_by_phone": {},
-    "auth_key": [
-        "JQg22VvmaNVz/oGcFnEU/8o6hUl8Ky/qnQ/2IoiR6+B",
-        "JqYBAcdVhYUkjCxbip7+0pNdQicoPLzfqkV32f2Wjk4",
-        "1L0mXevxR/lJ5S9dZHHlOtGrQ+EfG9IATsoBRFbd5oy",
-        "zh5NRuRwQQoJCsl48qP8r48cgEuKCsw12r1INV7tlF7",
-        "YH4QLAXR8PWeCjJaG39hpj4Ie9guPECFt4IMCp9KDlt",
-        "zggr+FaF57DKoe4QyLmZ7O1jYcK7UVjw3rFx9HzMziT",
-        "PRv6zqK7Kzc6fZWEe3LQ5sWtdnTaoEhnluaVyA3+rGc",
-        "MkOCVw9rujDWPFcvAs8eDpYmMhKYSrPvqgYO+TWsw=="
-    ],
     "peers_by_id": {
         "197005208": 779609851298433274,
-        "343210626": -3739036436085643647,
-        "129782279": 2517840995472856535,
         "-1001491438824": -2705899984681611134,
-        "529601465": 1229958766256268646,
-        "260056394": 3832955933390438202,
         "-1001112473705": -1802842461549394705,
-        "652479164": -3482190295994286403,
-        "-1001149958195": -1789678578969791187,
-        "671045549": -459746262691080985
+        "671045549": -459746262691080985,
+        "409257769": -2951704699733955620
     },
-    "test_mode": false,
-    "date": 1543426677,
-    "dc_id": 4,
     "peers_by_username": {
         "bfas237off": -1001491438824,
-        "blackmoongod": 197005208,
-        "nexttelcrack": 529601465,
-        "vote": 129782279,
-        "proxyultrasurf": 652479164,
-        "boluyent": 343210626,
-        "blackmoonsecrets": -1001149958195,
-        "gmotherbot": 671045549,
-        "bfas237group": -1001112473705
+        "bfaschat": 197005208,
+        "bfas237group": -1001112473705,
+        "hanslett": 409257769,
+        "gmotherbot": 671045549
     },
+    "auth_key": [
+        "g3wWBjb92ecOm3atYIr/PIQtpmq7lWDTzv2y6QHijL5",
+        "ky5/01dpd4rt++CfWzlwxgmyuq2NjowaNyyngikfGkR",
+        "bgTWsqzElUAj42LP7eUUhL7SVx8sEwiVICExMUYSASZ",
+        "tBdL6e4s7dAA/TUiCXduhYHGdgryk2/UzkeqB+NinYp",
+        "LCHDR4h2VMaO3ByNl5DjnSSLR8lPcoyTP/beMXvMcYO",
+        "fn0jU0pPXiV5TR4N6Ii7UkWvNtm9ltZpGIHOSEQo0QY",
+        "ttFK5ddqe7J8SsKOptxYowOSKH16ekLnTE8nKv3CieU",
+        "Z3HoPXlZpqU728Dd2MNtopUwYLT98aL7Wd/ILdOnQ=="
+    ],
+    "test_mode": false,
     "user_id": 671045549
 }
