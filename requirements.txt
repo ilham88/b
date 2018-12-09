@@ -1,4 +1,3 @@
-flask
 pyrogram[fast]
 tgcrypto
 bs4
