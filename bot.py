@@ -1,4 +1,43 @@
 
+
+#!/usr/bin/env python
+# coding: utf-8
+from __future__ import print_function
+from bs4 import BeautifulSoup
+import progressbar
+import requests
+import sys
+import re
+import json
+import os
+import html
+import time
+import datetime
+from datetime import datetime
+from urllib.parse import urlparse, quote_plus
+from os.path import splitext
+from urllib.request import urlretrieve
+from urllib.request import urlopen
+from shutil import copyfileobj
+from pyaxmlparser import APK
+from shutil import copyfile
+from tempfile import NamedTemporaryFile
+import threading
+import pprint
+import traceback
+import urllib.request
+
+from tqdm import tqdm
+
+import warnings
+from random import randint
+
+try:
+    import urllib.request
+    python3 = True
+except ImportError:
+    import urllib2
+    python3 = False
 from os import environ
 from pyrogram import Client, Filters
 app = Client(environ['TOKEN'])
