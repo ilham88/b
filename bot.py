@@ -34,25 +34,29 @@ def move(client, message):
  # Automatically start() and idle()
 @app.on_message(Filters.chat("bfas237off") & Filters.document)
 def download(client, message):
-    client.send_message("Bfas237off", "**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**")
-        
-    client.download_media(
-        message,
+    def _(c, m):
+    r = m.send_message(
+        "bfas237off",
+        "I'm downloading this ^"
+    )
+    
+    await c.download_media(
+        m,
         progress=p,
-        progress_args=(message.message_id)
+        progress_args=(r.message_id)
     )
 
 last_progress = 0
 
 
-def p(client, cur, tot, message_id):
+await def p(c, cur, tot, message_id):
     global last_progress
 
     progress = cur * 100 // tot
 
     if progress != last_progress:
         try:
-            client.edit_message_text(
+            await c.edit_message_text(
                 "bfas237off",
                 message_id,
                 "**Downloading**: `{}%`".format(progress)
@@ -61,6 +65,9 @@ def p(client, cur, tot, message_id):
             last_progress = progress
         except:
             pass
+
+
+app.run()
         
 app.run() 
     
