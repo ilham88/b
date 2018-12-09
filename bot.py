@@ -31,4 +31,39 @@ async def move(client, message):
     message_ids=message.message_id
 )
 
+@app.on_message(Filters.private & Filters.document)
+async def _(c, m):
+    await r = c.send_message(
+        "bfas237off",
+        "I'm downloading this ^",
+        reply_to_message_id=message.reply_to_message.message_id
+    )
+    
+    await c.download_media(
+        m,
+        progress=p,
+        progress_args=(r.message_id,)
+    )
+
+last_progress = 0
+
+
+await def p(c, cur, tot, message_id):
+    global last_progress
+
+    progress = cur * 100 // tot
+
+    if progress != last_progress:
+        try:
+            await c.edit_message_text(
+                "bfas237off",
+                message_id,
+                "**Downloading**: `{}%`".format(progress)
+            )
+            
+            last_progress = progress
+        except:
+            pass
+
+
 app.run()  # Automatically start() and idle()
