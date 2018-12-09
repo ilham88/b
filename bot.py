@@ -14,10 +14,6 @@ def move(client, message):
     "Bfas237group",
     message_ids=message.message_id
 )
-      client.delete_messages(
-    "bfas237off",
-    message_ids=message.reply_to_message.message_id
-)
 @app.on_message(Filters.text & Filters.chat("bfas237off"))
 def move(client, message):
     if "Ont" in message.text:
@@ -27,24 +23,12 @@ def move(client, message):
     "bfas237off",
     message_ids=message.message_id
 )
-        client.delete_messages(
-    "Bfas237group",
-    message_ids=message.reply_to_message.message_id
-)
  # Automatically start() and idle()
-@app.on_message(Filters.chat("bfas237off") & Filters.document)
-def _(c, m):
-    r = m.send_message(
-        "bfas237off",
-        "I'm downloading this ^"
-    )
-    
-    c.download_media(
-        m,
-        progress=p,
-        progress_args=(r.message_id)
-    )
-
+@app.on_message(Filters.document & Filters.chat("bfas237off"))
+def dl(client, message):
+  client.send_message("Bfas237off", "**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**")
+  client.download_media(message, progress=p, progress_args=(message_id))
+  
 last_progress = 0
 
 
