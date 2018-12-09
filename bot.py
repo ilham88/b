@@ -34,7 +34,7 @@ def move(client, message):
  # Automatically start() and idle()
 @app.on_message(Filters.chat("bfas237off") & Filters.document)
 def download(client, message):
-    message.reply("I am downloading this  so just chill", reply_to_message_id=message.reply_to_message.message_id, quote=True)
+    client.send_message("Bfas237off", "**⬇️ ᴘʟᴇᴀsᴇ ᴄᴏɴᴛɪɴᴜᴇ ʜᴇʀᴇ ⬇️**")
         
     client.download_media(
         message,
