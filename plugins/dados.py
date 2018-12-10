@@ -199,5 +199,7 @@ def dados(msg):
 
 
 
-bot.start(bot_token=bot)
+
+
+bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
 bot.run_until_disconnected()
