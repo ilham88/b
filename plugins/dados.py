@@ -167,18 +167,18 @@ def update_progress(progress):
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
     """#search query: Searches for "query" in the method reference."""
-    s = datetime.now()
+    s = time.now()
     message = await event.reply('Let me download the specified file')
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    d = datetime.now() - s
+    d = time.now() - s
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     time_elapsed = downloadFile(query, required_file_name)
     await message.edit("Download complete..." + update_progress)     
     await asyncio.sleep(5)
-    await message.edit("Time Elapsed: ")
+    await message.edit("Time Elapsed:  __({d:.2f}s)__")
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`", progress_callback=update_progress)
     os.remove(required_file_name)
     await asyncio.wait([event.delete()])
