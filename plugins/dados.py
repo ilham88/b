@@ -142,19 +142,7 @@ async def handler(event):
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
-    
-    mime = magic.Magic(mime=True) 
-    output = "output" # Your file name without extension
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
-    mimes = mime.from_file(app_name) # Get mime type
-    ext = mimetypes.guess_all_extensions(mimes)[0] # Guess extension
-    os.rename(output, output+ext)
-    print(output+ext)
-    
-
-
-   
-   
     await message.edit('Download Ended! Now sending your file')    
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
