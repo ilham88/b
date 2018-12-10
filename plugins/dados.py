@@ -102,24 +102,7 @@ def process_content_with_progress3(inputpath, blocksize=1024):
                     if buf:
                         pbar.set_postfix(file=filepath[-10:], refresh=False)
                         pbar.update(len(buf))
-def downloadFile(url, directory) :
-  localFilename = url.split('/')[-1]
-  with open(directory, 'wb') as f:
-    start = time.clock()
-    r = requests.get(url, stream=True)
-    total_length = r.headers.get('content-length')
-    dl = 0
-    if total_length is None: # no content length header
-      f.write(r.content)
-    else:
-      for chunk in r.iter_content(1024):
-        dl += len(chunk)
-        f.write(chunk)
-        f.flush()
-        with tqdm(os.path.getsize(directory)) as pbar:
-            with open(directory, "rb") as f:
-                for l in f:
-                    pbar.update(len(l))
+
  
 def download(link):
     res = requests.get(link + '/download?from=details', headers={
@@ -165,19 +148,7 @@ def get_env(name, message, cast=str):
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
-def reporthook(count, block_size, total_size):
-    global start_time
-    if count == 0:
-        start_time = time.time()
-        return
-    duration = time.time() - start_time
-    progress_size = int(count * block_size)
-    speed = int(progress_size / (1024 * duration))
-    percent = int(count * block_size * 100 / total_size)
-    sys.stdout.write("\r...%d%%, %d MB, %d KB/s, %d seconds passed" %
-                    (percent, progress_size / (1024 * 1024), speed, duration))
-    sys.stdout.flush()
-    
+
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
     """#search query: Searches for "query" in the method reference."""
@@ -189,14 +160,46 @@ async def handler(event):
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
-    time_elapsed = downloadFile(query, required_file_name)
-    urlretrieve(query, required_file_name, reporthook) 
-    await message.edit("Download complete...")     
+   
+@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
+async def handler(event):
+    """#search query: Searches for "query" in the method reference."""
+    s = datetime.now()
+    message = await event.reply('Let me download the specified file')
+    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+    d = datetime.now() - s
+    query = event.pattern_match.group(1)
+    local_filename = query.split('/')[-1]
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
+    
+    with open(required_file_name, "wb") as f:
+        print ("Downloading %s" % required_file_name)
+        response = requests.get(query, stream=True)
+        total_length = response.headers.get('content-length')
+        if total_length is None: # no content length header
+            f.write(response.content)
+        else:
+            dl = 0
+            total_length = int(total_length)
+            for data in response.iter_content(chunk_size=8129):
+                dl += len(data)
+                f.write(data)
+                f.flush()
+                done = int(50 * dl / total_length)
+                with tqdm(os.path.getsize(directory)) as pbar:
+                    with open(directory, "rb") as f:
+                        for l in f:
+                            pbar.update(len(l))
+ 
+                
+                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
+    await message.edit('Download Started!')     
     await asyncio.sleep(5)
-    await message.edit("Thanks for using our service")
-    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your downloaded file`")
+    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
     os.remove(required_file_name)
     await asyncio.wait([event.delete()])
+
 
 
 
