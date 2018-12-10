@@ -27,27 +27,7 @@ from time import sleep
 from amanobot.namedtuple import InlineKeyboardMarkup
 import warnings
 from random import randint
-from telegram_upload.exceptions import catch
-from telegram_upload.management import manage
-import asyncio
-import difflib
-import html
-import logging
-import os
-import re
-import sys
-import time
-import urllib.parse
-import click
-import subprocess
-from datetime import datetime
-from telethon.tl.types import DocumentAttributeVideo
-from telethon.errors import MessageNotModifiedError
-from telethon import TelegramClient, events, types, custom, utils
-from telethon.extensions import markdown
 
-logging.basicConfig(level=logging.WARNING)
-logging.getLogger('asyncio').setLevel(logging.ERROR)
 try:
     import urllib.request
     python3 = True
@@ -130,10 +110,6 @@ def process_content_with_progress3(inputpath, blocksize=1024):
                 
                     
     
-from pget.down import Downloader
-
-bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
-
 
 
     
@@ -176,9 +152,6 @@ async def handler(event):
 
 
 
-
-bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
-bot.run_until_disconnected()
 
 def download(link):
     res = requests.get(link + '/download?from=details', headers={
