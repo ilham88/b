@@ -163,7 +163,7 @@ async def handler(event):
     time_elapsed = downloadFile(query, required_file_name)
     await message.edit("Download complete...")     
     await asyncio.sleep(5)
-    await message.edit("Time Elapsed: " + time_elapsed)
+    await message.edit("Time Elapsed: ")
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`", progress_callback=progress)
     os.remove(required_file_name)
     await asyncio.wait([event.delete()])
