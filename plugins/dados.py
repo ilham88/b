@@ -45,7 +45,7 @@ from telethon.tl.types import DocumentAttributeVideo
 from telethon.errors import MessageNotModifiedError
 from telethon import TelegramClient, events, types, custom, utils
 from telethon.extensions import markdown
-
+import rfc6266
 logging.basicConfig(level=logging.WARNING)
 logging.getLogger('asyncio').setLevel(logging.ERROR)
 try:
@@ -121,10 +121,7 @@ def process_content_with_progress3(inputpath, blocksize=1024):
     
     
         
-                
-                    
-    
-from pget.down import Downloader
+ 
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
@@ -146,17 +143,21 @@ async def handler(event):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
+    req = requests.head(downloadLink)
+    headersContent = req.headers['Content-Disposition']
+    rfcFilename = rfc6266.parse_headers(headersContent, relaxed=True).filename_unsafe
+    filename = requests.utils.unquote(rfcFilename)
+    print(filename)
+    subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+
 
    
-    r = requests.get(query, stream=True, allow_redirects=True)
-    filename = get_filename_from_cd(r.headers.get('content-disposition'))
-    print(filename)
-    subprocess.run(['wget',filename], stdout=subprocess.PIPE)
+   
     await message.edit('Download Ended! Now sending your file')    
     await asyncio.sleep(5)
-    await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
+    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
     
-    os.remove(filename)
+    os.remove(required_file_name)
     
 
 
