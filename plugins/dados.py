@@ -109,14 +109,15 @@ def downloadChunks(url):
        the file will also be downloaded
        in chunks and print out how much remains
     """
-   
+    import os
+    import urllib2
 
     baseFile = os.path.basename(url)
 
     uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
 
     #move the file to a more uniq path
-  
+    
     temp_path = "/tmp"
     temp_path_uniq = os.path.join(temp_path,uuid_path)
     os.mkdir(temp_path_uniq)
@@ -124,7 +125,7 @@ def downloadChunks(url):
     try:
         file = os.path.join(temp_path_uniq,baseFile)
 
-        req = urlopen(url)
+        req = urllib2.urlopen(url)
         total_size = int(req.info().getheader('Content-Length').strip())
         downloaded = 0
         CHUNK = 256 * 10240
@@ -135,12 +136,14 @@ def downloadChunks(url):
                 print floor( (downloaded / total_size) * 100 )
                 if not chunk: break
                 fp.write(chunk)
-    except HTTPError, e:
-        print ("HTTP Error:",e.code , url)
+    except urllib2.HTTPError, e:
+        print "HTTP Error:",e.code , url
         return False
-    except URLError , e:
-        print ("URL Error:",e.reason , url)
+    except urllib2.URLError, e:
+        print "URL Error:",e.reason , url
         return False
+
+    return file
 
     return file 
 def download(link):
