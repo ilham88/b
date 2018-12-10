@@ -144,10 +144,10 @@ async def handler(event):
                 if not chunk:
                     break
                     fp.write(chunk)
-    except urllib2.HTTPError, e:
+    except HTTPError, e:
         print "HTTP Error:",e.code , url
         return False
-    except urllib2.URLError, e:
+    except URLError, e:
         print "URL Error:",e.reason , url
         return False    
     return file        
