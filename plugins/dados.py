@@ -144,14 +144,14 @@ async def handler(event):
     chunk_count = 8192
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name  
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
 
    
     r = requests.get(query, stream=True, allow_redirects=True)
     filename = get_filename_from_cd(r.headers.get('content-disposition'))
     print(filename)
-    subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+    subprocess.run(['wget',filename], stdout=subprocess.PIPE)
     await message.edit('Download Ended! Now sending your file')    
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
