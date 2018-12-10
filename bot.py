@@ -9,7 +9,32 @@ import threading
 from amanobot.exception import TooManyRequestsError, NotEnoughRightsError
 from urllib3.exceptions import ReadTimeoutError
 import db_handler as db
+from telegram_upload.exceptions import catch
+from telegram_upload.management import manage
+import asyncio
+import difflib
+import html
+import logging
+import os
+import re
+import sys
+import time
+import urllib.parse
+import click
+import subprocess
+from datetime import datetime
+from telethon.tl.types import DocumentAttributeVideo
+from telethon.errors import MessageNotModifiedError
+from telethon import TelegramClient, events, types, custom, utils
+from telethon.extensions import markdown
+bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
+
+
+
+
+logging.basicConfig(level=logging.WARNING)
+logging.getLogger('asyncio').setLevel(logging.ERROR)
 
 
 bot = config.bot
@@ -54,6 +79,8 @@ def handle(msg):
 print('\n\nBot started! {}\n'.format(config.version))
 
 MessageLoop(bot, handle_thread).run_as_thread()
+bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
+bot.run_until_disconnected()
 
 wr = db.get_restarted()
 
