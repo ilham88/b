@@ -158,10 +158,13 @@ async def handler(event):
                 done = int(50 * dl / total_length)
                 sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )  
                 sys.stdout.flush()
-                await message.edit('Download finished! __(Download '+upload_progress_string+' took {d:.2f}s)__')
-         
+                output_file_size = os.stat(required_file_name).st_size
+                human_readable_progress = size(output_file_size, system=alternative) + " / " + \
+                    size(int(r.headers["Content-Length"]), system=alternative)
+    await message.edit('Download finished! __(Download '+human_readable_progress+' took {d:.2f}s)__')     
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
+    os.remove(required_file_name)
     await asyncio.wait([event.delete()])
 
 
