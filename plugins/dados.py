@@ -143,11 +143,12 @@ async def handler(event):
             while True:
                 chunk = req.read(CHUNK)
                 downloaded += len(chunk)
-                #print floor((downloaded / total_size) * 100)
+                process_content_with_progress3(query)
                 if not chunk:
+                    await message.edit('fffff Ended!') 
                     break
                     fp.write(chunk)
-                    print(process_content_with_progress3(query))
+                    
     except urllib.error.HTTPError as err:
         print ("HTTP Error:", err.code , query)
         return False
