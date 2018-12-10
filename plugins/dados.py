@@ -136,9 +136,9 @@ async def handler(event):
     message = await event.reply('Let me download the specified file')
     d = datetime.now() - s
     query = event.pattern_match.group(1)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".zip"
-    chunk_size = 1024
     local_filename = query.split('/')[-1]
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ".zip"
+    chunk_size = 1024
     r = requests.get(query, stream = True) 
     with open(required_file_name,"wb") as apk:
         for chunk in r.iter_content(chunk_size=chunk_size):
