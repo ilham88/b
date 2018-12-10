@@ -83,7 +83,16 @@ def pretty_size(sizes):
         sizes /= 1024
         unit += 1
     return '%0.2f %s' % (sizes, units[unit])
+def dosomething(buf):
+    """Do something with the content of a file"""
+    sleep(0.01)
+    pass
 
+def walkdir(folder):
+    """Walk through each files in a directory"""
+    for dirpath, dirs, files in os.walk(folder):
+        for filename in files:
+            yield os.path.abspath(os.path.join(dirpath, filename))
 APPS = []
 def process_content_with_progress3(inputpath, blocksize=1024):
     # Preprocess the total files sizes
