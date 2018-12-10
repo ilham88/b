@@ -145,24 +145,21 @@ def get_env(name, message, cast=str):
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
-def update_progress(progress):
-    barLength = 20 # Modify this to change the length of the progress bar
-    status = ""
-    if isinstance(progress, int):
-        progress = float(progress)
-    if not isinstance(progress, float):
-        progress = 0
-        status = "error: progress var must be float\r\n"
-    if progress < 0:
-        progress = 0
-        status = "Halt...\r\n"
-    if progress >= 1:
-        progress = 1
-        status = "Done...\r\n"
-    block = int(round(barLength*progress))
-    text = "\rPercent: [{0}] {1}% {2}".format( "="*block + " "*(barLength-block), progress*100, status)
-    sys.stdout.write(text)
-    sys.stdout.flush()
+def download_progress_hook(count, blockSize, totalSize):
+  """A hook to report the progress of a download. This is mostly intended for users with slow internet connections. Reports every 5% change in download progress.
+  """
+  global last_percent_reported
+  percent = int(count * blockSize * 100 / totalSize)
+
+  if last_percent_reported != percent:
+    if percent % 5 == 0:
+      sys.stdout.write("%s%%" % percent)
+      sys.stdout.flush()
+    else:
+      sys.stdout.write(".")
+      sys.stdout.flush()
+
+    last_percent_reported = percent
 
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
@@ -176,6 +173,7 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     time_elapsed = downloadFile(query, required_file_name)
+    urlretrieve(query, required_file_name, reporthook=download_progress_hook)
     await message.edit("Download complete...")     
     await asyncio.sleep(5)
     await message.edit("Time Elapsed:  __({d:.2f}s)__")
