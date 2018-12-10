@@ -128,6 +128,11 @@ bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53
 
     
    
+def get_large_file(url, file, length=16*1024):
+    req = urlopen(url)
+    with open(file, 'wb') as fp:
+        shutil.copyfileobj(req, fp, length)
+
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
     
@@ -139,7 +144,7 @@ async def handler(event):
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
-    
+    get_large_file(query, required_file_name)
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
