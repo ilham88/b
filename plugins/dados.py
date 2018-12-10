@@ -139,7 +139,7 @@ async def handler(event):
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
     subprocess.run(['rm','-rf','brains.check'], stdout=subprocess.PIPE)
-    subprocess.run(['wget','https://download.apkpure.com/b/apk/Y29tLndoYXRzYXBwXzQ1MjYxMV9jYzcxZjRjMA?_fn=V2hhdHNBcHAgTWVzc2VuZ2VyX3YyLjE4LjM3M19hcGtwdXJlLmNvbS5hcGs&k=dd4a2222a20e9c0c6df2c2d69a5c79735c11314b&as=de6cba42455dfe6534663d6fb2627c915c0e8ec3&_p=Y29tLndoYXRzYXBw&c=1%7CCOMMUNICATION%7CZGV2PVdoYXRzQXBwJTIwSW5jLiZ0PWFwayZ2bj0yLjE4LjM3MyZ2Yz00NTI2MTE Whatsapp.apk -C 8'], stdout=subprocess.PIPE)
+    subprocess.run(['pget','https://download.apkpure.com/b/apk/Y29tLndoYXRzYXBwXzQ1MjYxMV9jYzcxZjRjMA?_fn=V2hhdHNBcHAgTWVzc2VuZ2VyX3YyLjE4LjM3M19hcGtwdXJlLmNvbS5hcGs&k=dd4a2222a20e9c0c6df2c2d69a5c79735c11314b&as=de6cba42455dfe6534663d6fb2627c915c0e8ec3&_p=Y29tLndoYXRzYXBw&c=1%7CCOMMUNICATION%7CZGV2PVdoYXRzQXBwJTIwSW5jLiZ0PWFwayZ2bj0yLjE4LjM3MyZ2Yz00NTI2MTE Whatsapp.apk -C 8'], stdout=subprocess.PIPE)
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
