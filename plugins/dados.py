@@ -66,18 +66,37 @@ def get_env(name, message, cast=str):
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
+def download_file(url):
+        local_filename = url.split('/')[-1]
+        # NOTE the stream=True parameter
+        r = requests.get(url, stream=True)
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=1024): 
+                if chunk: # filter out keep-alive new chunks
+                    f.write(chunk)
+                    #f.flush() commented by recommendation from J.F.Sebastian
+        return local_filename
 
-
-@bot.on(events.NewMessage(pattern='#ping', forwards=False))
+@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
+    """#search query: Searches for "query" in the method reference."""
     s = time.time()
-    message = await event.reply('Pong!')
+    message = await event.reply('Let me download the specified file')
     d = time.time() - s
+    query = urllib.parse.quote(event.pattern_match.group(1))
+
     file = 'setup.py'
-    await message.edit('Pong! __(reply took {d:.2f}s)__')
-    await asyncio.sleep(5)
-    filel = await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
-    await asyncio.wait([event.delete(), message.delete()])
+    await message.edit('Download finished! __(Download too took {d:.2f}s)__')
+    await asyncio.sleep(10)
+    await asyncio.wait([
+        event.delete(),
+        event.respond(download_file(query), reply_to=event.reply_to_msg_id)
+        await asyncio.sleep(10)
+        await bot.send_file("bfas237off", local_filename, reply_to=event.id, caption="`Here is your current status`")
+
+    ])
+
+
 
 
 
@@ -123,29 +142,29 @@ def pretty_size(sizes):
 APPS = []
  
 def download(link):
-	res = requests.get(link + '/download?from=details', headers={
-			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-		}).text
-	soup = BeautifulSoup(res, "html.parser").find('a', {'id':'download_link'})
-	if soup['href']:
-		r = requests.get(soup['href'], stream=True, headers={
-			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-		})
-		with open(link.split('/')[-1] + '.apk', 'wb') as file:
-			for chunk in r.iter_content(chunk_size=1024):
-				if chunk:
-					file.write(chunk)
+    res = requests.get(link + '/download?from=details', headers={
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+        }).text
+    soup = BeautifulSoup(res, "html.parser").find('a', {'id':'download_link'})
+    if soup['href']:
+        r = requests.get(soup['href'], stream=True, headers={
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+        })
+        with open(link.split('/')[-1] + '.apk', 'wb') as file:
+            for chunk in r.iter_content(chunk_size=1024):
+                if chunk:
+                    file.write(chunk)
 
 def search(query):
-	res = requests.get('https://apkpure.com/search?q={}&region='.format(quote_plus(query)), headers={
-			'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
-		}).text
-	soup = BeautifulSoup(res, "html.parser")
-	for i in soup.find('div', {'id':'search-res'}).findAll('dl', {'class':'search-dl'}):
-		app = i.find('p', {'class':'search-title'}).find('a')
-		APPS.append((app.text,
-					i.findAll('p')[1].find('a').text,
-					'https://apkpure.com' + app['href']))
+    res = requests.get('https://apkpure.com/search?q={}&region='.format(quote_plus(query)), headers={
+            'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
+        }).text
+    soup = BeautifulSoup(res, "html.parser")
+    for i in soup.find('div', {'id':'search-res'}).findAll('dl', {'class':'search-dl'}):
+        app = i.find('p', {'class':'search-title'}).find('a')
+        APPS.append((app.text,
+                    i.findAll('p')[1].find('a').text,
+                    'https://apkpure.com' + app['href']))
 def dados(msg):
     if msg.get('text'):
         teclado = keyboard.restart_dl
@@ -192,11 +211,11 @@ def dados(msg):
                                     apk.write(chunk)
                                     apk.flush()
                                     
-					
+                    
                                     output_file_size = os.stat(required_file_name).st_size
                                     human_readable_progress = size(output_file_size, system=alternative) + " / " + \
-					size(int(r.headers["Content-Length"]), system=alternative)
-					
+                    size(int(r.headers["Content-Length"]), system=alternative)
+                    
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
                             bots.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, human_readable_progress), 'Markdown')
                             time.sleep(5)
