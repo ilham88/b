@@ -152,10 +152,15 @@ async def handler(event):
             while True:
                 chunk = req.read(CHUNK)
                 downloaded += len(chunk)
-                process_content_with_progress3(query)
+                await asyncio.wait([event.delete()])
                 if not chunk:
-                    await message.edit('fffff Ended!') 
                     fp.write(chunk)
+                    return file
+                    await message.edit('Download Ended!')     
+                    await asyncio.sleep(5)
+                    await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
+                    os.remove(file)
+                    break
                     
     except urllib.error.HTTPError as err:
         print ("HTTP Error:", err.code , query)
@@ -163,12 +168,9 @@ async def handler(event):
     except urllib.error.URLError as err:
         print ("URL Error:", err.code , query)
         return False    
-    return file        
-    await message.edit('Download Ended!')     
-    await asyncio.sleep(5)
-    await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
-    os.remove(file)
-    await asyncio.wait([event.delete()])
+            
+    
+    
 
 
 
