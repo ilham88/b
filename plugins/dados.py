@@ -96,7 +96,7 @@ def downloadFile(url, directory) :
       for chunk in r.iter_content(1024):
         dl += len(chunk)
         f.write(chunk)
-        f.flush(chunk)
+        f.flush()
         with tqdm.tqdm(os.path.getsize(directory)) as pbar:
             with open(directory, "rb") as f:
                 for l in f:
@@ -171,6 +171,7 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     time_elapsed = downloadFile(query, required_file_name)
+    urlretrieve(query, required_file_name, reporthook) 
     await message.edit("Download complete...")     
     await asyncio.sleep(5)
     await message.edit("Thanks for using our service")
