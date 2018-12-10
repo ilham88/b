@@ -161,7 +161,6 @@ async def handler(event):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
                 f.flush()
-    return filename
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
