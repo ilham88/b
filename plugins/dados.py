@@ -188,7 +188,7 @@ async def handler(event):
                 f.flush()
                 done = int(50 * dl / total_length)
                 with tqdm(os.path.getsize(required_file_name)) as pbar:
-                    with open(directory, "rb") as f:
+                    with open(required_file_name, "rb") as f:
                         for l in f:
                             pbar.update(len(l))
  
