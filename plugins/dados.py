@@ -127,7 +127,9 @@ def get_env(name, message, cast=str):
 
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
-
+def progress(current, total):
+                bar.pos = 0
+                bar.update(current)
 
 
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
@@ -149,9 +151,11 @@ async def handler(event):
         if total_length is None: # no content length header
             f.write(response.content)
         else:
+            bar = click.progressbar(label='Uploading {}'.format(os.path.basename(required_file_name)),
+                                    length=os.path.getsize(required_file_name))
             dl = 0
             total_length = int(total_length)
-            for data in response.iter_content(chunk_size=4096):
+            for data in response.iter_content(chunk_size=8129):
                 dl += len(data)
                 f.write(data)
                 f.flush()
@@ -163,7 +167,7 @@ async def handler(event):
                     size(int(response.headers["Content-Length"]), system=alternative)
     await message.edit('Download Started! __(Download '+human_readable_progress+' progress {d:.2f}s)__')     
     await asyncio.sleep(5)
-    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
+    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`", progress_callback=progress)
     os.remove(required_file_name)
     await asyncio.wait([event.delete()])
 
