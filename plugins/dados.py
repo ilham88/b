@@ -173,7 +173,7 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     
-    with open(required_file_name, "wb") as f:
+    with open(required_file_name, "rb+") as f:
         await message.edit("Downloading {} to my local pc before i can upload".format(local_filename))
         response = requests.get(query, stream=True)
         total_length = response.headers.get('content-length')
@@ -188,7 +188,7 @@ async def handler(event):
                 f.flush()
                 done = int(50 * dl / total_length)
                 with tqdm(os.path.getsize(required_file_name)) as pbar:
-                    with open(required_file_name, "rb") as f:
+                    with open(required_file_name, "rb+") as f:
                         for l in f:
                             pbar.update(len(l))
  
