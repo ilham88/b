@@ -155,7 +155,6 @@ async def handler(event):
                 process_content_with_progress3(query)
                 if not chunk:
                     await message.edit('fffff Ended!') 
-                    break
                     fp.write(chunk)
                     
     except urllib.error.HTTPError as err:
