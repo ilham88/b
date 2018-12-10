@@ -167,11 +167,11 @@ def update_progress(progress):
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
     """#search query: Searches for "query" in the method reference."""
-    s = time.now()
+    s = time.time() 
     message = await event.reply('Let me download the specified file')
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    d = time.now() - s
+    d = time.time()  - s
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
