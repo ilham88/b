@@ -141,21 +141,25 @@ async def handler(event):
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ".zip"
-    chunk_size = 1024
-    r = requests.get(query, stream = True) 
-    with open(required_file_name,"wb") as apk:
-        for chunk in r.iter_content(chunk_size=chunk_size):
-            total_length = r.headers.get('content-length')
-            dl = 0
-            
-            if chunk:
-                dl += len(chunk)
-                done = int(100 * dl / total_length)
-                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                await message.edit('Download finished! __(Download '+upload_progress_string+' took {d:.2f}s)__')
-                apk.write(chunk)
-                apk.flush()
     
+    with open(required_file_name, "wb") as f:
+        print "Downloading %s" % file_name
+        response = requests.get(query, stream=True)
+        total_length = response.headers.get('content-length')
+        if total_length is None: # no content length header
+            f.write(response.content)
+        else:
+            dl = 0
+            total_length = int(total_length)
+            for data in response.iter_content(chunk_size=4096):
+                dl += len(data)
+                f.write(data)
+                f.flush()
+                done = int(50 * dl / total_length)
+                sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )  
+                sys.stdout.flush()
+                await message.edit('Download finished! __(Download '+upload_progress_string+' took {d:.2f}s)__')
+         
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
     await asyncio.wait([event.delete()])
