@@ -71,20 +71,28 @@ bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
     """#search query: Searches for "query" in the method reference."""
-    s = time.time()
+    s = datetime.now()
     message = await event.reply('Let me download the specified file')
-    d = time.time() - s
+    d = datetime.now() - s
     query = event.pattern_match.group(1)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".zip"
+    chunk_size = 1024
     local_filename = query.split('/')[-1]
-    r = requests.get(query, stream=True)
-    with open(local_filename, 'wb') as f:
-        for chunk in r.iter_content(chunk_size=1024):
+    r = requests.get(query, stream = True) 
+    with open(required_file_name,"wb") as apk:
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            total_length = r.headers.get('content-length')
+            dl = 0
+            total_length = int(total_length)
             if chunk:
-                f.write(chunk)
-                return local_filename
-    file = 'setup.py'
-    await message.edit('Download finished! __(Download too took {d:.2f}s)__')
-    await asyncio.sleep(10)
+                dl += len(chunk)
+                done = int(100 * dl / total_length)
+                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
+                await message.edit('Download finished! __(Download '+upload_progress_string+' took {d:.2f}s)__')
+                apk.write(chunk)
+                apk.flush()
+    
+    await asyncio.sleep(5)
     await bot.send_file("bfas237off", local_filename, reply_to=event.id, caption="`Here is your current status`")
     await asyncio.wait([event.delete()])
 
@@ -228,5 +236,5 @@ def dados(msg):
                                 return True
 
 
- 
+
 
