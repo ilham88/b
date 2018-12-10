@@ -184,8 +184,7 @@ async def handler(event):
             total_length = int(total_length)
             for data in response.iter_content(chunk_size=8129):
                 dl += len(data)
-                f.write(data)
-                f.flush()
+                urlretrieve(query, required_file_name)
                 done = int(50 * dl / total_length)
                 with tqdm(os.path.getsize(required_file_name)) as pbar:
                     with open(required_file_name, "rb") as f:
