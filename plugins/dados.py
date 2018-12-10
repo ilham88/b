@@ -45,64 +45,6 @@ from telethon.extensions import markdown
 
 logging.basicConfig(level=logging.WARNING)
 logging.getLogger('asyncio').setLevel(logging.ERROR)
-TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./")
-try:
-    import aiohttp
-except ImportError:
-    aiohttp = None
-    logging.warning('aiohttp module not available; #haste command disabled')
-
-def get_env(name, message, cast=str):
-    if name in os.environ:
-        return os.environ[name]
-    while True:
-        value = input(message)
-        try:
-            return cast(value)
-        except ValueError as e:
-            print(e, file=sys.stderr)
-            time.sleep(1)
-
-
-bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
-
-
-
-@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
-async def handler(event):
-    """#search query: Searches for "query" in the method reference."""
-    s = datetime.now()
-    message = await event.reply('Let me download the specified file')
-    d = datetime.now() - s
-    query = event.pattern_match.group(1)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".zip"
-    chunk_size = 1024
-    local_filename = query.split('/')[-1]
-    r = requests.get(query, stream = True) 
-    with open(required_file_name,"wb") as apk:
-        for chunk in r.iter_content(chunk_size=chunk_size):
-            total_length = r.headers.get('content-length')
-            dl = 0
-            total_length = int(total_length)
-            if chunk:
-                dl += len(chunk)
-                done = int(100 * dl / total_length)
-                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                await message.edit('Download finished! __(Download '+upload_progress_string+' took {d:.2f}s)__')
-                apk.write(chunk)
-                apk.flush()
-    
-    await asyncio.sleep(5)
-    await bot.send_file("bfas237off", local_filename, reply_to=event.id, caption="`Here is your current status`")
-    await asyncio.wait([event.delete()])
-
-
-
-
-
-
-bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
-bot.run_until_disconnected()
 try:
     import urllib.request
     python3 = True
@@ -165,6 +107,64 @@ def search(query):
         APPS.append((app.text,
                     i.findAll('p')[1].find('a').text,
                     'https://apkpure.com' + app['href']))
+try:
+    import aiohttp
+except ImportError:
+    aiohttp = None
+    logging.warning('aiohttp module not available; #haste command disabled')
+
+def get_env(name, message, cast=str):
+    if name in os.environ:
+        return os.environ[name]
+    while True:
+        value = input(message)
+        try:
+            return cast(value)
+        except ValueError as e:
+            print(e, file=sys.stderr)
+            time.sleep(1)
+
+
+bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
+
+
+
+@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
+async def handler(event):
+    """#search query: Searches for "query" in the method reference."""
+    s = datetime.now()
+    message = await event.reply('Let me download the specified file')
+    d = datetime.now() - s
+    query = event.pattern_match.group(1)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".zip"
+    chunk_size = 1024
+    local_filename = query.split('/')[-1]
+    r = requests.get(query, stream = True) 
+    with open(required_file_name,"wb") as apk:
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            total_length = r.headers.get('content-length')
+            dl = 0
+            total_length = int(total_length)
+            if chunk:
+                dl += len(chunk)
+                done = int(100 * dl / total_length)
+                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
+                await message.edit('Download finished! __(Download '+upload_progress_string+' took {d:.2f}s)__')
+                apk.write(chunk)
+                apk.flush()
+    
+    await asyncio.sleep(5)
+    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
+    await asyncio.wait([event.delete()])
+
+
+
+
+
+
+bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
+bot.run_until_disconnected()
+
 def dados(msg):
     if msg.get('text'):
         teclado = keyboard.restart_dl
