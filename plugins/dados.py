@@ -150,23 +150,23 @@ async def handler(event):
     chunk_count = 8192
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name
     
-    
-    #subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+    #subprocess.run(['wget','--content-disposition http://www.vim.org/scripts/download_script.php?src_id=9750'], stdout=subprocess.PIPE)
    
     r = requests.get(query, stream=True, allow_redirects=True)
     filename = get_filename_from_cd(r.headers.get('content-disposition'))
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + filename
-    with open(required_file_name, 'wb') as f:
+    
+    with open(filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024): 
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
-                process_content_with_progress3(required_file_name)
+                process_content_with_progress3(filename)
                 f.flush()
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
-    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
-    os.remove(required_file_name)
+    await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
+    os.remove(filename)
    
     
     
