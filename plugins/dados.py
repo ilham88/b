@@ -133,7 +133,7 @@ def downloadChunks(url):
             while True:
                 chunk = req.read(CHUNK)
                 downloaded += len(chunk)
-                print floor( (downloaded / total_size) * 100 )
+                print floor((downloaded / total_size) * 100)
                 if not chunk: break
                 fp.write(chunk)
     except urllib2.HTTPError, e:
