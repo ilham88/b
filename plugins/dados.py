@@ -135,7 +135,7 @@ async def handler(event):
     try:
         file = os.path.join(temp_path_uniq,baseFile)
         req = urlopen(query)
-        total_size = int(req.info().getheader('Content-Length').strip())
+        total_size = int(req.getheader('Content-Length')).strip())
         downloaded = 0
         CHUNK = 256 * 10240
         with open(file, 'wb') as fp:
