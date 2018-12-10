@@ -66,15 +66,7 @@ def get_env(name, message, cast=str):
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
-def download_file(url):
-        
-        # NOTE the stream=True parameter
-        
-             
-                 # filter out keep-alive new chunks
-                    
-                    #f.flush() commented by recommendation from J.F.Sebastian
-        
+
 
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
