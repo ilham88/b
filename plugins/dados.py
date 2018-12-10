@@ -145,12 +145,12 @@ async def handler(event):
     
     mime = magic.Magic(mime=True) 
     output = "output" # Your file name without extension
-    urlretrieve(query, output) # This is just an example url
-    mimes = mime.from_file(output) # Get mime type
+    subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+    mimes = mime.from_file(app_name) # Get mime type
     ext = mimetypes.guess_all_extensions(mimes)[0] # Guess extension
     os.rename(output, output+ext)
     print(output+ext)
-    subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+    
 
 
    
