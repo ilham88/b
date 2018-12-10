@@ -42,4 +42,4 @@ telethon
 click>=6.0
 cryptg
 aiohttp
-magic
+python-magic
