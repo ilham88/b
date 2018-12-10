@@ -13,6 +13,7 @@ from urllib.request import urlopen
 from shutil import copyfileobj
 from pyaxmlparser import APK
 from shutil import copyfile
+import shutil
 from tempfile import NamedTemporaryFile
 import threading
 import pprint
