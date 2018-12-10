@@ -143,11 +143,11 @@ async def handler(event):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
-    req = requests.head(query)
-    headersContent = req.headers['Content-Disposition']
-    rfcFilename = rfc6266.parse_headers(headersContent, relaxed=True).filename_unsafe
-    filename = requests.utils.unquote(rfcFilename)
-    print(filename)
+    page = urlopen(query)
+    pageHeaders = page.headers
+    contentType = pageHeaders.getheader('content-type')
+    return contentType
+    print(contentType)
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
 
 
