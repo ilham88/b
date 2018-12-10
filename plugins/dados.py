@@ -127,7 +127,7 @@ async def handler(event):
     message = await event.reply('Let me download the specified file')
     query = event.pattern_match.group(1)
     baseFile = os.path.basename(query)
-    uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
+    uuid_path = ''.join([random.choice(string.ascii_letters + string.digits) for i in range(10)])
     temp_path_uniq = os.path.join(TEMP_DOWNLOAD_DIRECTORY,uuid_path)
     if not os.path.isdir(temp_path_uniq):
         os.makedirs(temp_path_uniq)
