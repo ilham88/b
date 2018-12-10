@@ -150,9 +150,9 @@ async def handler(event):
     chunk_count = 8192
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + filename
     
-    subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+    #subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
    
     r = requests.get(query, stream=True, allow_redirects=True)
     filename = get_filename_from_cd(r.headers.get('content-disposition'))
@@ -160,6 +160,7 @@ async def handler(event):
         for chunk in r.iter_content(chunk_size=1024): 
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
+                process_content_with_progress3(filename)
                 f.flush()
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
