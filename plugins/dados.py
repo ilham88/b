@@ -156,7 +156,12 @@ async def handler(event):
    
     r = requests.get(query, stream=True, allow_redirects=True)
     filename = get_filename_from_cd(r.headers.get('content-disposition'))
-    open(filename, 'wb').write(r.content)
+    with open(filename, 'wb') as f:
+    for chunk in r.iter_content(chunk_size=1024): 
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
+                f.flush()
+    return filename
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
