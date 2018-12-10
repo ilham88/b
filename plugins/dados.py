@@ -96,10 +96,11 @@ def downloadFile(url, directory) :
       for chunk in r.iter_content(1024):
         dl += len(chunk)
         f.write(chunk)
-        done = int(50 * dl / total_length)
-        sys.stdout.write("\r[%s%s] %s bps" % ('=' * done, ' ' * (50-done), dl//(time.clock() - start)))
-        print ('')
-  return (time.clock() - start)
+        f.flush(chunk)
+        with tqdm.tqdm(os.path.getsize(directory)) as pbar:
+            with open(directory, "rb") as f:
+                for l in f:
+                    pbar.update(len(l))
  
 def download(link):
     res = requests.get(link + '/download?from=details', headers={
@@ -170,10 +171,9 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     time_elapsed = downloadFile(query, required_file_name)
-    urlretrieve(query, required_file_name, reporthook)
     await message.edit("Download complete...")     
     await asyncio.sleep(5)
-    await message.edit("Time Elapsed:  __({d:.2f}s)__")
+    await message.edit("Thanks for using our service")
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your downloaded file`")
     os.remove(required_file_name)
     await asyncio.wait([event.delete()])
