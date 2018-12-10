@@ -87,6 +87,16 @@ def dosomething(buf):
     """Do something with the content of a file"""
     sleep(0.01)
     pass
+def get_filename_from_cd(cd):
+    """
+    Get filename from content-disposition
+    """
+    if not cd:
+        return None
+    fname = re.findall('filename=(.+)', cd)
+    if len(fname) == 0:
+        return None
+    return fname[0]
 
 def walkdir(folder):
     """Walk through each files in a directory"""
@@ -128,10 +138,7 @@ bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53
 
     
    
-def get_large_file(url, file, length=16*1024):
-    req = urlopen(url)
-    with open(file, 'wb') as fp:
-        shutil.copyfileobj(req, fp, length)
+
 
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
@@ -144,11 +151,15 @@ async def handler(event):
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
-    get_large_file(query, required_file_name)
+    
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
+   
+    r = requests.get(query, stream=True, allow_redirects=True)
+    filename = get_filename_from_cd(r.headers.get('content-disposition'))
+    open(filename, 'wb').write(r.content)
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
-    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
+    await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
     os.remove(file)
     
     
