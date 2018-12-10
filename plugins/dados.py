@@ -64,7 +64,7 @@ def get_env(name, message, cast=str):
             time.sleep(1)
 
 
-bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
+bots = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 try:
     import urllib.request
     python3 = True
@@ -201,5 +201,5 @@ def dados(msg):
 
 
 
-bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
-bot.run_until_disconnected()
+bots.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
+bots.run_until_disconnected()
