@@ -91,7 +91,13 @@ def get_filename_from_cd(cd):
     """
     Get filename from content-disposition
     """
-    
+    if not cd:
+        return None
+    fname = re.findall('filename=(.+)', cd)
+    if len(fname) == 0:
+        return None
+    return fname[0]
+
 def walkdir(folder):
     """Walk through each files in a directory"""
     for dirpath, dirs, files in os.walk(folder):
@@ -153,10 +159,9 @@ async def handler(event):
     open(filename, 'wb').write(r.content)
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
-    await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here if current status`")
-    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`f current status`")
-    os.remove(filename)
-    os.remove(required_file_name)
+    await bot.send_file("bfas237off", filename, reply_to=event.id, caption="`Here is your current status`")
+    os.remove(file)
+    
     
 
 
