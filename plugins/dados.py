@@ -129,6 +129,7 @@ async def handler(event):
     baseFile = os.path.basename(query)
     uuid_path = ''.join([random.choice(string.ascii_letters + string.digits) for i in range(10)])
     temp_path_uniq = os.path.join(TEMP_DOWNLOAD_DIRECTORY,uuid_path)
+    print(temp_path_uniq)
     if not os.path.isdir(temp_path_uniq):
         os.makedirs(temp_path_uniq)
     d = datetime.now() - s
@@ -146,6 +147,7 @@ async def handler(event):
                 if not chunk:
                     break
                     fp.write(chunk)
+                    print(process_content_with_progress3(query))
     except urllib.error.HTTPError as err:
         print ("HTTP Error:", err.code , query)
         return False
