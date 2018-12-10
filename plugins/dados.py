@@ -21,7 +21,8 @@ import traceback
 import urllib.request
 import amanobot
 import amanobot.namedtuple
-from tqdm import tqdm
+from tqdm import tqdm, trange
+from time import sleep
 from amanobot.namedtuple import InlineKeyboardMarkup
 import warnings
 from random import randint
@@ -83,6 +84,24 @@ def pretty_size(sizes):
     return '%0.2f %s' % (sizes, units[unit])
 
 APPS = []
+def process_content_with_progress3(inputpath, blocksize=1024):
+    # Preprocess the total files sizes
+    sizecounter = 0
+    for filepath in tqdm(walkdir(inputpath), unit="files"):
+        sizecounter += os.stat(filepath).st_size
+
+    # Load tqdm with size counter instead of file counter
+    with tqdm(total=sizecounter,
+              unit='B', unit_scale=True, unit_divisor=1024) as pbar:
+        for filepath in walkdir(inputpath):
+            with open(filepath, 'rb') as fh:
+                buf = 1
+                while (buf):
+                    buf = fh.read(blocksize)
+                    dosomething(buf)
+                    if buf:
+                        pbar.set_postfix(file=filepath[-10:], refresh=False)
+                        pbar.update(len(buf))
 def downloadFile(url, directory) :
   localFilename = url.split('/')[-1]
   with open(directory, 'wb') as f:
@@ -97,7 +116,7 @@ def downloadFile(url, directory) :
         dl += len(chunk)
         f.write(chunk)
         f.flush()
-        with tqdm.tqdm(os.path.getsize(directory)) as pbar:
+        with tqdm(os.path.getsize(directory)) as pbar:
             with open(directory, "rb") as f:
                 for l in f:
                     pbar.update(len(l))
