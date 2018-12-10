@@ -42,4 +42,4 @@ telethon
 click>=6.0
 cryptg
 aiohttp
-rfc6266
+magic
