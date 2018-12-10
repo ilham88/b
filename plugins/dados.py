@@ -135,6 +135,7 @@ async def handler(event):
     message = await event.reply('Let me download the specified file')
     query = event.pattern_match.group(1)
     app_name = query.split('/')[-1]
+    chunk_count = 8192
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
