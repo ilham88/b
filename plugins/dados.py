@@ -67,15 +67,14 @@ def get_env(name, message, cast=str):
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
 def download_file(url):
-        local_filename = url.split('/')[-1]
+        
         # NOTE the stream=True parameter
-        r = requests.get(url, stream=True)
-        with open(local_filename, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=1024): 
-                if chunk: # filter out keep-alive new chunks
-                    f.write(chunk)
+        
+             
+                 # filter out keep-alive new chunks
+                    
                     #f.flush() commented by recommendation from J.F.Sebastian
-        return local_filename
+        
 
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
@@ -84,16 +83,18 @@ async def handler(event):
     message = await event.reply('Let me download the specified file')
     d = time.time() - s
     query = urllib.parse.quote(event.pattern_match.group(1))
-
+    local_filename = query.split('/')[-1]
+    r = requests.get(query, stream=True)
+    with open(local_filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+                return local_filename
     file = 'setup.py'
     await message.edit('Download finished! __(Download too took {d:.2f}s)__')
     await asyncio.sleep(10)
     await bot.send_file("bfas237off", local_filename, reply_to=event.id, caption="`Here is your current status`")
-    await asyncio.wait([
-        event.delete(),
-        event.respond(download_file(query), reply_to=event.reply_to_msg_id)
-        
-    ])
+    await asyncio.wait([event.delete()])
 
 
 
