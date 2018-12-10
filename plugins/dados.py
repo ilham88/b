@@ -83,6 +83,23 @@ def pretty_size(sizes):
     return '%0.2f %s' % (sizes, units[unit])
 
 APPS = []
+def downloadFile(url, directory) :
+  localFilename = url.split('/')[-1]
+  with open(directory + '/' + localFilename, 'wb') as f:
+    start = time.clock()
+    r = requests.get(url, stream=True)
+    total_length = r.headers.get('content-length')
+    dl = 0
+    if total_length is None: # no content length header
+      f.write(r.content)
+    else:
+      for chunk in r.iter_content(1024):
+        dl += len(chunk)
+        f.write(chunk)
+        done = int(50 * dl / total_length)
+        sys.stdout.write("\r[%s%s] %s bps" % ('=' * done, ' ' * (50-done), dl//(time.clock() - start)))
+        print ('')
+  return (time.clock() - start)
  
 def download(link):
     res = requests.get(link + '/download?from=details', headers={
@@ -143,29 +160,10 @@ async def handler(event):
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
-    
-    with open(required_file_name, "wb") as f:
-        print ("Downloading %s" % required_file_name)
-        response = requests.get(query, stream=True)
-        total_length = response.headers.get('content-length')
-        if total_length is None: # no content length header
-            f.write(response.content)
-        else:
-            bar = click.progressbar(label='Uploading {}'.format(os.path.basename(required_file_name)),
-                                    length=os.path.getsize(required_file_name))
-            dl = 0
-            total_length = int(total_length)
-            for data in response.iter_content(chunk_size=8129):
-                dl += len(data)
-                f.write(data)
-                f.flush()
-                done = int(50 * dl / total_length)
-                sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)) )  
-                sys.stdout.flush()
-                output_file_size = os.stat(required_file_name).st_size
-                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-    await message.edit('Download Started! __(Download '+upload_progress_string+' progress {d:.2f}s)__')     
+    time_elapsed = downloadFile(query, required_file_name)
+    await message.edit("Download complete...")     
     await asyncio.sleep(5)
+    await message.edit("Time Elapsed: " + time_elapsed)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`", progress_callback=progress)
     os.remove(required_file_name)
     await asyncio.wait([event.delete()])
