@@ -139,10 +139,7 @@ async def handler(event):
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
-    downloader = Downloader(query, required_file_name, chunk_count)
-
-    downloader.start()
-    downloader.wait_for_finish()
+    
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
