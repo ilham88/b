@@ -144,7 +144,7 @@ async def handler(event):
     downloader.wait_for_finish()
     await message.edit('Download Ended!')    
     await asyncio.sleep(5)
-    await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
+    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
     os.remove(file)
     
     
