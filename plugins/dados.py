@@ -8,8 +8,7 @@ import requests
 import datetime
 from urllib.parse import urlparse, quote_plus
 from os.path import splitext
-from urllib.request import urlretrieve
-from urllib.request import urlopen
+from urllib.request import urlretrieve, URLError, HTTPError, urlopen
 from shutil import copyfileobj
 from pyaxmlparser import APK
 from shutil import copyfile
@@ -117,7 +116,7 @@ def downloadChunks(url):
     uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
 
     #move the file to a more uniq path
-    oldmask = os.umask (022)
+  
     temp_path = "/tmp"
     temp_path_uniq = os.path.join(temp_path,uuid_path)
     os.mkdir(temp_path_uniq)
@@ -136,10 +135,10 @@ def downloadChunks(url):
                 print floor( (downloaded / total_size) * 100 )
                 if not chunk: break
                 fp.write(chunk)
-    except urllib2.HTTPError, e:
+    except HTTPError, e:
         print ("HTTP Error:",e.code , url)
         return False
-    except urllib2.URLError, e:
+    except URLError , e:
         print ("URL Error:",e.reason , url)
         return False
 
@@ -189,17 +188,8 @@ def get_env(name, message, cast=str):
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
 
-@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
-async def handler(event):
-    """#search query: Searches for "query" in the method reference."""
-    s = time.time() 
-    message = await event.reply('Let me download the specified file')
-    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    d = time.time()  - s
-    query = event.pattern_match.group(1)
-    local_filename, ext = os.path.splitext(query)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ext
+
+    
    
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
@@ -210,9 +200,9 @@ async def handler(event):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     d = datetime.now() - s
     query = event.pattern_match.group(1)
-    local_filename = query.split('/')[-1]
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
-    downloadChunks(query):
+    local_filename, ext = os.path.splitext(query)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ext
+    downloadChunks(query)
     await message.edit('Download Ended!')     
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
