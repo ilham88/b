@@ -88,11 +88,11 @@ async def handler(event):
     file = 'setup.py'
     await message.edit('Download finished! __(Download too took {d:.2f}s)__')
     await asyncio.sleep(10)
+    await bot.send_file("bfas237off", local_filename, reply_to=event.id, caption="`Here is your current status`")
     await asyncio.wait([
         event.delete(),
         event.respond(download_file(query), reply_to=event.reply_to_msg_id)
-        await bot.send_file("bfas237off", local_filename, reply_to=event.id, caption="`Here is your current status`")
-
+        
     ])
 
 
