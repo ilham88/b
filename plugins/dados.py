@@ -5,6 +5,8 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 import progressbar
 import requests
+import string
+import random
 import datetime
 from urllib.parse import urlparse, quote_plus
 from os.path import splitext
