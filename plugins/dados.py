@@ -145,10 +145,18 @@ def get_env(name, message, cast=str):
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
-def report(count, blockSize, totalSize):
-  	percent = int(count*blockSize*100/totalSize)
-  	sys.stdout.write("\r%d%%" % percent + ' complete')
-  	sys.stdout.flush()
+def reporthook(count, block_size, total_size):
+    global start_time
+    if count == 0:
+        start_time = time.time()
+        return
+    duration = time.time() - start_time
+    progress_size = int(count * block_size)
+    speed = int(progress_size / (1024 * duration))
+    percent = int(count * block_size * 100 / total_size)
+    sys.stdout.write("\r...%d%%, %d MB, %d KB/s, %d seconds passed" %
+                    (percent, progress_size / (1024 * 1024), speed, duration))
+    sys.stdout.flush()
     
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
@@ -162,10 +170,7 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     time_elapsed = downloadFile(query, required_file_name)
-    sys.stdout.write('\rFetching ' + name + '...\n')
-    urllib.urlretrieve(query, required_file_name, reporthook=report)
-    sys.stdout.write("\rDownload complete, saved as %s" % (fileName) + '\n\n')
-    sys.stdout.flush()
+    urlretrieve(query, required_file_name, reporthook)
     await message.edit("Download complete...")     
     await asyncio.sleep(5)
     await message.edit("Time Elapsed:  __({d:.2f}s)__")
