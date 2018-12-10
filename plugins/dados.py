@@ -117,7 +117,7 @@ def downloadChunks(url):
     uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
 
     #move the file to a more uniq path
-    os.umask(0002)
+    oldmask = os.umask (022)
     temp_path = "/tmp"
     temp_path_uniq = os.path.join(temp_path,uuid_path)
     os.mkdir(temp_path_uniq)
