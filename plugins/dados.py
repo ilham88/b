@@ -172,7 +172,7 @@ async def handler(event):
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
-    
+     
     with open(required_file_name, "rwb+") as f:
         await message.edit("Downloading {} to my local pc before i can upload".format(local_filename))
         response = requests.get(query, stream=True)
