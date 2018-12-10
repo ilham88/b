@@ -176,7 +176,7 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     time_elapsed = downloadFile(query, required_file_name)
-    await message.edit("Download complete..." + update_progress)     
+    await message.edit("Download complete...")     
     await asyncio.sleep(5)
     await message.edit("Time Elapsed:  __({d:.2f}s)__")
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`", progress_callback=update_progress)
