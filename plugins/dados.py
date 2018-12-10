@@ -142,7 +142,6 @@ async def handler(event):
     downloader = Downloader(query, required_file_name, chunk_count)
 
     downloader.start()
-    downloader.subscribe(callback, callback_threshold)
     downloader.wait_for_finish()
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
     await message.edit('Download Ended!')    
