@@ -173,7 +173,7 @@ async def handler(event):
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
      
-    with open(required_file_name, "rwb+") as f:
+    with open(required_file_name, "wb") as f:
         await message.edit("Downloading {} to my local pc before i can upload".format(local_filename))
         response = requests.get(query, stream=True)
         total_length = response.headers.get('content-length')
