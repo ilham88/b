@@ -150,7 +150,7 @@ async def handler(event):
     chunk_count = 8192
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".zip"
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
    
