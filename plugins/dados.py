@@ -45,7 +45,7 @@ from telethon.tl.types import DocumentAttributeVideo
 from telethon.errors import MessageNotModifiedError
 from telethon import TelegramClient, events, types, custom, utils
 from telethon.extensions import markdown
-import rfc6266
+import magic
 logging.basicConfig(level=logging.WARNING)
 logging.getLogger('asyncio').setLevel(logging.ERROR)
 try:
@@ -143,11 +143,13 @@ async def handler(event):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
-    page = urlopen(query)
-    pageHeaders = page.headers
-    contentType = pageHeaders.getheader('content-type')
-    return contentType
-    print(contentType)
+    mime = magic.Magic(mime=True) 
+    output = "output" # Your file name without extension
+    urlretrieve(query, output) # This is just an example url
+    mimes = mime.from_file(output) # Get mime type
+    ext = mimetypes.guess_all_extensions(mimes)[0] # Guess extension
+    os.rename(output, output+ext)
+    print(output+ext)
     subprocess.run(['wget',required_file_name], stdout=subprocess.PIPE)
 
 
@@ -156,7 +158,7 @@ async def handler(event):
     await message.edit('Download Ended! Now sending your file')    
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
-    
+    os.remove(output+ext)
     os.remove(required_file_name)
     
 
