@@ -140,10 +140,10 @@ async def handler(event):
     d = datetime.now() - s
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ".zip"
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
     
     with open(required_file_name, "wb") as f:
-        print "Downloading %s" % file_name
+        print ("Downloading %s" % required_file_name)
         response = requests.get(query, stream=True)
         total_length = response.headers.get('content-length')
         if total_length is None: # no content length header
