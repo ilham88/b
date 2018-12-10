@@ -64,7 +64,26 @@ def get_env(name, message, cast=str):
             time.sleep(1)
 
 
-bots = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
+bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
+
+
+
+@bot.on(events.NewMessage(pattern='#ping', forwards=False))
+async def handler(event):
+    s = time.time()
+    message = await event.reply('Pong!')
+    d = time.time() - s
+    file = 'setup.py'
+    await message.edit('Pong! __(reply took {d:.2f}s)__')
+    await asyncio.sleep(5)
+    filel = await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
+    await asyncio.wait([event.delete(), message.delete()])
+
+
+
+
+bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
+bot.run_until_disconnected()
 try:
     import urllib.request
     python3 = True
@@ -74,7 +93,7 @@ except ImportError:
 import config
 import keyboard
 from hurry.filesize import size, alternative
-bot = config.bot
+bots = config.bot
 version = config.version
 bot_username = config.bot_username
 ### XXX: hack to skip some stupid beautifulsoup warnings that I'll fix when refactoring
@@ -133,12 +152,12 @@ def dados(msg):
         if msg['text'].startswith('!dl '):
             input_str = msg['text'][4:]
             if input_str == '':
-                bot.sendMessage(msg['chat']['id'], '*Use:* `!dl <app name>`',
+                bots.sendMessage(msg['chat']['id'], '*Use:* `!dl <app name>`',
                                 parse_mode='Markdown',
                                 reply_to_message_id=msg['message_id'])
             else:
                 app_name = input_str.split('/')[-1]
-                sent = bot.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
+                sent = bots.sendMessage(msg['chat']['id'], "🔁 getting download link for {}".format(app_name), 'Markdown', reply_to_message_id=msg['message_id'])['message_id']
                 if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
                     os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
                 site = "https://apkpure.com"
@@ -156,7 +175,7 @@ def dados(msg):
                         downloadlink = link.get('href')
                         word = "123456789abcdefgh-_"
                         servers = shuffle(word)
-                        bot.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
+                        bots.editMessageText((msg['chat']['id'], sent), "⬇️ downloading from [{}.apkpure.com]({}) in progress...".format(servers, downloadlink), 'Markdown', disable_web_page_preview=True)
                         #bot.deleteMessage(chat_id, sent)
                         required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
                         start = datetime.now()
@@ -179,27 +198,24 @@ def dados(msg):
 					size(int(r.headers["Content-Length"]), system=alternative)
 					
                                     upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-                            bot.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, human_readable_progress), 'Markdown')
+                            bots.editMessageText((msg['chat']['id'], sent), "⬆️ Uploading *{}* to Telegram \n\n {}".format(app_name, human_readable_progress), 'Markdown')
                             time.sleep(5)
                             starts = datetime.now()
                             if total_length < 52428800:
-                                bot.sendChatAction(msg['chat']['id'], 'upload_document')
+                                bots.sendChatAction(msg['chat']['id'], 'upload_document')
                                 tr = bot.sendDocument(msg['chat']['id'], open(required_file_name, 'rb'), caption="@" + bot_username, parse_mode='Markdown')
                                 time.sleep(0.5)
                                 ends = datetime.now()
                                 mss = (ends - starts).seconds
                                 os.remove(required_file_name)
-                                bot.deleteMessage((msg['chat']['id'],sent))
+                                bots.deleteMessage((msg['chat']['id'],sent))
                             else:
-                                bot.editMessageText((msg['chat']['id'], sent), "⚠️ There was an error\n\n *{}* is more than 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n\n Try downloading something smaller than this".format(app_name), 'Markdown')
+                                bots.editMessageText((msg['chat']['id'], sent), "⚠️ There was an error\n\n *{}* is more than 50MB limit. Unfortunately, The current download job has ended unexpectedly.\n\n Try downloading something smaller than this".format(app_name), 'Markdown')
                                 os.remove(required_file_name)
                                 time.sleep(60)
-                                bot.deleteMessage((msg['chat']['id'],sent))
+                                bots.deleteMessage((msg['chat']['id'],sent))
                                 return True
 
 
 
 
-
-bots.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
-bots.run_until_disconnected()
