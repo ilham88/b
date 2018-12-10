@@ -158,8 +158,8 @@ async def handler(event):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     d = time.time()  - s
     query = event.pattern_match.group(1)
-    local_filename = query.split('/')[-1]
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
+    local_filename, ext = os.path.splitext(query)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ext
    
 @bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
 async def handler(event):
