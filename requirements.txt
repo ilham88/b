@@ -37,6 +37,7 @@ virustotal-api
 pyaxmlparser
 telepot
 hurry.filesize 
+pget 
 telethon
 click>=6.0
 cryptg
