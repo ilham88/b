@@ -103,7 +103,47 @@ def process_content_with_progress3(inputpath, blocksize=1024):
                         pbar.set_postfix(file=filepath[-10:], refresh=False)
                         pbar.update(len(buf))
 
- 
+def downloadChunks(url):
+    """Helper to download large files
+        the only arg is a url
+       this file will go to a temp directory
+       the file will also be downloaded
+       in chunks and print out how much remains
+    """
+   
+
+    baseFile = os.path.basename(url)
+
+    uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
+
+    #move the file to a more uniq path
+    os.umask(0002)
+    temp_path = "/tmp"
+    temp_path_uniq = os.path.join(temp_path,uuid_path)
+    os.mkdir(temp_path_uniq)
+
+    try:
+        file = os.path.join(temp_path_uniq,baseFile)
+
+        req = urlopen(url)
+        total_size = int(req.info().getheader('Content-Length').strip())
+        downloaded = 0
+        CHUNK = 256 * 10240
+        with open(file, 'wb') as fp:
+            while True:
+                chunk = req.read(CHUNK)
+                downloaded += len(chunk)
+                print floor( (downloaded / total_size) * 100 )
+                if not chunk: break
+                fp.write(chunk)
+    except urllib2.HTTPError, e:
+        print ("HTTP Error:",e.code , url)
+        return False
+    except urllib2.URLError, e:
+        print ("URL Error:",e.reason , url)
+        return False
+
+    return file 
 def download(link):
     res = requests.get(link + '/download?from=details', headers={
             'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
@@ -172,28 +212,8 @@ async def handler(event):
     query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename
-     
-    with open(required_file_name, "wb") as f:
-        await message.edit("Downloading {} to my local pc before i can upload".format(local_filename))
-        response = requests.get(query, stream=True)
-        total_length = response.headers.get('content-length')
-        if total_length is None: # no content length header
-            f.write(response.content)
-        else:
-            dl = 0
-            total_length = int(total_length)
-            for data in response.iter_content(chunk_size=8129):
-                dl += len(data)
-                urlretrieve(query, required_file_name)
-                done = int(50 * dl / total_length)
-                with tqdm(os.path.getsize(required_file_name)) as pbar:
-                    with open(required_file_name, "rb") as f:
-                        for l in f:
-                            pbar.update(len(l))
- 
-                
-                upload_progress_string = "... [%s of %s]" % (str(dl), str(pretty_size(total_length)))
-    await message.edit('Download Started!')     
+    downloadChunks(query):
+    await message.edit('Download Ended!')     
     await asyncio.sleep(5)
     await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
     os.remove(required_file_name)
