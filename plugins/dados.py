@@ -120,8 +120,7 @@ def process_content_with_progress3(inputpath, blocksize=1024):
                 
                     
     
-
-    
+from pget.down import Downloader
 
 bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 
@@ -135,40 +134,18 @@ async def handler(event):
     s = datetime.now()
     message = await event.reply('Let me download the specified file')
     query = event.pattern_match.group(1)
-    baseFile = os.path.basename(query)
-    uuid_path = ''.join([random.choice(string.ascii_letters + string.digits) for i in range(10)])
-    temp_path_uniq = os.path.join(TEMP_DOWNLOAD_DIRECTORY,uuid_path)
-    print(temp_path_uniq)
-    if not os.path.isdir(temp_path_uniq):
-        os.makedirs(temp_path_uniq)
-    d = datetime.now() - s
-    try:
-        file = os.path.join(temp_path_uniq,baseFile)
-        req = urlopen(query)
-        total_size = int(req.getheader('Content-Length'))
-        downloaded = 0
-        CHUNK = 256 * 10240
-        with open(file, 'wb') as fp:
-            while True:
-                chunk = req.read(CHUNK)
-                downloaded += len(chunk)
-                await asyncio.wait([event.delete()])
-                if not chunk:
-                    fp.write(chunk)
-                    return file
-                    await message.edit('Download Ended!')     
-                    await asyncio.sleep(5)
-                    await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
-                    os.remove(file)
-                    break
-                    
-    except urllib.error.HTTPError as err:
-        print ("HTTP Error:", err.code , query)
-        return False
-    except urllib.error.URLError as err:
-        print ("URL Error:", err.code , query)
-        return False    
-            
+    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
+        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
+    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
+    downloader = Downloader(query, required_file_name, chunk_count)
+
+    downloader.start()
+    downloader.subscribe(callback, callback_threshold)
+    downloader.wait_for_finish()
+    await message.edit('Download Ended!')    
+    await asyncio.sleep(5)
+    await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
+    os.remove(file)
     
     
 
