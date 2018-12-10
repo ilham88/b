@@ -85,7 +85,7 @@ def pretty_size(sizes):
 APPS = []
 def downloadFile(url, directory) :
   localFilename = url.split('/')[-1]
-  with open(directory + '/' + localFilename, 'wb') as f:
+  with open(directory, 'wb') as f:
     start = time.clock()
     r = requests.get(url, stream=True)
     total_length = r.headers.get('content-length')
