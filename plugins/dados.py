@@ -143,7 +143,7 @@ async def handler(event):
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
     required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + app_name + ".apk"
     
-    req = requests.head(downloadLink)
+    req = requests.head(query)
     headersContent = req.headers['Content-Disposition']
     rfcFilename = rfc6266.parse_headers(headersContent, relaxed=True).filename_unsafe
     filename = requests.utils.unquote(rfcFilename)
