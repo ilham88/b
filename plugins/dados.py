@@ -5,14 +5,7 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 import progressbar
 import requests
-import sys
-import re
-import json
-import os
-import html
-import time
 import datetime
-from datetime import datetime
 from urllib.parse import urlparse, quote_plus
 from os.path import splitext
 from urllib.request import urlretrieve
@@ -31,7 +24,47 @@ from tqdm import tqdm
 from amanobot.namedtuple import InlineKeyboardMarkup
 import warnings
 from random import randint
+from telegram_upload.exceptions import catch
+from telegram_upload.management import manage
+import asyncio
+import difflib
+import html
+import logging
+import os
+import re
+import sys
+import time
+import urllib.parse
+import click
+import subprocess
+from datetime import datetime
+from telethon.tl.types import DocumentAttributeVideo
+from telethon.errors import MessageNotModifiedError
+from telethon import TelegramClient, events, types, custom, utils
+from telethon.extensions import markdown
 
+logging.basicConfig(level=logging.WARNING)
+logging.getLogger('asyncio').setLevel(logging.ERROR)
+TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./")
+try:
+    import aiohttp
+except ImportError:
+    aiohttp = None
+    logging.warning('aiohttp module not available; #haste command disabled')
+
+def get_env(name, message, cast=str):
+    if name in os.environ:
+        return os.environ[name]
+    while True:
+        value = input(message)
+        try:
+            return cast(value)
+        except ValueError as e:
+            print(e, file=sys.stderr)
+            time.sleep(1)
+
+
+bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
 try:
     import urllib.request
     python3 = True
@@ -164,4 +197,7 @@ def dados(msg):
                                 bot.deleteMessage((msg['chat']['id'],sent))
                                 return True
 
-        
+
+
+bot.start(bot_token=bot)
+bot.run_until_disconnected()
