@@ -74,7 +74,7 @@ async def handler(event):
     s = time.time()
     message = await event.reply('Let me download the specified file')
     d = time.time() - s
-    query = urllib.parse.quote(event.pattern_match.group(1))
+    query = event.pattern_match.group(1)
     local_filename = query.split('/')[-1]
     r = requests.get(query, stream=True)
     with open(local_filename, 'wb') as f:
