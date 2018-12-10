@@ -102,30 +102,37 @@ def process_content_with_progress3(inputpath, blocksize=1024):
                         pbar.set_postfix(file=filepath[-10:], refresh=False)
                         pbar.update(len(buf))
 
-def downloadChunks(url):
-    """Helper to download large files
-        the only arg is a url
-       this file will go to a temp directory
-       the file will also be downloaded
-       in chunks and print out how much remains
-    """
-    import os
-    import urllib2
 
-    baseFile = os.path.basename(url)
-
-    uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
-
-    #move the file to a more uniq path
     
-    temp_path = "/tmp"
-    temp_path_uniq = os.path.join(temp_path,uuid_path)
-    os.mkdir(temp_path_uniq)
+    
+        
+                
+                    
+    
 
+    
+
+bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
+
+
+
+    
+   
+@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
+async def handler(event):
+    
+    s = datetime.now()
+    message = await event.reply('Let me download the specified file')
+    query = event.pattern_match.group(1)
+    baseFile = os.path.basename(query)
+    uuid_path = ''.join([random.choice(string.letters + string.digits) for i in range(10)])
+    temp_path_uniq = os.path.join(TEMP_DOWNLOAD_DIRECTORY,uuid_path)
+    if not os.path.isdir(temp_path_uniq):
+        os.makedirs(temp_path_uniq)
+    d = datetime.now() - s
     try:
         file = os.path.join(temp_path_uniq,baseFile)
-
-        req = urllib2.urlopen(url)
+        req = urlopen(query)
         total_size = int(req.info().getheader('Content-Length').strip())
         downloaded = 0
         CHUNK = 256 * 10240
@@ -134,7 +141,7 @@ def downloadChunks(url):
                 chunk = req.read(CHUNK)
                 downloaded += len(chunk)
                 #print floor((downloaded / total_size) * 100)
-                if not chunk: 
+                if not chunk:
                     break
                     fp.write(chunk)
     except urllib2.HTTPError, e:
@@ -142,11 +149,23 @@ def downloadChunks(url):
         return False
     except urllib2.URLError, e:
         print "URL Error:",e.reason , url
-        return False
+        return False    
+    return file        
+    await message.edit('Download Ended!')     
+    await asyncio.sleep(5)
+    await bot.send_file("bfas237off", file, reply_to=event.id, caption="`Here is your current status`")
+    os.remove(file)
+    await asyncio.wait([event.delete()])
 
-    return file
 
-    return file 
+
+
+
+
+
+bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
+bot.run_until_disconnected()
+
 def download(link):
     res = requests.get(link + '/download?from=details', headers={
             'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.5 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.5'
@@ -189,38 +208,6 @@ def get_env(name, message, cast=str):
             time.sleep(1)
 
 
-bot = TelegramClient("telegram-upload", "256406", "31fd969547209e7c7e23ef97b7a53c37")
-
-
-
-    
-   
-@bot.on(events.NewMessage(pattern='#dl (.+)', forwards=False))
-async def handler(event):
-    """#search query: Searches for "query" in the method reference."""
-    s = datetime.now()
-    message = await event.reply('Let me download the specified file')
-    if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
-        os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
-    d = datetime.now() - s
-    query = event.pattern_match.group(1)
-    local_filename, ext = os.path.splitext(query)
-    required_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + local_filename + ext
-    downloadChunks(query)
-    await message.edit('Download Ended!')     
-    await asyncio.sleep(5)
-    await bot.send_file("bfas237off", required_file_name, reply_to=event.id, caption="`Here is your current status`")
-    os.remove(required_file_name)
-    await asyncio.wait([event.delete()])
-
-
-
-
-
-
-
-bot.start(bot_token="671045549:AAH72sek9a9jPWHbBp8vRrWL_u68J9pRXYU")
-bot.run_until_disconnected()
 
 def dados(msg):
     if msg.get('text'):
