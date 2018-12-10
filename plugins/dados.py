@@ -144,11 +144,11 @@ async def handler(event):
                 if not chunk:
                     break
                     fp.write(chunk)
-    except HTTPError, e:
-        print "HTTP Error:",e.code , url
+    except urllib.error.HTTPError as err:
+        print ("HTTP Error:", err.code , query)
         return False
-    except URLError, e:
-        print "URL Error:",e.reason , url
+    except urllib.error.URLError as err:
+        print ("URL Error:", err.code , query)
         return False    
     return file        
     await message.edit('Download Ended!')     
