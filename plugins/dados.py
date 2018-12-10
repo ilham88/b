@@ -147,7 +147,7 @@ async def handler(event):
         for chunk in r.iter_content(chunk_size=chunk_size):
             total_length = r.headers.get('content-length')
             dl = 0
-            shutil.copyfileobj(r.raw, apk)
+            
             if chunk:
                 dl += len(chunk)
                 done = int(100 * dl / total_length)
